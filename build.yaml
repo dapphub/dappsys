@@ -1,0 +1,11 @@
+example:
+    "simple.sol": true
+    "simple_test.sol": true
+test:
+    "test.sol": true
+math:
+    "math.sol": true
+    "math_test.sol": true
+#kern:
+#    "kern.sol": true
+#    "kern_test.sol": true
