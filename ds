@@ -59,14 +59,14 @@ if sys.argv[1] == "test":
             print "Testing", typename
             binary = info["binary"].decode('hex')
             try:
-                tmp = EvmContract(abi, binary, typename, []) 
+                tmp = EvmContract(abi, binary, typename, [], gas=3000000) 
             except Exception, e:
-                #print typename, info
+            #    print typename, info
                 raise e
             for func in dir(tmp):
                 if func.startswith("test"):
                     print "  " + func
-                    contract = EvmContract(abi, binary, typename, []) 
+                    contract = EvmContract(abi, binary, typename, [], gas=3000000) 
                     if hasattr(contract, "setUp"):
                         contract.setUp()
                     getattr(contract, func)()
