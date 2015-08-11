@@ -1,5 +1,5 @@
 import "dappsys/asset/baldb/balance_db.sol";
-import "dappsys/asset/asset.sol";
+import "dappsys/asset/asset_interface.sol";
 import "dappsys/owned.sol";
 
 // Minimal asset that implements DSAssetInterface.
@@ -50,9 +50,9 @@ contract DSBaseAsset is DSAssetInterface, DSOwned {
         }
         return db.sub_balance( msg.sender, amount );
     }
-    function migrate(address new_baldb_owner) ds_owner() {
+    function migrate(DSProtectorInterface new_baldb_owner) auth() {
         if( !migrated ) {
-            db._ds_transfer_ownership( new_baldb_owner );
+            db._ds_change_protector( new_baldb_owner );
             migrated = true;
         }
     }

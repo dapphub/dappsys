@@ -3,7 +3,7 @@ import 'dappsys/owned.sol';
 
 contract OwnedContract is DSOwned {
     bool public breached;
-    function breach() ds_owner() {
+    function breach() auth() {
         breached = true;
     }
 }
@@ -14,11 +14,12 @@ contract OwnedTest is Test {
     }
     function testOwnerCanBreach() {
         o.breach();
-        assertTrue(o.breached(), "owner couldn't call");
+        assertTrue(o.breached(), "owner failed to call");
     }
     function testNonOwnerCantBreach() {
-        o._ds_transfer_ownership( address(0x0) );
+        o._ds_change_protector( DSProtectorInterface(0x0) );
         o.breach();
+        log_address( o._ds_protector() );
         assertFalse(o.breached(), "non-owner breached");
     }
 }

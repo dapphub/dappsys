@@ -1,4 +1,6 @@
-contract Test {
+import 'dappsys/test/debug.sol';
+
+contract Test is Debug {
     bytes32 testname;
     address me;
     // easy way to detect if its a test from the abi
@@ -12,29 +14,22 @@ contract Test {
     modifier tests(bytes32 what) {
         _
     }
-    // These should be generated for each type
-
-    event log_bytes32(bytes32 val);
-    event log_bytes8(bytes8 val);
-    event log_bytes4(bytes4 val);
-
-    event log_named_bytes32(bytes32 key, bytes32 val);
-    event log_named_bytes8(bytes32 key, bytes8 val);
-    event log_named_bytes4(bytes32 key, bytes4 val);
-    event log_named_uint(bytes32 key, uint val);
-    event log_named_address(bytes32 key, address val);
-
     function fail() {
         failed = true;
     }
-    function testAlwaysFail() returns (bool) {
-        return false;
+    function assertTrue(bool what) {
+        if( !what) {
+            fail();
+        }
     }
     function assertTrue(bool what, bytes32 error) {
         if( !what) {
-            log_named_bytes32("failed assertTrue:  ", error);
+            log_bytes32(error);
             fail();
         }
+    }
+    function assertFalse(bool what) {
+        assertTrue(!what);
     }
     function assertFalse(bool what, bytes32 error) {
         assertTrue(!what, error);

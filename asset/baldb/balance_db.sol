@@ -1,10 +1,10 @@
-import 'dappsys/owned.sol';
+import 'dappsys/protected.sol';
 
-contract DSBalanceDB is DSOwned {
+contract DSBalanceDB is DSProtected {
     uint                       public    supply;
     mapping( address => uint ) public    balances;
 
-    function add_balance( address to, uint amount ) ds_owner() returns (bool success) {
+    function add_balance( address to, uint amount ) auth() returns (bool success) {
         if( supply + amount < supply ) {
             return false;
         }
@@ -12,7 +12,7 @@ contract DSBalanceDB is DSOwned {
         supply += amount;
         return true;
     }
-    function sub_balance( address from, uint amount ) ds_owner() returns (bool success) {
+    function sub_balance( address from, uint amount ) auth() returns (bool success) {
         if( balances[from] - amount > balances[from] ) { // underflow
             return false;
         }
