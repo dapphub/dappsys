@@ -50,9 +50,9 @@ contract DSBaseAsset is DSAssetInterface, DSOwned {
         }
         return db.sub_balance( msg.sender, amount );
     }
-    function migrate(DSProtectorInterface new_baldb_owner) auth() {
+    function migrate(DSAuthorityInterface new_baldb_owner) auth() {
         if( !migrated ) {
-            db._ds_change_protector( new_baldb_owner );
+            db._ds_change_authority( new_baldb_owner );
             migrated = true;
         }
     }

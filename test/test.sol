@@ -18,12 +18,12 @@ contract Test is Debug {
         failed = true;
     }
     function assertTrue(bool what) {
-        if( !what) {
+        if( !what ) {
             fail();
         }
     }
     function assertTrue(bool what, bytes32 error) {
-        if( !what) {
+        if( !what ) {
             log_bytes32(error);
             fail();
         }

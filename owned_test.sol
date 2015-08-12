@@ -1,5 +1,6 @@
 import 'dappsys/test/test.sol';
 import 'dappsys/owned.sol';
+import 'dappsys/protected_test.sol'; // MockAuthority
 
 contract OwnedContract is DSOwned {
     bool public breached;
@@ -17,9 +18,9 @@ contract OwnedTest is Test {
         assertTrue(o.breached(), "owner failed to call");
     }
     function testNonOwnerCantBreach() {
-        o._ds_change_protector( DSProtectorInterface(0x0) );
+        o._ds_change_authority( DSAuthorityInterface(0x0) );
         o.breach();
-        log_address( o._ds_protector() );
+        //log_address( o._ds_protector() );
         assertFalse(o.breached(), "non-owner breached");
     }
 }

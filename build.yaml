@@ -5,21 +5,21 @@ asset:
     baldb:
         "balance_db.sol": true
         "balance_db_test.sol": true
-#example:
-#    "simple.sol": true
-#    "simple_test.sol": true
+example:
+    "simple.sol": true
+    "simple_test.sol": true
 test:
     "test.sol": true
     "debug.sol": true
-#math:
-#    "math.sol": true
-#    "math_test.sol": true
+math:
+    "math.sol": true
+    "math_test.sol": true
 "owned.sol": true
 "owned_test.sol": true
 "protected.sol": true
 "protected_test.sol": true
-#"sig_helper.sol": true
-#"sig_helper_test.sol": true
+"sig_helper.sol": true
+"sig_helper_test.sol": true
 
 #kern:
 #    "kern.sol": true
