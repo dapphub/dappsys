@@ -1,6 +1,7 @@
 // DSProtected in the more familiar "owned" pattern.
 // This overrides auth() to simply check the sender
 // is the authority rather than call it for permission.
+// Authority can toggle between "owned" and "protected" modes.
 import 'dappsys/test/debug.sol';
 
 contract DSOwned is DSProtected {
@@ -20,9 +21,8 @@ contract DSOwned is DSProtected {
                 _
             }
         } else {
-            var can_call = _ds_protector.can_call( msg.sender, address(this), msg.sig );
+            var can_call = _ds_protector.can_call(msg.sender, address(this), msg.sig);
             if( can_call ) {
-                //logs("authorized.");
                 _
             }
         }
