@@ -12,6 +12,7 @@ contract Debug {
     event log_named_bytes8(bytes32 key, bytes8 val);
     event log_named_bytes4(bytes32 key, bytes4 val);
     event log_named_uint(bytes32 key, uint val);
+    event log_named_int(bytes32 key, int val);
     event log_named_bool(bytes32 key, bool val);
     event log_named_address(bytes32 key, address val);
 }

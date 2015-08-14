@@ -19,6 +19,7 @@ control:
     "proxy_actor_test.sol": true
 "sig_helper.sol": true
 "sig_helper_test.sol": true
+"fallback_test.sol": true
 
 #kern:
 #    "kern.sol": true

@@ -1,4 +1,5 @@
 contract DSSigHelperMixin {
+    // TODO do this more idiomatically
     function dyn_sig() internal returns (bytes4) {
         uint sig = 0;
         var zero = uint(msg.data[0]);
