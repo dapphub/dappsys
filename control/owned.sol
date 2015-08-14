@@ -3,7 +3,7 @@
 // is the authority rather than call it for permission.
 // Authority can toggle between "owned" and "protected" modes.
 import 'dappsys/test/debug.sol';
-import 'dappsys/protected.sol';
+import 'dappsys/control/protected.sol';
 
 contract DSOwned is DSProtected {
     bool _ds_owned;

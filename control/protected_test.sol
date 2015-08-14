@@ -1,5 +1,5 @@
 import 'dappsys/test/test.sol';
-import 'dappsys/protected.sol';
+import 'dappsys/control/protected.sol';
 
 contract MockAuthority is DSAuthorityInterface {
     function can_call( address caller, address callee, bytes4 sig )

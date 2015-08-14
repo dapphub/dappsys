@@ -1,6 +1,6 @@
 import 'dappsys/test/test.sol';
-import 'dappsys/owned.sol';
-import 'dappsys/protected_test.sol'; // MockAuthority
+import 'dappsys/control/owned.sol';
+import 'dappsys/control/protected_test.sol'; // MockAuthority
 
 contract OwnedContract is DSOwned {
     bool public breached;

@@ -7,10 +7,11 @@ test:
 math:
     "math.sol": true
     "math_test.sol": true
-"owned.sol": true
-"owned_test.sol": true
-"protected.sol": true
-"protected_test.sol": true
+control:
+    "owned.sol": true
+    "owned_test.sol": true
+    "protected.sol": true
+    "protected_test.sol": true
 "sig_helper.sol": true
 "sig_helper_test.sol": true
 
