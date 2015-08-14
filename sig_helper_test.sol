@@ -9,6 +9,8 @@ contract SigHelperTest is Test {
     function testCheckSigs() {
         s.assets("TEST");
         assertEq4(0x73b4fbd7, s.last_sig(), "wrong sig!!");
+        s.poke();
+        //log_named_bytes4("True poke sig:", s.last_sig());
     }
     function testGetSig() {
         var actual = s.get_my_sig();

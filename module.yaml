@@ -1,6 +1,3 @@
-example:
-    "simple.sol": true
-    "simple_test.sol": true
 test:
     "test.sol": true
     "debug.sol": true
@@ -8,10 +5,18 @@ math:
     "math.sol": true
     "math_test.sol": true
 control:
+    "authority.sol": true
+    "authority_test.sol": true
+#    "dynabi.sol": true
+#    "dynabi_test.sol": true
+    "whitelist_authority.sol": true
+    "whitelist_authority_test.sol": true
     "owned.sol": true
     "owned_test.sol": true
     "protected.sol": true
     "protected_test.sol": true
+    "proxy_actor.sol": true
+    "proxy_actor_test.sol": true
 "sig_helper.sol": true
 "sig_helper_test.sol": true
 

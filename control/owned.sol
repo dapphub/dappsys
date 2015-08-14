@@ -8,7 +8,7 @@ import 'dappsys/control/protected.sol';
 contract DSOwned is DSProtected {
     bool _ds_owned;
     function DSOwned() {
-        _ds_init_authority( DSAuthorityInterface(msg.sender) );
+        _ds_set_authority( DSAuthorityInterface(msg.sender) );
         _ds_owned = true;
     }
     function _ds_set_owned_status( bool what )
@@ -16,16 +16,17 @@ contract DSOwned is DSProtected {
     {
         _ds_owned = what;
     }
-    modifier auth() {
+    function authed() internal returns (bool) {
         if( _ds_owned ) {
-            if( msg.sender == address(_ds_protector) ) {
-                _
+            if( msg.sender == address(_ds_authority) ) {
+                return true;
             }
         } else {
-            var can_call = _ds_protector.can_call(msg.sender, address(this), msg.sig);
+            var can_call = _ds_authority.can_call(msg.sender, address(this), msg.sig);
             if( can_call ) {
-                _
+                return true;
             }
         }
+        return false;
     }
 }

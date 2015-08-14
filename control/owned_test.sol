@@ -18,7 +18,7 @@ contract OwnedTest is Test {
         assertTrue(o.breached(), "owner failed to call");
     }
     function testNonOwnerCantBreach() {
-        o._ds_change_authority( DSAuthorityInterface(0x0) );
+        o._ds_set_authority( DSAuthorityInterface(0x0) );
         o.breach();
         //log_address( o._ds_protector() );
         assertFalse(o.breached(), "non-owner breached");
