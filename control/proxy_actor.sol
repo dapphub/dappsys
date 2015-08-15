@@ -5,7 +5,7 @@
 //       4) interprets next 
 //       3) returns byte[BUFSIZE]
 import 'dappsys/control/protected.sol';
-import 'dappsys/sig_helper.sol';
+import 'dappsys/lang/sig_helper.sol';
 import 'dappsys/test/debug.sol';
 
 contract UintProvider{
@@ -14,7 +14,6 @@ contract UintProvider{
 
 contract DSProxyActor is DSProtected
                        , DSSigHelperMixin
-                       , Debug
 {
     // The point of this contract is to avoid needing to use this
     // function:

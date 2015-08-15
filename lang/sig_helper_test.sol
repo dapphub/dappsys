@@ -1,5 +1,5 @@
 import 'dappsys/test/test.sol';
-import 'dappsys/sig_helper.sol';
+import 'dappsys/lang/sig_helper.sol';
 
 contract SigHelperTest is Test {
     SigHelper s;

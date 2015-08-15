@@ -5,6 +5,7 @@ math:
     "math.sol": true
     "math_test.sol": true
 control:
+    "auth.sol": true
     "authority.sol": true
     "authority_test.sol": true
 #    "dynabi.sol": true
@@ -17,10 +18,14 @@ control:
     "protected_test.sol": true
     "proxy_actor.sol": true
     "proxy_actor_test.sol": true
-"sig_helper.sol": true
-"sig_helper_test.sol": true
-"fallback_test.sol": true
+
+lang:
+    "sig_helper.sol": true
+    "sig_helper_test.sol": true
+    "fallback_test.sol": true
 
 #kern:
 #    "kern.sol": true
 #    "kern_test.sol": true
+#    "klog.sol": true
+#    "perm_db.sol": true

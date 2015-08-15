@@ -4,6 +4,13 @@ contract DSProtectedInterface {
     function _ds_set_authority( DSAuthorityInterface authority ) returns (bool);
     modifier auth() {}
 }
+
+contract DSProtected is DSAuth {
+    function DSProtected() {
+        _ds_auth_mode = 0x1;
+    }
+}
+/*
 contract DSProtected is DSProtectedInterface {
     DSAuthorityInterface public _ds_authority;
     modifier auth() {
@@ -33,3 +40,4 @@ contract DSProtected is DSProtectedInterface {
         }
     }
 }
+*/

@@ -5,6 +5,10 @@
 import 'dappsys/test/debug.sol';
 import 'dappsys/control/protected.sol';
 
+
+contract DSOwned is DSAuth {}
+
+/*
 contract DSOwned is DSProtected {
     bool _ds_owned;
     function DSOwned() {
@@ -30,3 +34,4 @@ contract DSOwned is DSProtected {
         return false;
     }
 }
+*/
