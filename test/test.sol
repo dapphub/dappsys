@@ -50,7 +50,16 @@ contract Test is Debug {
             fail();
         }
     }
-    function assertEq(bytes8 a, bytes8 b, bytes32 err) {
+    function assertEq(bytes32 a, bytes32 b, bytes32 err) {
+        if( a != b ) {
+            log_bytes32("Not equal!");
+            log_named_bytes32("A", a);
+            log_named_bytes32("B", b);
+            fail();
+        }
+    }
+
+    function assertEq8(bytes8 a, bytes8 b, bytes32 err) {
         if( a != b ) {
             log_bytes32("Not equal!");
             log_named_bytes8("A", a);

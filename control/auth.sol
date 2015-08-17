@@ -28,11 +28,10 @@ contract DSAuth is Debug {
         }
         return false;
     }
-    function _ds_set_auth_mode(byte mode) auth() returns (bool) {
-        _ds_auth_mode = mode;
-    }
-    function _ds_set_authority(address authority) auth() returns (bool) {
+    function _ds_set_authority(address authority, byte mode) auth() returns (bool) {
         _ds_authority = authority;
+        _ds_auth_mode = mode;
+        return true;
     }
 
     // TODO use enums
