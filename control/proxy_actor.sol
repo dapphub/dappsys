@@ -35,11 +35,11 @@ contract DSProxyActor is DSProtected
 
     function() {
         var sig = dyn_sig();
-        logs("proxy actor fallback");
+        //logs("proxy actor fallback");
         //log_named_bytes4("sig:", sig);
         var ok = _ds_call_target.call( msg.data );
-        log_named_uint( "real magic", UintProvider(_ds_call_target).magic());
-        log_bool(ok);
+        //log_named_uint( "real magic", UintProvider(_ds_call_target).magic());
+        //log_bool(ok);
     }
     // TODO you can't actually do this.
     /*

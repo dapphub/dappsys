@@ -16,8 +16,8 @@ contract SigHelperTest is Test {
         var actual = s.get_my_sig();
         var static = s.last_sig();
         assertEq4(actual, static, "get_my_sig doesn't work");
-        log_bytes4( s.get_my_sig() );
-        log_bytes4( s.last_sig() );
+        //log_bytes4( s.get_my_sig() );
+        //log_bytes4( s.last_sig() );
     }
     function testFallbackStaticSig() {
         s.call(0x1);

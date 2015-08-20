@@ -1,9 +1,8 @@
 import 'dappsys/control/authority.sol';
 import 'dappsys/test/debug.sol';
 
-contract DSAuth is Debug {
+contract DSAuth {
     // TODO use enums
-    // these are only here because consts and enums don't work 
     // 0x0:   authority == sender
     // 0x1:   authority._ds_is_authorized( sender, this, sig )
     byte                    public   _ds_auth_mode;
@@ -18,7 +17,8 @@ contract DSAuth is Debug {
             _
         }
     }
-    function authed() internal returns (bool) {
+    function authed() internal returns (bool authorized)
+    {
         if ( _ds_auth_mode == 0x0 ) {
             return msg.sender == _ds_authority;
         }
@@ -28,15 +28,18 @@ contract DSAuth is Debug {
         }
         return false;
     }
-    function _ds_set_authority(address authority, byte mode) auth() returns (bool) {
+    function _ds_set_authority( address authority
+                              , byte mode )
+             auth()
+             returns (bool)
+    {
         _ds_authority = authority;
         _ds_auth_mode = mode;
         return true;
     }
 
-    // TODO use enums
-    // these are only here because consts and enums don't work 
-    function _ds_set_auth_mode_owned() auth() returns (bool) {
+    function _ds_set_auth_mode_owned() auth() returns (bool)
+    {
         _ds_auth_mode = 0x0;
     }
     function _ds_set_auth_mode_authority() auth() returns (bool) {
