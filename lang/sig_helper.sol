@@ -26,6 +26,8 @@ contract SigHelper is DSSigHelperMixin {
     }
     function assets(bytes8 symbol) S() returns (address) {}
     function poke() S() {}
+    function breach() S() {}
+    function look() S() returns (uint) {}
 
     // testing a few other things
     function get_my_sig() S() returns (bytes4) {

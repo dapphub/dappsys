@@ -3,6 +3,7 @@ contract DSDataInStream {
     function pull() returns (bytes32);
 }
 contract DSDataOutStream {
+    // might require computation
     function push(bytes32 val);
 }
 
@@ -14,6 +15,7 @@ contract DSDataSource is DSDataInStream {
     }
 }
 contract DSDataSink is DSDataOutStream {
+    // definitely doesn't require computation
     function set(bytes32 val);
     function push(bytes32 val) {
         set(val);

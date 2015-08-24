@@ -37,12 +37,4 @@ contract DSAuth {
         _ds_auth_mode = mode;
         return true;
     }
-
-    function _ds_set_auth_mode_owned() auth() returns (bool)
-    {
-        _ds_auth_mode = 0x0;
-    }
-    function _ds_set_auth_mode_authority() auth() returns (bool) {
-        _ds_auth_mode = 0x1;
-    }
 }

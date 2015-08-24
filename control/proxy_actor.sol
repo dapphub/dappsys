@@ -4,7 +4,6 @@
 //       2) interprets next ?? bytes as target address
 //       4) interprets next 
 //       3) returns byte[BUFSIZE]
-import 'dappsys/control/protected.sol';
 import 'dappsys/lang/sig_helper.sol';
 import 'dappsys/test/debug.sol';
 
@@ -12,7 +11,7 @@ contract UintProvider{
     function magic() returns (uint);
 }
 
-contract DSProxyActor is DSProtected
+contract DSProxyActor is DSAuth
                        , DSSigHelperMixin
 {
     // The point of this contract is to avoid needing to use this

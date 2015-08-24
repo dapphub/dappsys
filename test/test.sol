@@ -17,6 +17,7 @@ contract Test is Debug {
     function fail() {
         failed = true;
     }
+    // TODO generate assets: type x has_error_msg
     function assertTrue(bool what) {
         if( !what ) {
             fail();
@@ -35,6 +36,14 @@ contract Test is Debug {
         assertTrue(!what, error);
     }
     function assertEq(uint a, uint b, bytes32 err) {
+        if( a != b ) {
+            log_bytes32("Not equal!");
+            log_named_uint("A", a);
+            log_named_uint("B", b);
+            fail();
+        }
+    }
+    function assertEq(uint a, uint b ) {
         if( a != b ) {
             log_bytes32("Not equal!");
             log_named_uint("A", a);
