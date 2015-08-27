@@ -26,7 +26,11 @@ contract DSAuth is Debug {
         }
         if (_ds_auth_mode == 0x1) {
             var A = DSAuthorityInterface(_ds_authority);
-            return A.can_call( msg.sender, address(this), msg.sig );
+            var can = A.can_call( msg.sender, address(this), msg.sig );
+            if( can ) {
+                return true;
+            }
+            return msg.sender == _ds_authority;
         }
         return false;
     }

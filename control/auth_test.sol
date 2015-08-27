@@ -22,7 +22,7 @@ contract RejectingAuthority {
     }
 }
 
-contract Vault is DSAuth {
+contract Vault is DSAuth, DSSigHelperMixin {
     bool public breached;
     uint public coins;
     function Vault() {
@@ -32,7 +32,8 @@ contract Vault is DSAuth {
         coins = 50;
         breached = false;
     }
-    function breach() auth() {
+    // 0x0b6142fc
+    function breach() printsig() auth() {
         breached = true;
         coins = 4;
     }

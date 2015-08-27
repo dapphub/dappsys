@@ -11,6 +11,7 @@ srcs:
         "auth.sol": true
         "auth_test.sol": true
         "authority.sol": true
+        "authority_test.sol": true
     #    "dynabi.sol": true
     #    "dynabi_test.sol": true
         "proxy_actor.sol": true

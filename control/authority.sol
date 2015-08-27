@@ -34,6 +34,11 @@ contract DSAuthority is DSAuthorityInterface {
         _is_root[who] = status;
         return true;
     }
+    function migrate_authority( address who, address new_authority, byte auth_mode )
+             root() returns (bool)
+    {
+        return DSAuth(who)._ds_set_authority( new_authority, auth_mode );
+    }
     modifier root() {
         if( _is_root[msg.sender] ) {
             _

@@ -12,6 +12,11 @@ contract DSSigHelperMixin {
         sig += three * 256**0;
         return bytes4(sig);
     }
+    modifier printsig() {
+        sig(msg.sig);
+        _
+    }
+    event sig(bytes4 sig);
 }
 
 // Add a function, add the S() modifier, and run the tests to see
