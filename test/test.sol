@@ -59,6 +59,15 @@ contract Test is Debug {
             fail();
         }
     }
+    function assertEq(address a, address b, bytes32 err) {
+        if( a != b ) {
+            log_bytes32("Not equal!");
+            log_named_address("A", a);
+            log_named_address("B", b);
+            fail();
+        }
+    }
+
     function assertEq(bytes32 a, bytes32 b, bytes32 err) {
         if( a != b ) {
             log_bytes32("Not equal!");

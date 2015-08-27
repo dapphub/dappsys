@@ -13,8 +13,6 @@ srcs:
         "authority.sol": true
     #    "dynabi.sol": true
     #    "dynabi_test.sol": true
-        "whitelist_authority.sol": true
-        "whitelist_authority_test.sol": true
         "proxy_actor.sol": true
     #    "proxy_actor_test.sol": true
 

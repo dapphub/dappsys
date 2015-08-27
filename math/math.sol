@@ -13,7 +13,7 @@ contract DSFixedPointMathUser {
         return (a * b) / _precision;
     }
     function div(uint a, uint b) internal returns (uint c) {
-        return (a / b) * _precision;
+        return a / (b * _precision);
     }
     function pow(uint a, uint b) internal returns (uint c) {
         return 0x4444;

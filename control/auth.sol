@@ -1,7 +1,7 @@
 import 'dappsys/control/authority.sol';
 import 'dappsys/test/debug.sol';
 
-contract DSAuth {
+contract DSAuth is Debug {
     // TODO use enums
     // 0x0:   authority == sender
     // 0x1:   authority._ds_is_authorized( sender, this, sig )
@@ -13,7 +13,9 @@ contract DSAuth {
     }
 
     modifier auth() {
+        //logs("trying to auth");
         if( authed() ) {
+        //    logs("authed!");
             _
         }
     }
