@@ -1,6 +1,8 @@
 bins:
     DSBalanceDB: true
 srcs:
+    "namereg.sol": true
+    "namereg_test.sol": true
     test:
         "test.sol": true
         "debug.sol": true

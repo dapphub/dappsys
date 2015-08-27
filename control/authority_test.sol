@@ -25,5 +25,9 @@ contract AuthorityTest is Test {
         a.set_can_call( me, address(v), 0x0b6142fc, true );
         v.breach();
         assertTrue( v.breached() );
+        v.reset();
+        a.set_can_call( me, address(v), 0x0b6142fc, false );
+        v.breach();
+        assertFalse( v.breached() );
     }
 }
