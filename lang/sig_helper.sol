@@ -20,11 +20,18 @@ contract DSSigHelperMixin {
 // sig when you are in a fallback function.
 contract SigHelper is DSSigHelperMixin {
     bytes4 public last_sig;
+    bytes4 public internal_helper_sig;
     modifier S() {
         last_sig = msg.sig;
         _
     }
-    function assets(bytes8 symbol) S() returns (address) {}
+    function internal_tester() internal returns (bytes4 sig) {
+        return msg.sig;
+    }
+    //0x73b4fbd7
+    function assets(bytes8 symbol) S() returns (address) {
+        internal_helper_sig = internal_tester();
+    }
     function poke() S() {}
     function breach() S() {}
     function look() S() returns (uint) {}

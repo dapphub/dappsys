@@ -1,26 +1,18 @@
-contract DSDataInStream {
-    // might require computation
-    function pull() returns (bytes32);
-}
-contract DSDataOutStream {
-    // might require computation
-    function push(bytes32 val);
-}
-
-contract DSDataSource is DSDataInStream {
-    // definitely doesn't require computation
-    function get() returns (bytes32);
-    function pull() returns (bytes32) {
-        return get();
+contract DSDataSource {
+    function get(bytes32 key) returns (bytes32, bool);
+    function pull(bytes32 key) returns (bytes32) {
+        return get(key);
     }
 }
-contract DSDataSink is DSDataOutStream {
-    // definitely doesn't require computation
-    function set(bytes32 val);
-    function push(bytes32 val) {
-        set(val);
+contract DSDataSink {
+    function set(bytes32 key, bytes32 val) returns (bool);
+    function push(bytes32 key, bytes32 val) {
+        set(key, val);
     }
 }
 
-
-contract DSData
+contract DSDataStream is DSDataSink
+                       , DSDataSource
+{
+    
+}

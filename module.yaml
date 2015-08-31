@@ -1,6 +1,7 @@
 bins:
     DSBalanceDB: true
 srcs:
+    "namereg.sol": true
     test:
         "test.sol": true
         "debug.sol": true
@@ -20,7 +21,8 @@ srcs:
         "sig_helper.sol": true
         "sig_helper_test.sol": true
         "fallback_test.sol": true
-
+    data:
+        "dataflow.sol": true
     kern:
         "klog.sol": true
     #    "perm_db.sol": true

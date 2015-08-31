@@ -20,79 +20,104 @@ contract Test is Debug {
     // TODO generate assets: type x has_error_msg
     function assertTrue(bool what) {
         if( !what ) {
+            logs("assertTrue was false");
             fail();
         }
     }
+
     function assertTrue(bool what, bytes32 error) {
         if( !what ) {
+            logs("assertTrue was false");
             log_bytes32(error);
             fail();
         }
     }
     function assertFalse(bool what) {
-        assertTrue(!what);
+        if( what ) {
+            logs("assertFalse was true");
+            fail();
+        }
     }
     function assertFalse(bool what, bytes32 error) {
-        assertTrue(!what, error);
-    }
-    function assertEq(uint a, uint b, bytes32 err) {
-        if( a != b ) {
-            log_bytes32("Not equal!");
-            log_named_uint("A", a);
-            log_named_uint("B", b);
-            fail();
-        }
-    }
-    function assertEq(uint a, uint b ) {
-        if( a != b ) {
-            log_bytes32("Not equal!");
-            log_named_uint("A", a);
-            log_named_uint("B", b);
-            fail();
-        }
-    }
-    function assertEq(int a, int b, bytes32 err) {
-        if( a != b ) {
-            log_bytes32("Not equal!");
-            log_named_int("A", a);
-            log_named_int("B", b);
-            fail();
-        }
-    }
-    function assertEq(address a, address b, bytes32 err) {
-        if( a != b ) {
-            log_bytes32("Not equal!");
-            log_named_address("A", a);
-            log_named_address("B", b);
+        if( what ) {
+            logs("assertFalse was true");
+            log_bytes32(error);
             fail();
         }
     }
 
-    function assertEq(bytes32 a, bytes32 b, bytes32 err) {
-        if( a != b ) {
-            log_bytes32("Not equal!");
-            log_named_bytes32("A", a);
-            log_named_bytes32("B", b);
+
+    function assertEq0(bytes a, bytes b) {
+        var len = a.length;
+        var ok = true;
+        if( b.length == len ) {
+            for( var i = 0; i < len; i++ ) {
+                if( a[i] != b[i] ) {
+                    ok = false;
+                }
+            }
+        } else {
+            ok = false;
+        }
+        if( !ok ) {
+            log_bytes32("failed assertEq(bytes)");
             fail();
         }
     }
 
-    function assertEq8(bytes8 a, bytes8 b, bytes32 err) {
-        if( a != b ) {
-            log_bytes32("Not equal!");
-            log_named_bytes8("A", a);
-            log_named_bytes8("B", b);
+    function assertEq0(bytes a, bytes b, bytes32 err) {
+        var len = a.length;
+        var ok = true;
+        if( b.length == len ) {
+            for( var i = 0; i < len; i++ ) {
+                if( a[i] != b[i] ) {
+                    ok = false;
+                }
+            }
+        } else {
+            ok = false;
+        }
+        if( !ok ) {
+            log_bytes32("failed assertEq(bytes)");
+            log_bytes32(err);
             fail();
         }
     }
-    function assertEq4(bytes4 a, bytes4 b, bytes32 err) {
-        if( a != b ) {
-            log_bytes32("Not equal!");
-            log_named_bytes4("A", a);
-            log_named_bytes4("B", b);
-            fail();
-        }
-    }
+
+
+    /*[[[cog
+    import cog
+    types = ['bool', 'uint', 'int', 'address']
+    for i in range(32):
+        types.append('bytes'+str(i+1))
+    for type in types:
+        fname = "assertEq"
+        if type.startswith("bytes") and type != "bytes":
+            fname += type.strip("bytes")
+        cog.out("function " + fname + "(")
+        cog.outl(type + " a, " + type + " b, bytes32 err) {")
+        cog.outl("    if( a != b ) {");
+        cog.outl("        log_bytes32('Not equal!');")
+        cog.outl("        log_bytes32(err);")
+        cog.outl("        log_named_" + type + "('A', a);")
+        cog.outl("        log_named_" + type + "('B', b);")
+        cog.outl("        fail();")
+        cog.outl("    }")
+        cog.outl("}")
+
+        cog.out("function " + fname + "(")
+        cog.outl(type + " a, " + type + " b) {")
+        cog.outl("    if( a != b ) {");
+        cog.outl("        log_bytes32('Not equal!');")
+        cog.outl("        log_named_" + type + "('A', a);")
+        cog.outl("        log_named_" + type + "('B', b);")
+        cog.outl("        fail();")
+        cog.outl("    }")
+        cog.outl("}")
+
+
+    ]]]*/
+    //[[[end]]]
 
 
 

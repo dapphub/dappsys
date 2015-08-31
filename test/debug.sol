@@ -1,18 +1,16 @@
 contract Debug {
-    // These should be generated for each type
     event logs(bytes val);
-    event log_bytes32(bytes32 val);
-    event log_bytes8(bytes8 val);
-    event log_bytes4(bytes4 val);
 
-    event log_bool(bool val);
-    event log_address(address val);
+    // Generate log_* and log_named* functions
+    /*[[[cog
+    import cog
+    types = ['bool', 'uint', 'int', 'address', 'bytes']
+    for i in range(32):
+        types.append('bytes'+str(i+1))
 
-    event log_named_bytes32(bytes32 key, bytes32 val);
-    event log_named_bytes8(bytes32 key, bytes8 val);
-    event log_named_bytes4(bytes32 key, bytes4 val);
-    event log_named_uint(bytes32 key, uint val);
-    event log_named_int(bytes32 key, int val);
-    event log_named_bool(bytes32 key, bool val);
-    event log_named_address(bytes32 key, address val);
+    for type in types:
+        cog.outl("event log_" + type + "(" + type + " val);")
+        cog.outl("event log_named_" + type + "(bytes32 key, " + type + " val);")
+    ]]]*/
+    //[[[end]]]
 }
