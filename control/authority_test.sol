@@ -1,4 +1,4 @@
-import 'dappsys/test/test.sol';
+import 'dapple/test/test.sol';
 import 'dappsys/control/authority.sol';
 import 'dappsys/control/auth_test.sol';  // Vault
 

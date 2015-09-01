@@ -2,10 +2,6 @@ bins:
     DSBalanceDB: true
 srcs:
     "namereg.sol": true
-    "namereg_test.sol": true
-    test:
-        "test.sol": true
-        "debug.sol": true
     math:
         "math.sol": true
     #    "math_test.sol": true
@@ -14,6 +10,8 @@ srcs:
         "auth_test.sol": true
         "authority.sol": true
         "authority_test.sol": true
+        "transient.sol": true
+        "transient_test.sol": true
     #    "dynabi.sol": true
     #    "dynabi_test.sol": true
         "proxy_actor.sol": true
@@ -23,7 +21,8 @@ srcs:
         "sig_helper.sol": true
         "sig_helper_test.sol": true
         "fallback_test.sol": true
-
+    data:
+        "dataflow.sol": true
     kern:
         "klog.sol": true
     #    "perm_db.sol": true
