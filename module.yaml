@@ -2,9 +2,6 @@ bins:
     DSBalanceDB: true
 srcs:
     "namereg.sol": true
-    test:
-        "test.sol": true
-        "debug.sol": true
     math:
         "math.sol": true
     #    "math_test.sol": true
@@ -12,6 +9,8 @@ srcs:
         "auth.sol": true
         "auth_test.sol": true
         "authority.sol": true
+        "transient.sol": true
+        "transient_test.sol": true
     #    "dynabi.sol": true
     #    "dynabi_test.sol": true
         "proxy_actor.sol": true

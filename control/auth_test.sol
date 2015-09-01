@@ -1,5 +1,5 @@
+import 'dapple/test/test.sol';
 import 'dappsys/lang/sig_helper.sol';
-import 'dappsys/test/test.sol';
 import 'dappsys/control/auth.sol';
 
 contract AcceptingAuthority {
@@ -59,7 +59,7 @@ contract AuthTest is Test {
         assertTrue(v.breached(), "owner failed to call");
     }
     function testNonOwnerCantBreach() {
-        v._ds_set_authority( DSAuthorityInterface(0x0), 0x0 );
+        v._ds_set_authority( DSAuthority(0x0), 0x0 );
         v.breach();
     }
     function testTransferToAcceptAuthority() {

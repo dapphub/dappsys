@@ -1,4 +1,4 @@
-import 'dappsys/test/test.sol';
+import 'dapple/test/test.sol';
 
 contract IntReturnerInterface {
     function get() returns (int);
