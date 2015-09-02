@@ -1,4 +1,4 @@
-import 'dapple/test/test.sol';
+import 'dapple/contracts/test.sol';
 import 'dappsys/lang/sig_helper.sol';
 
 contract SigHelperTest is Test

@@ -1,4 +1,4 @@
-import 'dapple/test/test.sol';
+import 'dapple/contracts/test.sol';
 
 contract IntReturnerInterface {
     function get() returns (int);
