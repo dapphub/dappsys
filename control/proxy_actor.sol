@@ -5,7 +5,7 @@
 //       4) interprets next 
 //       3) returns byte[BUFSIZE]
 import 'dappsys/lang/sig_helper.sol';
-import 'dapple/test/debug.sol';
+import 'dapple/debug.sol';
 
 contract UintProvider{
     function magic() returns (uint);

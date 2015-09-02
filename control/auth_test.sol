@@ -1,4 +1,4 @@
-import 'dapple/test/test.sol';
+import 'dapple/test.sol';
 import 'dappsys/lang/sig_helper.sol';
 import 'dappsys/control/auth.sol';
 
