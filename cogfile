@@ -1,2 +1,2 @@
-test/test.sol
-test/debug.sol
+../dapple/test.sol
+../dapple/debug.sol

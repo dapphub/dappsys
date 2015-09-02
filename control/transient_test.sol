@@ -1,4 +1,4 @@
-import 'dapple/contracts/test.sol';
+import 'dapple/test.sol';
 import 'dappsys/control/transient.sol';
 
 
