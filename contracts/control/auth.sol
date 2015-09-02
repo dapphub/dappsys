@@ -22,7 +22,7 @@ contract DSAuth {
             return msg.sender == _ds_authority;
         }
         if (_ds_auth_mode == 0x1) {
-            var A = DSAuthorityInterface(_ds_authority);
+            var A = DSAuthority(_ds_authority);
             var can = A.can_call( msg.sender, address(this), msg.sig );
             if( can ) {
                 return true;

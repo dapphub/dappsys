@@ -3,19 +3,19 @@ import 'dappsys/control/authority.sol';
 import 'dappsys/control/auth_test.sol';  // Vault
 
 
-contract AuthorityTest is Test {
-    DSAuthority a;
-    DSAuthority a2;
+contract StandardAuthorityTest is Test {
+    DSStandardAuthority a;
+    DSStandardAuthority a2;
     Vault v;
     function setUp() {
-        a = new DSAuthority();
+        a = new DSStandardAuthority();
         v = new Vault();
         v._ds_set_authority(a, 0x1);
     }
-    function testMigratingAuthority() {
+    function testExportAuthorized() {
         v.breach();
         assertFalse( v.breached() );
-        a.migrate_authority( address(v), address(this), 0x0 );
+        a.export_authorized( DSAuth(v), DSAuthority(this), 0x0 );
         v.breach();
         assertTrue( v.breached(), "couldn't breach w/ permission" );
     }

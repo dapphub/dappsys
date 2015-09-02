@@ -1,0 +1,14 @@
+def init():
+    storage[0] = msg.sender
+def code():
+    // set root
+    // set function
+    // log
+    sig = msg.data[:4]
+    if sig == 0x0000:
+        storage[msg.data[4:8]] = msg.data[8:]
+    if sig == 0x0001:
+    // giant switch which implements solidity contract
+    // fallback case:
+    target = storage[sig]
+    target.call(msg.data)
