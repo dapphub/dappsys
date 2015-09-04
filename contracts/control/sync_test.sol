@@ -1,39 +1,42 @@
 import 'dapple/test.sol';
-import 'dappsys/control/transient.sol';
+import 'dappsys/control/sync.sol';
+import 'dappsys/control/migrate.sol';
 
 
 contract IDProvider {
     function id() returns (uint);
 }
 
-contract transient is DSTransient {
-    DSTransient next_t;
+contract migratable is DSMigratable {
+    migratable next;
     uint _id;
     function id() returns(uint) {
         return _id;
     }
-    function transient( uint id ) {
+    function migratable( uint id ) {
         _id = id;
     }
     function _ds_get_update() returns (address) {
-        if( next_t == DSTransient(0x0) ) {
-            return address(this);
-        } else {
-            return address(next_t);
-        }
+        return address(next);
     }
-    function update( DSTransient t ) {
-        next_t = t;
+    function update( migratable m ) {
+        next = m;
     }
 }
 
-contract consumer is DSTransientContractConsumer {
-    function consumer( DSTransient t)
-             DSTransientContractConsumer( t )
+contract consumer is DSSync {
+    migratable m;
+    function consumer( migratable m )
     {
+        sync_with( DSMigratable(m) );
+    }
+    modifier syncs() {
+        _ds_sync();
+        m = migratable(_m[0]);
+        _
     }
     function get_provider() internal returns (IDProvider p) {
-        return IDProvider(t);
+        return IDProvider(m);
     }
     function dostuff()
              syncs()
@@ -43,16 +46,16 @@ contract consumer is DSTransientContractConsumer {
     }
 }
 
-contract DSTransientTest is Test
+contract DSSyncTest is Test
 {
-    transient t1;
-    transient t2;
-    transient t3;
+    migratable t1;
+    migratable t2;
+    migratable t3;
     consumer c;
     function setUp() {
-        t1 = new transient(1);
-        t2 = new transient(2);
-        t3 = new transient(3);
+        t1 = new migratable(1);
+        t2 = new migratable(2);
+        t3 = new migratable(3);
         c = new consumer(t1);
     }
     function testSyncBeforeUpdate() {

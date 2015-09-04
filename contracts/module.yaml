@@ -1,17 +1,18 @@
 bins:
-    DSBalanceDB: true
+    DSStaticMath: true
 srcs:
     "namereg.sol": true
     math:
         "math.sol": true
-    #    "math_test.sol": true
+        "math_test.sol": true
     control:
         "auth.sol": true
         "auth_test.sol": true
         "authority.sol": true
         "authority_test.sol": true
-        "transient.sol": true
-        "transient_test.sol": true
+        "migrate.sol": true
+        "sync.sol": true
+        "sync_test.sol": true
     #    "dynabi.sol": true
     #    "dynabi_test.sol": true
         "proxy_actor.sol": true
