@@ -1,3 +1,8 @@
+contract DSDataPoint {
+    function get(bytes32 key) returns (bytes32);
+    function set(bytes32 key) returns (bytes32);
+}
+
 contract DSDataSource {
     function get(bytes32 key) returns (bytes32, bool);
     function pull(bytes32 key) returns (bytes32) {

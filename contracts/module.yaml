@@ -1,5 +1,10 @@
+static:
+    DSStaticMath:
+        "ethereum": "0x0"
+        "olympic-testnet": "0x0"
 bins:
-    DSStaticMath: true
+    DSMath: true
+    DSStandardAuthority: true
 srcs:
     "namereg.sol": true
     math:
@@ -24,6 +29,8 @@ srcs:
         "fallback_test.sol": true
     data:
         "dataflow.sol": true
+        "median.sol": true
+        "median_test.sol": true
     kern:
         "klog.sol": true
     #    "perm_db.sol": true

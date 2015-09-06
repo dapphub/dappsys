@@ -19,6 +19,7 @@ contract DSStandardAuthority is DSAuthority {
         return _can_call[caller][callee][0x0000] == true
             || _can_call[caller][callee][sig];
     }
+    event set_can_call_event( address caller, address callee, bytes4 sig, bool can );
     function set_can_call( address caller
                          , address callee
                          , bytes4 sig
@@ -26,12 +27,15 @@ contract DSStandardAuthority is DSAuthority {
              root() returns (bool success)
     {
         _can_call[caller][callee][sig] = can;
+        set_can_call_event( caller, callee, sig, can );
         return true;
     }
-    function set_root( address who, bool status )
+    event set_root_event( address who, bool is_root );
+    function set_root( address who, bool is_root )
              root() returns (bool)
     {
-        _is_root[who] = status;
+        _is_root[who] = is_root;
+        set_root_event( who, is_root );
         return true;
     }
     function export_authorized( DSAuth who
