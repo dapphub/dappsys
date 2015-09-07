@@ -14,7 +14,8 @@ srcs:
         "auth.sol": true
         "auth_test.sol": true
         "authority.sol": true
-        "authority_test.sol": true
+        "standard_authority.sol": true
+        "standard_authority_test.sol": true
     #    "sync.sol": true
     #    "sync_test.sol": true
         "update.sol": true
