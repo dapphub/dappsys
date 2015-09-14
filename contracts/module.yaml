@@ -18,7 +18,9 @@ srcs:
         "standard_authority_test.sol": true
     #    "sync.sol": true
     #    "sync_test.sol": true
+        "only_if.sol": true
         "update.sol": true
+        "update_test.sol": true
     #    "dynabi.sol": true
     #    "dynabi_test.sol": true
         "proxy_actor.sol": true
