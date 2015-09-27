@@ -30,10 +30,12 @@ srcs:
         "sig_helper.sol": true
         "sig_helper_test.sol": true
         "fallback_test.sol": true
+        "get.sol": true
     data:
         "dataflow.sol": true
         "median.sol": true
         "median_test.sol": true
     kern:
         "klog.sol": true
+        "loader.sol": true
     #    "perm_db.sol": true
