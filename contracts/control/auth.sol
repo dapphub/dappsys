@@ -1,4 +1,4 @@
-import 'dappsys/control/authority.sol';
+import 'control/authority.sol';
 
 contract DSAuth {
     // TODO use enums

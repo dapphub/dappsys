@@ -1,6 +1,6 @@
-import 'dapple/test.sol';
-import 'dappsys/control/authority.sol';
-import 'dappsys/control/auth_test.sol';  // Vault
+import 'dapple/core/test.sol';
+import 'control/authority.sol';
+import 'control/auth_test.sol';  // Vault
 
 
 contract StandardAuthorityTest is Test {

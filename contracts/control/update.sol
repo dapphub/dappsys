@@ -1,4 +1,4 @@
-import 'dapple/debug.sol';
+import 'dapple/core/debug.sol';
 
 contract DSUpdateChain is Debug {
     address _ds_latest_version;

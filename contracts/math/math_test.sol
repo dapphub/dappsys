@@ -1,4 +1,4 @@
-import 'dappsys/math/math.sol';
+import 'math/math.sol';
 
 contract DSFixedPointMathUserTest is Test
                                    , DSFixedPointMathMixin(10**18)

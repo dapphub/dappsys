@@ -1,5 +1,5 @@
-import 'dappsys/control/authority.sol';
-import 'dappsys/control/auth.sol';
+import 'control/authority.sol';
+import 'control/auth.sol';
 
 contract DSStandardAuthority is DSAuthority
                               , DSAuth

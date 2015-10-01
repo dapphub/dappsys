@@ -1,5 +1,5 @@
-import 'dapple/test/test.sol';
-import 'dappsys/namereg.sol';
+import 'dapple/core/test.sol';
+import 'namereg.sol';
 
 
 contract NameRegTest is Test {

@@ -1,5 +1,5 @@
 //  blocked on solidity improvements  (indexing into `bytes`)
-import 'dappsys/control/auth.sol';
+import 'control/auth.sol';
 
 contract DSDataStore {
     function get( bytes query ) returns (bytes data);
