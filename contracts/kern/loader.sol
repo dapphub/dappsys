@@ -2,7 +2,7 @@ import 'dappsys/control/auth.sol';
 import 'dappsys/lang/get.sol';
 
 contract DSLoader is DSAuth
-                   , DSAddressGetter
+    //               , DSAddressGetter
 {
     address public implementation;
     bool    public finalized;
@@ -16,10 +16,18 @@ contract DSLoader is DSAuth
     {
         finalized = true;
     }
-    function get() returns (address) {
-        return implementation;        
-    }
     function() returns (address) {
         return implementation;
+    }
+}
+
+
+contract DSLoaderUser {
+    DSLoader _loader;
+    function DSLoaderUser( DSLoader loader ) {
+        _loader = loader;
+    }
+    modifier sync() {
+        
     }
 }
