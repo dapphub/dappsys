@@ -1,5 +1,5 @@
-import 'dappsys/control/auth.sol';
-import 'dappsys/lang/get.sol';
+import 'control/auth.sol';
+import 'lang/get.sol';
 
 contract DSLoader is DSAuth
     //               , DSAddressGetter

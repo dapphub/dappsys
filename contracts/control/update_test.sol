@@ -1,4 +1,4 @@
-import 'dapple/test.sol';
+import 'dapple/core/test.sol';
 
 contract updater is DSUpdateChain {
     uint val;

@@ -1,5 +1,5 @@
-import 'dapple/test.sol';
-import 'dappsys/lang/sig_helper.sol';
+import 'dapple/core/test.sol';
+import 'lang/sig_helper.sol';
 
 contract SigHelperTest is Test
                         , DSSigHelperMixin

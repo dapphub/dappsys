@@ -1,5 +1,5 @@
-import 'dappsys/data/median.sol';
-import 'dapple/test.sol';
+import 'data/median.sol';
+import 'dapple/core/test.sol';
 
 
 contract submitter {
