@@ -1,6 +1,6 @@
-import 'dapple/test.sol';
-import 'dappsys/lang/sig_helper.sol';
-import 'dappsys/auth/auth.sol';
+import 'core/test.sol';
+import 'lang/sig_helper.sol';
+import 'auth/auth.sol';
 
 contract AcceptingAuthority {
     function can_call( address caller
