@@ -1,4 +1,4 @@
-import 'dappsys/control/authority.sol';
+import 'dappsys/auth/authority.sol';
 
 contract DSStaticAuth {
     modifier static_auth( address authority ) {
