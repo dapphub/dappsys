@@ -1,13 +1,2 @@
-name: 'dappsys'
+name: 'my_dapple_package'
 version: '0.0.1a'
-source_dir: 'contracts'
-dependencies:
-    core: 'latest'
-ignore:
-    - kern/perm_db.sol
-    - control/proxy_actor_test.sol
-constants:
-    DSStaticMath: '0x0'
-environments:
-    dev.constants.DSStaticMath: '0x1'
-    prod.constants.DSStaticMath: 0x2'
