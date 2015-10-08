@@ -3,12 +3,12 @@ import 'control/authority.sol';
 import 'control/auth_test.sol';  // Vault
 
 
-contract StandardAuthorityTest is Test {
-    DSStandardAuthority a;
-    DSStandardAuthority a2;
+contract BasicAuthorityTest is Test {
+    DSBasicAuthority a;
+    DSBasicAuthority a2;
     Vault v;
     function setUp() {
-        a = new DSStandardAuthority();
+        a = new DSBasicAuthority();
         v = new Vault();
         v._ds_set_authority(a, 0x1);
     }

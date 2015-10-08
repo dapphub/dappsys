@@ -1,10 +1,10 @@
 import 'auth/authority.sol';
 import 'auth/auth.sol';
 
-contract DSStandardAuthority is DSAuthority
+contract DSBasicAuthority is DSAuthority
                               , DSAuth
 {
-    function DSStandardAuthority() {
+    function DSBasicAuthority() {
         _is_root[msg.sender] = true;
     }
     mapping(address=>bool)  public _is_root;
