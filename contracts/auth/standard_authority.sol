@@ -1,5 +1,5 @@
-import 'control/authority.sol';
-import 'control/auth.sol';
+import 'auth/authority.sol';
+import 'auth/auth.sol';
 
 contract DSStandardAuthority is DSAuthority
                               , DSAuth
