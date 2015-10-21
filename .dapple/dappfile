@@ -4,8 +4,12 @@ source_dir: 'contracts'
 dependencies:
     core: 'latest'
 ignore:
-    - kern/perm_db.sol
+    - kern
+    - data
+    - auth
+    - proxy
     - control/proxy_actor_test.sol
+    - lang/multiret_test.sol
 constants:
     DSStaticMath: '0x0'
 environments:
