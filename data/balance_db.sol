@@ -5,7 +5,7 @@ contract DSBalanceDB is DSAuth {
     uint[2**128] _balances;
     function get_balance( address who )
              constant
-             returns (uint);
+             returns (uint)
     {
         return _balances[uint128(who)];
     }

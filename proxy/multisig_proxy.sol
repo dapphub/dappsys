@@ -40,6 +40,5 @@ contract DSMultisigProxy {
         act( action_id );
     }
     function act( uint action ) {
-        if( 
     }
 }

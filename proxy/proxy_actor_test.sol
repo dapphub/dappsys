@@ -1,5 +1,5 @@
-import 'dapple/core/test.sol';
-import 'control/proxy_actor.sol';
+import 'core/test.sol';
+import 'proxy/proxy_actor.sol';
 
 
 contract Mock is Debug {

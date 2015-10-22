@@ -10,6 +10,6 @@ contract DSDirectMap { //is DSStaticAuth {
         _storage[uint(key)] = val;
     }
     function _ds_get( bytes32 key ) internal returns (bytes32 val) {
-        return _storage[uint(key)]
+        return _storage[uint(key)];
     }
 }

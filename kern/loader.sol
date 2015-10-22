@@ -1,4 +1,4 @@
-import 'control/auth.sol';
+import 'auth/auth.sol';
 import 'lang/get.sol';
 
 contract DSLoader is DSAuth

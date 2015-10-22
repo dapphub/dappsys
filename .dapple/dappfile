@@ -18,9 +18,15 @@ dependencies:
 # source_dir: 'contracts'
 
 # A list of files to ignore, relative to "source_dir."
-#
-# ignore:
-#     - ignored_file.sol
+ignore:
+    - auth/
+    - control/
+    - data/
+    - kern/
+    - lang/
+    - proxy/
+    - math/
+    - util/
 
 # A map of preprocessor variable names to values to
 # pass on to your preprocessor. For example, the
