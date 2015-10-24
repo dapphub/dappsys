@@ -9,8 +9,8 @@ contract OverflowTest is Test {
             return (magic, true);
         }
         var (ret, is_ok) = this.helper(depth+1);
-        log_uint(depth);
-        log_bytes32(ret);
+        //log_uint(depth);
+        //log_bytes32(ret);
         return (magic, true);
     }
     function testOverflow() {

@@ -1,6 +1,6 @@
 
 
-contract DSFastPermDB is DSAuthorityInterface {
+contract DSFastPermDB is DSAuthority {
     mapping( address => mapping( bytes4 => bytes8 ) )    _kern_perm_required;
     mapping( address => bytes8 )                         _kern_perm_grants;
     mapping( address => bytes8 )        public                 _kern_perm_has;
@@ -51,5 +51,4 @@ contract DSFastPermDB is DSAuthorityInterface {
             _
         }
     }
- 
 }
