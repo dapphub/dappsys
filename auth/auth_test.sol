@@ -22,7 +22,7 @@ contract RejectingAuthority {
     }
 }
 
-contract Vault is DSAuth, DSSigHelperMixin {
+contract Vault is DSAuth2, DSSigHelperMixin {
     bool public breached;
     uint public coins;
     function Vault() {
@@ -60,16 +60,16 @@ contract AuthTest is Test {
         assertTrue(v.breached(), "owner failed to call");
     }
     function testNonOwnerCantBreach() {
-        v._ds_set_authority( DSAuthority(0x0), 0x0 );
+        v._ds_update_authority( DSAuthority(0x0) );
         v.breach();
     }
     function testTransferToAcceptAuthority() {
-        v._ds_set_authority( AA, 0x1 );
+        v._ds_update_authority( AA );
         v.breach();
         assertTrue( v.breached(), "authority failed to accept");
     }
     function testTransferToRejectAuthority() {
-        v._ds_set_authority( RA, 0x1 );
+        v._ds_update_authority( RA );
         v.breach();
         assertFalse( v.breached(), "authority failed to reject");
     }

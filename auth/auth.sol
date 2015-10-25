@@ -1,18 +1,4 @@
 import 'auth/authority.sol';
-
-contract DSStaticAuth {
-    modifier static_auth( address authority ) {
-        if( msg.sender == authority ) {
-            _
-        } else {
-            var A = DSAuthority(authority);
-            if( A.can_call( msg.sender, address(this), msg.sig ) ) {
-                _
-            }
-        }
-    }
-}
-
 contract DSAuth {
     // TODO use enums
     // 0x0:   authority == sender
@@ -54,3 +40,21 @@ contract DSAuth {
         return true;
     }
 }
+
+// This contract is useful if you want to keep the authority address
+// in code and not in storage. Use it with dapple's CONSTANT macro:
+// `function example() static_auth(CONSTANT("DAPP_AUTHORITY")) returns (bool) {}`
+contract DSStaticAuth {
+    modifier static_auth( address authority ) {
+        if( msg.sender == authority ) {
+            _
+        } else {
+            var A = DSAuthority(authority);
+            if( A.can_call( msg.sender, address(this), msg.sig ) ) {
+                _
+            }
+        }
+    }
+}
+
+
