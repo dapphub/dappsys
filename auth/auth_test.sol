@@ -1,6 +1,5 @@
 import 'core/test.sol';
 import 'auth/auth.sol';
-import 'lang/sig_helper.sol';
 
 contract AcceptingAuthority {
     function can_call( address caller
@@ -22,7 +21,7 @@ contract RejectingAuthority {
     }
 }
 
-contract Vault is DSAuth, DSSigHelperMixin {
+contract Vault is DSAuth { //, DSSigHelperMixin {
     bool public breached;
     uint public coins;
     function Vault() {
@@ -33,7 +32,7 @@ contract Vault is DSAuth, DSSigHelperMixin {
         breached = false;
     }
     // 0x0b6142fc
-    function breach() printsig() auth() {
+    function breach() auth() {
         breached = true;
         coins = 4;
     }
@@ -44,14 +43,14 @@ contract Vault is DSAuth, DSSigHelperMixin {
 
 contract AuthTest is Test {
     Vault v;
-    SigHelper s;
+    //SigHelper s;
     AcceptingAuthority AA;
     RejectingAuthority RA;
     bytes4 breach_sig;
     bytes4 look_sig;
     function setUp() {
         v = new Vault();
-        s = new SigHelper();
+     //   s = new SigHelper();
         RA = new RejectingAuthority();
         AA = new AcceptingAuthority();
     }
@@ -71,6 +70,6 @@ contract AuthTest is Test {
     function testTransferToRejectAuthority() {
         v._ds_update_authority( RA );
         v.breach();
-        assertFalse( v.breached(), "authority failed to reject");
+        this.assertFalse( v.breached(), "authority failed to reject");
     }
 }

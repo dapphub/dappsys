@@ -21,7 +21,11 @@ Modules
 ---
 
 asset
+    DSAsset0
+        interface, impl, test
 auth
+    auth mixin
+    authority IIT
 data
     balance DB
 lang

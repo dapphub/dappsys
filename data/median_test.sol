@@ -24,14 +24,18 @@ contract MedianFinderTest is Test {
             mf.set_slot(address(s[i]), i);
         }
     }
-    function testSimpleMedian() {
+    function testSimpleMedian()
+             logs_gas()
+    {
         mf.set_num_slots(3);
         s[1].submit(1);
         s[2].submit(2);
         s[3].submit(3);
         assertEq(2, mf.get_median());
     }
-    function testOutOfOrderMedian() {
+    function testOutOfOrderMedian()
+             logs_gas()
+    {
         mf.set_num_slots(5);
         s[1].submit(5);
         s[2].submit(2);
@@ -40,7 +44,9 @@ contract MedianFinderTest is Test {
         s[5].submit(1);
         assertEq(3, mf.get_median());
     }
-    function testMoreFeedsThanSlots() {
+    function testMoreFeedsThanSlots()
+             logs_gas()
+    {
         mf.set_num_slots(3);
         s[1].submit(5);
         s[2].submit(2);

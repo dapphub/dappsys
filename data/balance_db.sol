@@ -1,4 +1,5 @@
 import 'auth/auth.sol';
+// TODO check it does direct-map, otherwise static auth trick isn't worth it
 
 // An optimized address-to-uint-balance base class
 // Uses static auth version as a hack to get state variables
@@ -12,9 +13,9 @@ contract DSBalanceDB is DSStaticAuth {
     }
     function get_balance( address who )
              constant
-             returns (uint)
+             returns (uint, bool)
     {
-        return _balances[uint(bytes20(who))];
+        return (_balances[uint(bytes20(who))], true);
     }
     function add_balance( address to, uint amount )
              static_auth( _ds_authority )
@@ -38,5 +39,15 @@ contract DSBalanceDB is DSStaticAuth {
         supply -= amount;
         return true;
     }
-
+    function move_balance( address from, address to, uint amount )
+             static_auth( _ds_authority )
+             returns (bool success)
+    {
+        if( _balances[uint(bytes20(from))] < amount ) {
+            return false;
+        }
+        _balances[uint(bytes20(from))] -= amount;
+        _balances[uint(bytes20(to))] += amount;
+        return true;
+    }
 }

@@ -19,13 +19,11 @@ dependencies:
 
 # A list of files to ignore, relative to "source_dir."
 ignore:
-    - asset/interface.sol
-    - auth/_auth.sol
-    - auth/_auth_test.sol
     - data/direct_map.sol
     - kern/perm_db.sol
     - lang/multiret_test.sol
-    - proxy/multisig_proxy.sol
+    - lang/sig_helper_test.sol
+    - proxy/*
 
 # A map of preprocessor variable names to values to
 # pass on to your preprocessor. For example, the
