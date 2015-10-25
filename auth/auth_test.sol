@@ -1,6 +1,6 @@
 import 'core/test.sol';
-import 'lang/sig_helper.sol';
 import 'auth/auth.sol';
+import 'lang/sig_helper.sol';
 
 contract AcceptingAuthority {
     function can_call( address caller
@@ -22,7 +22,7 @@ contract RejectingAuthority {
     }
 }
 
-contract Vault is DSAuth2, DSSigHelperMixin {
+contract Vault is DSAuth, DSSigHelperMixin {
     bool public breached;
     uint public coins;
     function Vault() {

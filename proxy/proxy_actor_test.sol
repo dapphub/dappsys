@@ -21,7 +21,7 @@ contract ProxyActorTest is Test {
     Mock m;
     function setUp() {
         a = new DSProxyActor();
-        a._ds_set_authority( DSAuthority(this), 0x0 );
+        a._ds_update_authority( DSAuthority(this) );
         m = new Mock();
     }
     function test_void_action() {

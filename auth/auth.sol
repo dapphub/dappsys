@@ -1,60 +1,42 @@
-import 'auth/authority.sol';
 contract DSAuth {
-    // TODO use enums
-    // 0x0:   authority == sender
-    // 0x1:   authority._ds_is_authorized( sender, this, sig )
-    byte                    public   _ds_auth_mode;
-    address                 public   _ds_authority;
-
+    address public _ds_authority;
     function DSAuth() {
         _ds_authority = msg.sender;
     }
-
     modifier auth() {
-        if( authed() ) {
+        if( _ds_authenticated() ) {
             _
         }
     }
-    function authed() internal returns (bool authorized)
-    {
-        if ( _ds_auth_mode == 0x0 ) {
-            return msg.sender == _ds_authority;
+    function _ds_authenticated() internal returns (bool is_authenticated) {
+        if( msg.sender == _ds_authority ) {
+            return true;
         }
-        if (_ds_auth_mode == 0x1) {
-            var A = DSAuthority(_ds_authority);
-            var can = A.can_call( msg.sender, address(this), msg.sig );
-            if( can ) {
-                return true;
-            }
-            return msg.sender == _ds_authority;
-        }
-        return false;
+        var A = DSAuthority(_ds_authority);
+        return A.can_call( msg.sender, address(this), msg.sig );
     }
-    function _ds_set_authority( address authority
-                              , byte mode )
+    function _ds_update_authority( address new_authority )
              auth()
-             returns (bool)
-    {
-        _ds_authority = authority;
-        _ds_auth_mode = mode;
+             returns (bool success) {
+        _ds_authority = DSAuthority(new_authority);
         return true;
     }
 }
 
-// This contract is useful if you want to keep the authority address
-// in code and not in storage. Use it with dapple's CONSTANT macro:
-// `function example() static_auth(CONSTANT("DAPP_AUTHORITY")) returns (bool) {}`
+// Use the auth() pattern, but compile the address into code instead
+// of into storage. This is useful if you need to use the entire address
+// space, for example.
 contract DSStaticAuth {
-    modifier static_auth( address authority ) {
-        if( msg.sender == authority ) {
+    function _ds_authenticated( address _ds_authority ) internal returns (bool is_authenticated) {
+        if( msg.sender == _ds_authority ) {
+            return true;
+        }
+        var A = DSAuthority(_ds_authority);
+        return A.can_call( msg.sender, address(this), msg.sig );
+    }
+    modifier static_auth( address _ds_authority ) {
+        if( _ds_authenticated( _ds_authority ) ) {
             _
-        } else {
-            var A = DSAuthority(authority);
-            if( A.can_call( msg.sender, address(this), msg.sig ) ) {
-                _
-            }
         }
     }
 }
-
-

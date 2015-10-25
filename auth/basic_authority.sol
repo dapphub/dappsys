@@ -2,7 +2,7 @@ import 'auth/authority.sol';
 import 'auth/auth.sol';
 
 contract DSBasicAuthority is DSAuthority
-                             , DSAuth2
+                           , DSAuth
 {
     function DSBasicAuthority() {
         _is_root[msg.sender] = true;
@@ -39,7 +39,7 @@ contract DSBasicAuthority is DSAuthority
         set_root_event( who, is_root );
         return true;
     }
-    function export_authorized( DSAuth2 who
+    function export_authorized( DSAuth who
                               , DSAuthority new_authority
                               , byte mode )
              auth()
