@@ -1,0 +1,37 @@
+import 'data/balance_db.sol';
+
+contract DSBalanceDB_Test is Test {
+    DSBalanceDB db;
+    address bob;
+    function setUp() {
+        db = new DSBalanceDB(me);
+        bob = address(0xbab);
+    }
+    function testAddBalance() tests("add_balance") {
+        var ok = db.add_balance(me, 100);
+        assertTrue(ok, "add_balance returned err");
+        assertEq(100, db.get_balance(me), "wrong balance after add");
+    }
+    function testSubBalance() tests("sub_balance") {
+        var ok = db.add_balance(me, 100);
+        ok = db.sub_balance(me, 51);
+        assertTrue(ok, "sub_balance returned err");
+        assertEq(49, db.get_balance(me), "wrong balance after sub");
+    }
+    function testSubBalanceFailsBelowZero() tests("sub_balance") {
+        bool ok = db.sub_balance(me, 100);
+//        assertTrue(ok, "sub failed below zero");
+//        db.add_balance(me, 50);
+ //       ok = db.sub_balance(me, 51);
+        assertFalse(ok, "sub failed below zero");
+    }
+
+    /* TODO move to derived class
+    function testAdminTransfer() {
+        bool ok = db.add_balance(bob, 100);
+        ok = db.direct_transfer(bob, me, 40);
+        assertEq(40, db.get_balance(me), "wrong balance");
+    }
+    */
+
+}

@@ -15,3 +15,14 @@ The value of the first 3 components is that together that they let you simulate 
 The `auth` component is a simple set of conventions for contract command-and-control.
 
 [1] certain restrictions in the Solidity language definition prevent us from creating this contract in pure Solidity. For now, the Kernel is split into component contracts, giving you several workaround options. Fortunately these critical features are still on the official solidity roadmap.
+
+
+Modules
+---
+
+asset
+auth
+data
+    balance DB
+lang
+util

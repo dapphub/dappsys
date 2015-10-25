@@ -7,6 +7,9 @@ contract DSBalanceDB is DSStaticAuth {
     uint[2**160] _balances;
     uint public supply;
     address public _ds_authority;
+    function DSBalanceDB( address authority ) {
+        _ds_authority = authority;
+    }
     function get_balance( address who )
              constant
              returns (uint)
