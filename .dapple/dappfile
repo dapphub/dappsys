@@ -23,7 +23,7 @@ ignore:
     - kern/perm_db.sol
     - lang/multiret_test.sol
     - lang/sig_helper_test.sol
-    - proxy/*
+    - dev/*
 
 # A map of preprocessor variable names to values to
 # pass on to your preprocessor. For example, the
