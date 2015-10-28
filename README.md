@@ -1,7 +1,7 @@
 `dappsys`
 ===
 
-`dappsys` is a **contract system framework**. It is a collection of contracts **mixins**, **factories**, and **interfaces** written in Solidity that were created to support a system with many interacting Ethereum contracts.
+`dappsys` is a **contract system framework**. It is a collection of **base types**, **mixins**, **factories**, and **interfaces** written in Solidity that were created to support a system with many interacting Ethereum contracts.
 
 The core feature of `dappsys` is the `DSKernel` contract type[1].
 This contract will be a "fully dynamic object". The creator owns a contract which can be modified arbitraily, including the ability to "solidify" and constrain its ability to change itself. It is the union of several generalizations:
@@ -20,13 +20,29 @@ The `auth` component is a simple set of conventions for contract command-and-con
 Modules
 ---
 
-asset
-    DSAsset0
-        interface, impl, test
-auth
-    auth mixin
-    authority IIT
-data
-    balance DB
-lang
-util
+### `auth`
+
+Base command-and-control contracts. 
+
+* DSAuth
+* DSAuthority
+
+### `data`
+
+Database contracts.
+
+* DSBalanceDB
+
+### `asset`
+
+Asset controllers and helper mixins.
+
+* DSAsset0
+
+### `lang`
+
+Tests to explore solidity's corner cases, and some helper mixins.
+
+### `util`
+
+misc utilities
