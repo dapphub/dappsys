@@ -12,6 +12,7 @@ Base command-and-control contracts.
 contracts :
 
 * DSAuth
+* DSStaticAuth
 * DSAuthority
 
 ### `data`
