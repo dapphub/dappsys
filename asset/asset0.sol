@@ -10,7 +10,7 @@ contract DSAsset0Impl is DSAsset0
         db = new DSBalanceDB( address(this) ); // TODO use factory
         db.add_balance( msg.sender, (10**6)*(10**18) );
     }
-    function get_supply() constant returns (uint) {
+    function get_supply() constant returns (uint, bool) {
         return db.get_supply();
     }
     function get_balance( address who ) constant returns (uint balance, bool ok) {
