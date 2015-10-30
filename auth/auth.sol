@@ -1,5 +1,6 @@
+// @brief Mixin contract to enable standard authorization pattern.
 contract DSAuth {
-    address public _ds_authority;
+    address _ds_authority;
     function DSAuth() {
         _ds_authority = msg.sender;
     }
@@ -15,6 +16,10 @@ contract DSAuth {
         var A = DSAuthority(_ds_authority);
         return A.can_call( msg.sender, address(this), msg.sig );
     }
+
+    function _ds_get_authority() constant returns (address authority) {
+        return _ds_authority;
+    }
     function _ds_update_authority( address new_authority )
              auth()
              returns (bool success) {
@@ -26,6 +31,9 @@ contract DSAuth {
 // Use the auth() pattern, but compile the address into code instead
 // of into storage. This is useful if you need to use the entire address
 // space, for example.
+// @brief DSAuth-like mixin contract which puts the authority address
+//        into code instead of storage. 
+// @dev Optionally implement missing DSAuth functions with your constant address
 contract DSStaticAuth {
     function _ds_authenticated( address _ds_authority ) internal returns (bool is_authenticated) {
         if( msg.sender == _ds_authority ) {
@@ -39,4 +47,7 @@ contract DSStaticAuth {
             _
         }
     }
+    // Implement these with your constant address to make this into a proper DSAuth
+    // function _ds_get_authority() constant returns (address authority);
+    // function _ds_update_authority( address new_authority ) returns (bool success);
 }

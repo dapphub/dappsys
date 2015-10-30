@@ -1,13 +1,10 @@
 import 'auth/authority.sol';
 import 'auth/auth.sol';
 
+// @brief A DSAuthority which contains a whitelist map from can_call arguments to return value.
 contract DSBasicAuthority is DSAuthority
                            , DSAuth
 {
-    function DSBasicAuthority() {
-        _is_root[msg.sender] = true;
-    }
-    mapping(address=>bool)  public _is_root;
     mapping(address=>mapping(address=>mapping(bytes4=>bool))) _can_call;
     function can_call( address caller
                      , address callee
@@ -18,7 +15,7 @@ contract DSBasicAuthority is DSAuthority
         return _can_call[caller][callee][0x0000] == true
             || _can_call[caller][callee][sig];
     }
-    event set_can_call_event( address caller, address callee, bytes4 sig, bool can );
+    event event_set_can_call( address caller, address callee, bytes4 sig, bool can );
     function set_can_call( address caller
                          , address callee
                          , bytes4 sig
@@ -27,7 +24,7 @@ contract DSBasicAuthority is DSAuthority
              returns (bool success)
     {
         _can_call[caller][callee][sig] = can;
-        set_can_call_event( caller, callee, sig, can );
+        event_set_can_call( caller, callee, sig, can );
         return true;
     }
     event set_root_event( address who, bool is_root );
@@ -39,9 +36,7 @@ contract DSBasicAuthority is DSAuthority
         set_root_event( who, is_root );
         return true;
     }
-    function export_authorized( DSAuth who
-                              , DSAuthority new_authority
-                              , byte mode )
+    function export_authorized( DSAuth, DSAuthority new_authority )
              auth()
              returns (bool)
     {
