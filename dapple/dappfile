@@ -7,7 +7,7 @@ version: '0.0.1a'
 # versions this package needs.
 #
 dependencies:
-    core: 'latest'
+    dapple: 'latest'
 
 # All paths in the dappfile and in your local Solidity
 # imports are interpreted relative to this directory.
@@ -23,6 +23,7 @@ ignore:
     - kern/perm_db.sol
     - lang/multiret_test.sol
     - lang/sig_helper_test.sol
+    - util/false.sol
     - dev/*
 
 # A map of preprocessor variable names to values to

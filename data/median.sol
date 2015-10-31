@@ -1,5 +1,5 @@
 import 'auth/auth.sol';
-import 'core/debug.sol';
+import 'dapple/debug.sol';
 
 // Linear-time median-finding
 contract MedianFinder is DSAuth

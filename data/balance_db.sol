@@ -13,9 +13,9 @@ contract DSBalanceDB is DSAuth {
     }
     function get_supply()
              constant
-             returns (uint)
+             returns (uint, bool)
     {
-        return _supply;
+        return (_supply, true);
     }
     function get_balance( address who )
              constant

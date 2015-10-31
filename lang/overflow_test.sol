@@ -1,6 +1,6 @@
 // Confirm the behavior of EVM stack overflow.
 
-import 'core/test.sol';
+import 'dapple/test.sol';
 
 contract OverflowTest is Test {
     function helper(uint depth) external returns (bytes32 val, bool ok) {

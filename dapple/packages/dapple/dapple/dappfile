@@ -1,0 +1,61 @@
+# A mapping of required Dapple packages to the particular
+# Change these to your package's name and version.
+#
+name: 'dapple'
+version: '0.0.1a'
+
+# versions this package needs.
+#
+# dependencies:
+#    dapple: 'latest'
+
+# All paths in the dappfile and in your local Solidity
+# imports are interpreted relative to this directory.
+# By default set to the project's root directory.
+# The line below would make it relative to the
+# "contracts" directory in the project's root.
+#
+# source_dir: 'contracts'
+
+# A list of files to ignore, relative to "source_dir."
+#
+# ignore:
+#     - ignored_file.sol
+
+# A map of preprocessor variable names to values to
+# pass on to your preprocessor. For example, the
+# default preprocessor is cogapp: this mapping gets
+# passed to `cog.options.defines`. Other preprocessor
+# plugins should treat this map in a similar manner.
+# 
+# preprocessor_vars:
+#     my_template_var: 'my value'
+
+# A list of addresses to swap in during preprocessing.
+# To reference a Dapple constant, put something like
+# this in your source code: CONSTANT:"my_constant"
+# For example, if you had a NameReg constant defined:
+# address nameReg = CONSTANT:"NameReg"
+#
+# Any constants referenced in your source code but
+# left undefined will be placed in your binary output
+# in the form __CONSTANT:"my_constant"__, in order to
+# prevent accidental deployment with unbound constants.
+#
+# This also allows deploy scripts to swap in addresses
+# that had been, prior to the beginning of the deploy
+# script, left unbound.
+#
+# constants:
+#     SomeContractAddress: '0x0'
+
+# Constant override values based on the context
+# name passed to dapple. For example,
+# `dapple build production` would grab the constants
+# defined in the "production" map below and use those
+# to override the constants defined above, and to
+# define any constants that'd been left undefined.
+#
+# contexts:
+#     production:
+#         SomeContractAddress: '0x1'

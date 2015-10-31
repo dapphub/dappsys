@@ -1,6 +1,6 @@
+import 'dapple/test.sol';
 import 'asset/asset0.sol';
-import 'util/false.sol';
-import 'core/test.sol';
+//import 'util/false.sol';
 
 contract helper {
     function do_transfer( DSAsset0 a, address to, uint amount ) returns (bool) {
@@ -22,7 +22,6 @@ contract DSAssetTest is Test {
         assertTrue( bal == uint(10**(6+18)) );
     }
     function testOnlyOwnerCanTransfer() {
-        this.IS_TEST();
         this.assertFalse( h.do_transfer(A, address(h), 100) );
         var (bal, ok) = A.get_balance(address(h));
         assertEq( bal, 0 );
