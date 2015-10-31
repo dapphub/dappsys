@@ -23,8 +23,7 @@ ignore:
     - kern/perm_db.sol
     - lang/multiret_test.sol
     - lang/sig_helper_test.sol
-    - math/*
-    - util/*
+    - util/false.sol
     - dev/*
 
 # A map of preprocessor variable names to values to
