@@ -31,7 +31,9 @@ contract DSAsset0Impl is DSAsset0
         return success;
     }
 
-    function swap_db( DSBalanceDB new_db, DSAuthority old_db_new_owner ) returns (bool success)
+    function swap_db( DSBalanceDB new_db, DSAuthority old_db_new_owner )
+             auth()
+             returns (bool success)
     {
         if( db._ds_update_authority( old_db_new_owner ) ) {
             db = new_db;

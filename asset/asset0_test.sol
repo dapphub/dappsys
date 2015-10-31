@@ -8,7 +8,7 @@ contract helper {
     }
 }
 
-contract DSAssetTest is Test {
+contract DSAsset0Test is Test {
     DSAsset0 A;
     helper h;
     address bob;

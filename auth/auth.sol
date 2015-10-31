@@ -17,12 +17,13 @@ contract DSAuth {
         return A.can_call( msg.sender, address(this), msg.sig );
     }
 
-    function _ds_get_authority() constant returns (address authority) {
-        return _ds_authority;
+    function _ds_get_authority() constant returns (address authority, bool ok) {
+        return (_ds_authority, true);
     }
     function _ds_update_authority( address new_authority )
              auth()
-             returns (bool success) {
+             returns (bool success)
+    {
         _ds_authority = DSAuthority(new_authority);
         return true;
     }

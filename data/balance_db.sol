@@ -1,13 +1,13 @@
 import 'auth/auth.sol';
-// TODO check it does direct-map, otherwise static auth trick isn't worth it
+// TODO check it does direct-map, otherwise auth trick isn't worth it
 
 // An optimized address-to-uint-balance base class
-// Uses static auth version as a hack to get state variables
-// ordered for addresses to map directly to their balances in storage
-contract DSBalanceDB is DSAuth {
+// Implements DSAuth directly so that address balances appear directly in storage
+// for aesthetic purposes
+contract DSBalanceDB { // is DSAuth {
     uint[2**160] _balances;
     uint _supply;
-    address public _ds_authority;
+    address _ds_authority;
     function DSBalanceDB( address authority ) {
         _ds_authority = authority;
     }
@@ -56,4 +56,29 @@ contract DSBalanceDB is DSAuth {
         _balances[uint(bytes20(to))] += amount;
         return true;
     }
+
+    function _ds_get_authority() constant returns (address authority, bool ok) {
+        return (_ds_authority, true);
+    }
+    function _ds_update_authority( address new_authority )
+             auth()
+             returns (bool success) {
+        _ds_authority = DSAuthority(new_authority);
+        return true;
+    }
+
+    modifier auth() {
+        if( _ds_authenticated() ) {
+            _
+        }
+    }
+    function _ds_authenticated() internal returns (bool is_authenticated) {
+        if( msg.sender == _ds_authority ) {
+            return true;
+        }
+        var A = DSAuthority(_ds_authority);
+        return A.can_call( msg.sender, address(this), msg.sig );
+    }
+
+
 }

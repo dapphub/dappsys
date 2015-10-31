@@ -27,19 +27,10 @@ contract DSBasicAuthority is DSAuthority
         event_set_can_call( caller, callee, sig, can );
         return true;
     }
-    event set_root_event( address who, bool is_root );
-    function set_root( address who, bool is_root )
+    function export_authorized( DSAuth who, DSAuthority new_authority )
              auth()
              returns (bool)
     {
-        _is_root[who] = is_root;
-        set_root_event( who, is_root );
-        return true;
-    }
-    function export_authorized( DSAuth, DSAuthority new_authority )
-             auth()
-             returns (bool)
-    {
-        who._ds_update_authority( new_authority );
+        who._ds_update_authority( address(new_authority) );
     }
 }
