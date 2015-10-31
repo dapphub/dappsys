@@ -1,4 +1,4 @@
-import 'debug.sol';
+import 'dapple/debug.sol';
 
 contract Test is Debug {
     bytes32 testname;

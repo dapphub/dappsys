@@ -1,5 +1,5 @@
 import 'data/balance_db.sol';
-import 'core/test.sol';
+import 'dapple/test.sol';
 
 contract DSBalanceDB_Test is Test {
     DSBalanceDB db;

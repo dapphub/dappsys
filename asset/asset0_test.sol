@@ -1,6 +1,6 @@
 import 'asset/asset0.sol';
 import 'util/false.sol';
-import 'core/test.sol';
+import 'dapple/test.sol';
 
 contract helper {
     function do_transfer( DSAsset0 a, address to, uint amount ) returns (bool) {

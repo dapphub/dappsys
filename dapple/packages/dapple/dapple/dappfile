@@ -1,13 +1,13 @@
+# A mapping of required Dapple packages to the particular
 # Change these to your package's name and version.
 #
-name: 'mypackage'
+name: 'dapple'
 version: '0.0.1a'
 
-# A mapping of required Dapple packages to the particular
 # versions this package needs.
 #
-dependencies:
-    core: 'latest'
+# dependencies:
+#    dapple: 'latest'
 
 # All paths in the dappfile and in your local Solidity
 # imports are interpreted relative to this directory.
@@ -18,12 +18,9 @@ dependencies:
 # source_dir: 'contracts'
 
 # A list of files to ignore, relative to "source_dir."
-ignore:
-    - data/direct_map.sol
-    - kern/perm_db.sol
-    - lang/multiret_test.sol
-    - lang/sig_helper_test.sol
-    - dev/*
+#
+# ignore:
+#     - ignored_file.sol
 
 # A map of preprocessor variable names to values to
 # pass on to your preprocessor. For example, the

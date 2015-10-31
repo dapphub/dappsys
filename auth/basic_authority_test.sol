@@ -1,4 +1,4 @@
-import 'core/test.sol';
+import 'dapple/test.sol';
 import 'auth/authority.sol';
 import 'auth/auth_test.sol';  // Vault
 
