@@ -1,5 +1,5 @@
 import 'auth/auth.sol';
-// TODO check it does direct-map, otherwise auth trick isn't worth it
+// TODO check it does direct-map, otherwise auth reimplementation isn't worth it
 
 // An optimized address-to-uint-balance base class
 // Implements DSAuth directly so that address balances appear directly in storage
@@ -8,8 +8,8 @@ contract DSBalanceDB { // is DSAuth {
     uint[2**160] _balances;
     uint _supply;
     address _ds_authority;
-    function DSBalanceDB( address authority ) {
-        _ds_authority = authority;
+    function DSBalanceDB() { // fake DSAuth constructor
+        _ds_authority = msg.sender;
     }
     function get_supply()
              constant

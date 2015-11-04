@@ -28,13 +28,11 @@ contract DSAsset0Test is Test {
         assertEq( bal, 0 );
     }
     function testSwapDB() {
-	var old_db = DSAsset0Impl(A).db();
         var new_db = new DSBalanceDB();
 	new_db._ds_update_authority( address(A) );
 	A.swap_db( new_db, DSAuthority(this) );
-	old_db.add_balance( me, 500 );
-	var (bal, ok) = old_db.get_balance( me );
-	assertTrue(bal==1500, "didn't gain authority of old db");
+        var auth = DSAuthority(new RejectingAuthority());
+	
     }
 
 }

@@ -5,7 +5,7 @@ contract DSBalanceDB_Test is Test {
     DSBalanceDB db;
     address bob;
     function setUp() {
-        db = new DSBalanceDB(me);
+        db = new DSBalanceDB();
         bob = address(0xbab);
     }
     function testAddBalance() tests("add_balance") {

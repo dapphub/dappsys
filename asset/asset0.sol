@@ -6,9 +6,8 @@ contract DSAsset0Impl is DSAsset0
                        , DSAuth
 {
     DSBalanceDB public db;
-    function DSAsset0Impl() {
-        db = new DSBalanceDB( address(this) ); // TODO use factory
-        db.add_balance( msg.sender, (10**6)*(10**18) );
+    function DSAsset0Impl( address balance_db ) {
+        db = DSBalanceDB(balance_db);
     }
     function get_supply() constant returns (uint, bool) {
         return db.get_supply();
@@ -35,7 +34,8 @@ contract DSAsset0Impl is DSAsset0
              auth()
              returns (bool success)
     {
-        if( db._ds_update_authority( old_db_new_owner ) ) {
+	var ok = db._ds_update_authority( old_db_new_owner );
+        if( ok ) {
             db = new_db;
             return true;
         }
