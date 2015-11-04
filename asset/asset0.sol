@@ -37,6 +37,7 @@ contract DSAsset0Impl is DSAsset0
 	var ok = db._ds_update_authority( old_db_new_owner );
         if( ok ) {
             db = new_db;
+	    event_swap_db( address(db), address(old_db_new_owner) );
             return true;
         }
         return false;

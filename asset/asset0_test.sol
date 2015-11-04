@@ -22,10 +22,14 @@ contract DSAsset0Test is Test {
         assertTrue( ok );
         assertTrue( bal == uint(1000) );
     }
-    function testOnlyOwnerCanTransfer() {
-        this.assertFalse( h.do_transfer(A, address(h), 100) );
+    function testTransfer() {
+        assertFalse( h.do_transfer(A, address(h), 100) );
         var (bal, ok) = A.get_balance(address(h));
         assertEq( bal, 0 );
+	A.transfer(address(h), 100);
+        (bal, ok) = A.get_balance(address(h));
+        assertEq( bal, 100 );
+	h.do_transfer(A, address(0x42), 100);
     }
     function testSwapDB() {
 	var old_db = DSAsset0Impl(A).db();

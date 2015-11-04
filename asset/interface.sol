@@ -1,4 +1,4 @@
-contract DSAsset0
+contract DSAsset0 // is DSAuth
 {
     function get_supply() constant returns (uint balance, bool ok);
     function get_balance( address who ) constant returns (uint balance, bool ok);
@@ -17,7 +17,7 @@ contract DSAsset0
 
     // Admin
     function swap_db( DSBalanceDB db, DSAuthority old_db_new_owner ) returns (bool success);
-    // _ds_update_authority
+    event event_swap_db( address db, address old_db_new_owner );
 }
 
 
