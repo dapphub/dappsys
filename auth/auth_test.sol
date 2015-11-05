@@ -1,5 +1,6 @@
 import 'dapple/test.sol';
 import 'auth/auth.sol';
+import 'auth/reject.sol';
 
 contract AcceptingAuthority {
     function can_call( address caller
@@ -8,16 +9,6 @@ contract AcceptingAuthority {
              returns (bool)
     {
         return true;
-    }
-}
-
-contract RejectingAuthority {
-    function can_call( address caller
-                     , address callee
-                     , bytes4 sig )
-             returns (bool)
-    {
-        return false;
     }
 }
 
@@ -72,4 +63,11 @@ contract AuthTest is Test {
         v.breach();
         this.assertFalse( v.breached(), "authority failed to reject");
     }
+/*
+    function testTransferToNullAuthority() {
+        v._ds_update_authority( DSAuthority(address(0x1)) );
+        v.breach();
+        this.assertFalse( v.breached(), "authority failed to reject");
+    }
+*/
 }

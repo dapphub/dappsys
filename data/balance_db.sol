@@ -62,7 +62,8 @@ contract DSBalanceDB { // is DSAuth {
     }
     function _ds_update_authority( address new_authority )
              auth()
-             returns (bool success) {
+             returns (bool success)
+    {
         _ds_authority = DSAuthority(new_authority);
         return true;
     }
