@@ -27,10 +27,11 @@ contract DSBasicAuthority is DSAuthority
         event_set_can_call( caller, callee, sig, can );
         return true;
     }
-    function export_authorized( DSAuth who, DSAuthority new_authority )
+    function export_authorized( DSAuth who, address new_authority, uint8 mode )
              auth()
              returns (bool)
     {
-        who._ds_update_authority( address(new_authority) );
+	//logs("inside update_authorized");
+        return who._ds_update_authority( address(new_authority), mode );
     }
 }
