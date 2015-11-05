@@ -4,7 +4,7 @@ import 'auth/auth.sol';
 // An optimized address-to-uint-balance base class
 // Implements DSAuth directly so that address balances appear directly in storage
 // for aesthetic purposes
-contract DSBalanceDB { // is DSAuth {
+contract DSBalanceDB is DSAuth {
     uint[2**160] _balances;
     uint _supply;
     address _ds_authority;
@@ -57,6 +57,8 @@ contract DSBalanceDB { // is DSAuth {
         return true;
     }
 
+
+/*
     function _ds_get_authority() constant returns (address authority, bool ok) {
         return (_ds_authority, true);
     }
@@ -80,6 +82,6 @@ contract DSBalanceDB { // is DSAuth {
         var A = DSAuthority(_ds_authority);
         return A.can_call( msg.sender, address(this), msg.sig );
     }
-
+*/
 
 }

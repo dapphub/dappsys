@@ -30,11 +30,11 @@ contract DSAsset0Impl is DSAsset0
         return success;
     }
 
-    function swap_db( DSBalanceDB new_db, DSAuthority old_db_new_owner )
+    function swap_db( DSBalanceDB new_db, DSAuthority old_db_new_owner, uint8 mode )
              auth()
              returns (bool success)
     {
-	var ok = db._ds_update_authority( old_db_new_owner );
+	var ok = db._ds_update_authority( old_db_new_owner, mode );
         if( ok ) {
             db = new_db;
 	    event_swap_db( address(db), address(old_db_new_owner) );

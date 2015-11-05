@@ -16,7 +16,7 @@ contract DSAsset0 // is DSAuth
                                    , uint amount);
 
     // Admin
-    function swap_db( DSBalanceDB db, DSAuthority old_db_new_owner ) returns (bool success);
+    function swap_db( DSBalanceDB db, DSAuthority old_db_new_owner, uint8 mode ) returns (bool success);
     event event_swap_db( address db, address old_db_new_owner );
 }
 
