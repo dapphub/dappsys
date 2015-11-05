@@ -9,7 +9,6 @@ contract DSBasicAuthority is DSAuthority
     function can_call( address caller
                      , address callee
                      , bytes4 sig )
-             constant
              returns (bool)
     {
         return _can_call[caller][callee][0x0000] == true
