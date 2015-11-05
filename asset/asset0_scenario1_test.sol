@@ -44,6 +44,10 @@ contract DSAsset0_Scenario is Test {
 		dai_db.add_balance(me, 1000);
 		(bal, ok) = DAI.get_balance(me);
 		assertTrue(bal == 1000, "couldn't add balance");
+
+		DAI.transfer(address(0x0), 500);
+		(bal, ok) = DAI.get_balance(me);
+		assertTrue(bal == 500, "couldn't use normal transfer");
 	}
 	function testScenario() {
 	}
