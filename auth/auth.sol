@@ -1,5 +1,5 @@
 // @brief Mixin contract to enable standard authorization pattern.
-contract DSAuth is Debug {
+contract DSAuth {
     // TODO document potential other auth modes
     //enum DSAuthModes { Owned, Authority }
     //DSAuthModes public _ds_mode;
