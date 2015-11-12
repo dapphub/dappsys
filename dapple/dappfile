@@ -20,6 +20,7 @@ dependencies:
 # A list of files to ignore, relative to "source_dir."
 ignore:
     - data/direct_map.sol
+    - data/fast_balance_db.sol
     - kern/perm_db.sol
     - lang/multiret_test.sol
     - lang/sig_helper_test.sol

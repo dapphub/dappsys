@@ -1,8 +1,5 @@
 // @brief Mixin contract to enable standard authorization pattern.
 contract DSAuth {
-    // TODO document potential other auth modes
-    //enum DSAuthModes { Owned, Authority }
-    //DSAuthModes public _ds_mode;
     uint _ds_mode;
     address _ds_authority;
     function DSAuth() {
@@ -15,12 +12,8 @@ contract DSAuth {
         }
     }
     function _ds_authenticated() internal returns (bool is_authenticated) {
-	//logs("inside _ds_authenticated");
-	//log_named_uint("auth mode is", _ds_mode);
-//        if( _ds_mode == DSAuthModes.Owned && msg.sender == _ds_authority ) {
         if( _ds_mode == 0 && msg.sender == _ds_authority ) {
             return true;
-//        } else if ( _ds_mode == DSAuthModes.Authority ) {
         } else if ( _ds_mode == 1 ) {
 	    if( msg.sender == _ds_authority ) { return true; }
             var A = DSAuthority(_ds_authority);
@@ -36,9 +29,8 @@ contract DSAuth {
              auth()
              returns (bool success)
     {
-	//logs("inside update_authority");
         _ds_authority = DSAuthority(new_authority);
-	_ds_mode = mode; //DSAuthModes(mode);
+	_ds_mode = mode;
         return true;
     }
 
