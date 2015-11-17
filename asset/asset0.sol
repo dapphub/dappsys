@@ -34,10 +34,10 @@ contract DSAsset0Impl is DSAsset0
              auth()
              returns (bool success)
     {
-	var ok = db._ds_update_authority( old_db_new_owner, mode );
+	    var ok = db._ds_update_authority( old_db_new_owner, mode );
         if( ok ) {
             db = new_db;
-	    event_swap_db( address(db), address(old_db_new_owner) );
+	        event_swap_db( address(db), address(old_db_new_owner) );
             return true;
         }
         return false;
