@@ -1,6 +1,4 @@
-
-
-contract DSMultisigProxy {
+contract DSMultisigProxy is DSBaseProxy {
     struct multisig_config {
         uint required_signatures;
         uint num_members;

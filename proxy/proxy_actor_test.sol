@@ -1,4 +1,4 @@
-import 'core/test.sol';
+import 'dapple/test.sol';
 import 'proxy/proxy_actor.sol';
 
 
