@@ -25,6 +25,7 @@ ignore:
     - lang/multiret_test.sol
     - lang/sig_helper_test.sol
     - util/false.sol
+    - proxy/proxy_actor*.sol
     - dev/*
 
 # A map of preprocessor variable names to values to
