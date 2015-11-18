@@ -9,9 +9,15 @@ contract DSModifiers {
             _
         }
     }
-    modifier contracts_only( ) {
+    modifier contracts_only() {
         if( msg.sender != tx.origin ) {
             _
         } 
     }
+    modifier static_auth( address auth ) {
+        if( msg.sender == auth ) {
+            _
+        }
+    }
+ 
 }
