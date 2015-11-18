@@ -4,7 +4,7 @@ contract DSAuth {
     address _ds_authority;
     function DSAuth() {
         _ds_authority = msg.sender;
-	_ds_mode = 0; //DSAuthModes.Owned;
+        _ds_mode = 0; //DSAuthModes.Owned;
     }
     modifier auth() {
         if( _ds_authenticated() ) {
@@ -15,12 +15,14 @@ contract DSAuth {
         if( _ds_mode == 0 && msg.sender == _ds_authority ) {
             return true;
         } else if ( _ds_mode == 1 ) {
-	    if( msg.sender == _ds_authority ) { return true; }
+            if( msg.sender == _ds_authority ) {
+                return true;
+            }
             var A = DSAuthority(_ds_authority);
             return A.can_call( msg.sender, address(this), msg.sig );
-	} else {
+        } else {
             return false;
-	}
+        }
     }
     function _ds_get_authority() constant returns (address authority, bool ok) {
         return (_ds_authority, true);
@@ -30,10 +32,9 @@ contract DSAuth {
              returns (bool success)
     {
         _ds_authority = DSAuthority(new_authority);
-	_ds_mode = mode;
+        _ds_mode = mode;
         return true;
     }
-
 }
 
 // Use the auth() pattern, but compile the address into code instead
