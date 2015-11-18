@@ -23,6 +23,7 @@ contract DSAsset0 // is DSAuth
 
 // This interface adds small set of functions for contract-based asset manipulation.
 // It is a subset of old the MakerAsset and the proposed standard asset API in the ethereum wiki.
+// TODO swap_db
 contract DSAsset1 // is DSAuth
 {
     function transfer( address to, uint amount) returns (bool ok);
