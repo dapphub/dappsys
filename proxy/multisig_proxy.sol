@@ -5,38 +5,41 @@ contract DSMultisigProxy is DSBaseProxy {
     }
     struct action {
         address target;
+        uint value;
         bytes calldata;
+
         uint approvals;
-        bool acted;
+        uint required;
+
+        bool succeeded;
+        bool complete;
     }
 
+    mapping( uint => action )     public    actions;
     mapping( address => bool)     public    is_member;
     multisig_config               public    config;
-    action[2**128]                public    actions;
     uint                          public    next_action;
 
     mapping( address => mapping( uint => bool ) ) approvals;
     
-    function prime( address target, bytes calldata )
-             returns (uint action_id)
+    function execute( address target, uint value, bytes calldata )
+             returns (bytes32 call_id, bool ok)
     {
         action a;
         a.target = target;
+        a.value = value;
         a.calldata = calldata;
         a.approvals = 0;
         a.acted = false;
 
         actions[next_action] = a;
-        approve(next_action);
         next_action++;
     }
-    function approve( uint action_id )
+    function confirm( bytes32 call_id )
+             returns (bool executed, bool call_ret, bool ok)
     {
         if( is_member[msg.sender] && !approvals[msg.sender][action_id] ) {
             actions[action_id].approvals++;
         }
-        act( action_id );
-    }
-    function act( uint action ) {
     }
 }
