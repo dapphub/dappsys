@@ -1,6 +1,6 @@
 // @brief Mixin contract to enable standard authorization pattern.
 contract DSAuth {
-    uint _ds_mode;
+    uint8 _ds_mode;
     address _ds_authority;
     function DSAuth() {
         _ds_authority = msg.sender;
