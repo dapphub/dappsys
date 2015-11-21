@@ -15,7 +15,7 @@ dependencies:
 # The line below would make it relative to the
 # "contracts" directory in the project's root.
 #
-source_dir: 'contracts'
+source_dir: 'src/sol'
 
 # A list of files to ignore, relative to "source_dir."
 ignore:
