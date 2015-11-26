@@ -12,10 +12,12 @@ contract DSApprovalDB is DSAuth {
     }
     function add( address holder, address spender, uint amount )
              auth()
-             returns (bool ok)
+             returns (uint allowance, bool ok)
     {
-        approvals[holder][spender] += amount;
-        return true;
+        var old_amt = approvals[holder][spender];
+        var new_amt = old_amt + amount;
+        approvals[holder][spender] = new_amount;
+        return (new_amount, true);
     }
     function get( address holder, address spender )
              returns (uint amount, bool ok )
