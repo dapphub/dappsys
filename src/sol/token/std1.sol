@@ -1,9 +1,10 @@
 import 'token/eip20.sol';
-import 'data/token_db.sol';
+import 'data/balance_db.sol';
 import 'data/approval_db.sol';
 
 contract DSToken1 is EIP20
-                   , DSAuth {
+                   , DSAuth
+{
     DSBalanceDB bal;
     DSApprovalDB appr;
     function DSToken1( DSBalanceDB baldb, DSApprovalDB apprdb ) {
@@ -11,21 +12,25 @@ contract DSToken1 is EIP20
         appr = apprdb;
     }
     function totalSupply() constant returns (uint supply) {
-        return db.get_supply();
+        (supply,) = bal.get_supply();
     }
+/*
     function totalSupply() constant returns (uint supply, bool ok) {
-        return (supply, true);
+        return bal.get_supply();
     }
+*/
     function balanceOf( address who ) constant returns (uint amount) {
-        return bal.get_balance( who );
+        (amount,) = bal.get_balance( who );
     }
+/*
     function balanceOf( address who ) constant returns (uint amount, bool ok) {
-        return (bal.get_balance( who ), true);
+        (amount, ok) = bal.get_balance(who);
     }
-    function transfer( address to, uint amount) returns (bool ok) {
-        var ok = bal.move_balance( msg.sender, to, amount );
+*/
+    function transfer( address to, uint value) returns (bool ok) {
+        ok = bal.move_balance( msg.sender, to, value );
         if( ok ) {
-            Transfer( from, to, value );
+            Transfer( msg.sender, to, value );
         }
     }
     function transferFrom( address from, address to, uint value) returns (bool ok) {
@@ -39,23 +44,24 @@ contract DSToken1 is EIP20
         
     }
     function approve(address spender, uint value) returns (bool ok) {
-        var (allowance, ok) = appr.add( msg.sender, spender, value );
+        uint allowance;
+        (allowance, ok) = appr.add( msg.sender, spender, value );
         if( ok ) {
-            event Approval( msg.sender, spender, allowance);
+            Approval( msg.sender, spender, allowance);
         }
     }
     function unapprove(address spender) returns (bool ok) {
-        var ok = appr.set( msg.sender, spender, 0 );
+        ok = appr.set( msg.sender, spender, 0 );
         if( ok ) {
             Approval( msg.sender, spender, 0);
         }
     }
-    function allowance(address owner, address spender) constant returns (uint allowance) {
-        var (allowance,) = appr.get(owner, spender);
+    function allowance(address owner, address spender) constant returns (uint _allowance) {
+        (_allowance,) = appr.get(owner, spender);
     }
-    function allowance(address owner, address spender) constant returns (uint allowance, bool ok) {
-        return appr.get(owner, spender);
+/*
+    function allowance(address owner, address spender) constant returns (uint _allowance, bool ok) {
+        (_allowance, ok) = appr.get(owner, spender);
     }
-    event Transfer(address indexed from, address indexed to, uint amount) returns (bool ok);
-    event Approval( address indexed owner, address indexed spender, uint value);
+*/
 }

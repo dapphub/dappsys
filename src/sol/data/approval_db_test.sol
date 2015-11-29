@@ -12,7 +12,8 @@ contract DSApprovalDB_Test is Test {
         var (bal, ok) = db.get(me, bob);
         assertTrue(ok);
         assertEq( 100, bal );
-        assertTrue( db.add( me, bob, 50) );
+        (bal, ok) = db.add( me, bob, 50);
+        assertTrue(ok);
         (bal, ok) = db.get(me, bob);
         assertTrue(ok);
         assertEq( 150, bal );

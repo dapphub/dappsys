@@ -1,3 +1,11 @@
 layout:
     sol_sources: "src/sol"
     build_dir: "build"
+ignore:
+    - "alarm/*"
+    - "data/direct_map.sol"
+    - "data/fast_balance_db.sol"
+    - "kern/*"
+    - "lang/*"
+    - "math/*"
+    - "proxy/*"

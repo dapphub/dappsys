@@ -14,8 +14,8 @@ contract DSApprovalDB is DSAuth {
              auth()
              returns (uint allowance, bool ok)
     {
-        var old_amt = approvals[holder][spender];
-        var new_amt = old_amt + amount;
+        var old_amount = approvals[holder][spender];
+        var new_amount = old_amount + amount;
         approvals[holder][spender] = new_amount;
         return (new_amount, true);
     }
