@@ -1,0 +1,34 @@
+<html>
+<head>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+
+    <script src="universal-dapp/libs/ethereumjs-vm.js"></script>
+    <script src="universal-dapp/libs/web3.min.js"></script>
+    <script src="universal-dapp/src/universal-dapp.js"></script>
+    <link rel="stylesheet" href="universal-dapp/src/universal-dapp.css">
+
+    <script src="dist/dappsys-browser.js"></script>
+    <script>
+        $(function() {
+            console.log("loaded");
+            var formatted = [];
+            for( var classname in window.dappsys_classes ) {
+                var udapp_class = {
+                    name: classname,
+                    interface: window.dappsys_classes[classname].interface,
+                    address: ""
+                };
+                console.log(udapp_class);
+                formatted.push(udapp_class);
+            }
+            var udapp = new UniversalDApp(formatted, {});
+            $("#ui").append(udapp.render());
+            console.log(window.dappsys_classes);
+        });
+    </script>
+</head>
+<body>
+<div id="ui">
+</div>
+</body>
+</html>
