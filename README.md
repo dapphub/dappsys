@@ -1,4 +1,12 @@
 `dappsys`
 ===
 
-`dappsys` is a **contract system framework** written in Solidity that was created to support systems with many interacting Ethereum contracts.
+`dappsys` is **contract system framework**. It is a collection of Solidity contracts (classes) to help manage multi-contract dapps on ethereum.
+
+Installation
+---
+
+This will work Soon:
+
+  npm install dapple
+  dapple install dappsys
