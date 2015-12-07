@@ -1,0 +1,4 @@
+{
+    "glob": ["src/sol/**/*.sol", "doc/*.md"],
+    "out": "doc/dist"
+}
