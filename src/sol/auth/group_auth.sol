@@ -1,3 +1,4 @@
+// Group-based call permissions.
 contract GroupAuthority is DSAuthority {
 	mapping( address => bytes32 ) _perms_has;
 	mapping( address => mapping( bytes4 => bytes32 ) ) _perms_req;
