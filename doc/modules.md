@@ -1,39 +1,38 @@
+## Tested and Documented:
 
 ### `auth`
 
 Base command-and-control contracts. 
 
-contracts :
+tests/docs
+* `auth/auth.sol`
+* `auth/authority.sol`
+* `auth/basic_authority.sol`
 
-* DSAuth
-* DSAuthority
+design
+* `auth/group_authority.sol`
+
 
 ### `data`
 
 Database contracts.
 
-* DSBalanceDB
+tests/docs
+* `data/approval_db.sol`
+* `data/balance_db.sol`
 
-dependencies:
+design
+* `data/auth_db.sol`
 
-* `auth`
+### `token`
 
-### `asset`
+impl:
+`token/eip20.sol`
+`token/token.sol`
 
-Asset controllers and helper mixins.
-
-contracts:
-
-* DSAsset0
-
-dependencies:
-
-* `data`
-* `auth`
 
 ### `kern`
 
-The core feature of `dappsys` is the `DSKernel` contract type[1].
 This contract will be a "fully dynamic object". The creator owns a contract which can be modified arbitraily, including the ability to "solidify" and constrain its ability to change itself. It is the union of several generalizations:
 
 * A *dynamic ABI* (`dynin`)

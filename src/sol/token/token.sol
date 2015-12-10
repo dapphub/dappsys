@@ -13,6 +13,7 @@ contract DSToken1 is EIP20
     }
     function totalSupply() constant returns (uint supply) {
         (supply,) = bal.get_supply();
+        return supply;
     }
 /*
     function totalSupply() constant returns (uint supply, bool ok) {
@@ -21,6 +22,7 @@ contract DSToken1 is EIP20
 */
     function balanceOf( address who ) constant returns (uint amount) {
         (amount,) = bal.get_balance( who );
+        return amount;
     }
 /*
     function balanceOf( address who ) constant returns (uint amount, bool ok) {
