@@ -1,4 +1,8 @@
-// NOTE: add_balance checks for overflow
+// Balance database contract for Tokens.
+// Note that `add_balance` checks for overflow, but `move_balance` does not.
+// That means this interface makes the assumption that all balances were added
+// using `add_balance` - there are implicit semantics.
+// TODO why not both one way or the other?
 import 'auth/auth.sol';
 
 contract DSBalanceDB is DSAuth {
