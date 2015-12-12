@@ -1,12 +1,13 @@
-import 'token/eip20.sol';
+// An implementation of ERC20 with updateable databases contracts.
+import 'token/erc20.sol';
 import 'data/balance_db.sol';
 import 'data/approval_db.sol';
 
-contract DSToken1 is EIP20
+contract DSToken1 is ERC20
                    , DSAuth
 {
-    DSBalanceDB bal;
-    DSApprovalDB appr;
+    DSBalanceDB public bal;
+    DSApprovalDB public appr;
     function DSToken1( DSBalanceDB baldb, DSApprovalDB apprdb ) {
         bal = baldb;
         appr = apprdb;
@@ -66,4 +67,19 @@ contract DSToken1 is EIP20
         (_allowance, ok) = appr.get(owner, spender);
     }
 */
+    function update_dbs( DSBalanceDB new_bal_db, address new_bal_auth, uint8 new_bal_auth_mode
+                       , DSApprovalDB new_appr_db, address new_appr_auth, uint8 new_appr_auth_mode )
+             auth()
+             returns (bool)
+    {
+        var ok = bal._ds_update_authority( new_bal_auth, new_bal_auth_mode );
+        if( ok ) {
+            bal = new_bal_db;
+        }
+        ok = appr._ds_update_authority( new_appr_auth, new_appr_auth_mode );
+        if( ok ) {
+            appr = new_app_db;
+        }
+        return true;
+    }
 }

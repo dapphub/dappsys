@@ -1,4 +1,9 @@
-contract EIP20 {
+// Token system implementation, in anticipation of Token System EIP:
+
+import 'auth/auth.sol';
+import 'data/map.sol';
+
+contract ERC_tokensystem {
     function totalSupply() constant returns (uint supply);
 //    function totalSupply() constant returns (uint supply, bool ok);
     function balanceOf( address who ) constant returns (uint amount);
@@ -13,4 +18,12 @@ contract EIP20 {
     event Approval( address indexed owner, address indexed spender, uint value);
 }
 
+contract DSTokenSystem is DSAuth {
+    function DSTokenSystem() {
+    }    
+    function setTokenInfo() returns (bool ok)
+    {
+    }
 
+    
+}
