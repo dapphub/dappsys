@@ -78,7 +78,7 @@ contract DSToken1 is ERC20
         }
         ok = appr._ds_update_authority( new_appr_auth, new_appr_auth_mode );
         if( ok ) {
-            appr = new_app_db;
+            appr = new_appr_db;
         }
         return true;
     }
