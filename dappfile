@@ -9,3 +9,4 @@ ignore:
     - "lang/*"
     - "math/*"
     - "proxy/*"
+    - "token/old_asset/*"
