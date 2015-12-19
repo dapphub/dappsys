@@ -11,6 +11,6 @@ contract MultiRetUser {
         var mr = new MultiReturner();
         bytes memory value;
         bool ok;
-        (ok, value) = mr.get();
+        // (ok, value) = mr.get();    can't be done !
     }
 }
