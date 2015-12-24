@@ -7,15 +7,10 @@ contract DSApprovalDB_Test is Test {
         db = new DSApprovalDB();
         bob = address(bytes32("bob"));
     }
-    function testEverything() {
+    function testSetGet() {
         assertTrue( db.set(me, bob, 100) );
         var (bal, ok) = db.get(me, bob);
         assertTrue(ok);
         assertEq( 100, bal );
-        (bal, ok) = db.add( me, bob, 50);
-        assertTrue(ok);
-        (bal, ok) = db.get(me, bob);
-        assertTrue(ok);
-        assertEq( 150, bal );
     }
 }

@@ -1,4 +1,7 @@
-// A base contract for single-contract tokens.
+// A base contract for single-contract tokens. All the data is held in 
+// the storage locally and there are no extra functions (initial issuance
+// is done via constructor argument).
+// Contracts that plan to ever export data should be using `token/controller.sol`.
 import 'token/erc20.sol';
 
 contract DSTokenBase is ERC20 {
@@ -37,12 +40,7 @@ contract DSTokenBase is ERC20 {
         if( current + value < current )
             return false;
         _approvals[msg.sender][spender] += value;
-        Approved( msg.sender, spender, value );
-        return true;
-    }
-    function unapprove(address spender) returns (bool ok) {
-        _approvals[msg.sender][spender] = 0;
-        Unapproved( msg.sender, spender );
+        Approval( msg.sender, spender, value );
         return true;
     }
     function allowance(address owner, address spender) constant returns (uint _allowance) {
