@@ -3,9 +3,9 @@
 // contract that is controlled, and to make clear it is not the `DSAuthority`.
 contract DSAuth {
     // Currently, two authority modes are defined:
-    // * "owned", where `auth()` simply checks the sender is `_ds_authority`
+    // * "simple auth", where `auth()` simply checks if the sender is `_ds_authority`
     // * "remote auth", where `auth()` first makes a call to
-    // `DSAuthority(_ds_authority).can_call(sender, this, sig)`
+    // `DSAuthority(_ds_authority).canCall(sender, this, sig)`
     uint8 _ds_mode;
     address _ds_authority;
     function DSAuth() {
@@ -28,7 +28,7 @@ contract DSAuth {
                 return true;
             }
             var A = DSAuthority(_ds_authority);
-            return A.can_call( msg.sender, address(this), msg.sig );
+            return A.canCall( msg.sender, address(this), msg.sig );
         } else {
             return false;
         }
@@ -57,7 +57,7 @@ contract DSStaticAuth {
             return true;
         }
         var A = DSAuthority(_ds_authority);
-        return A.can_call( msg.sender, address(this), msg.sig );
+        return A.canCall( msg.sender, address(this), msg.sig );
     }
     modifier static_auth( address _ds_authority ) {
         if( _ds_authenticated( _ds_authority ) ) {

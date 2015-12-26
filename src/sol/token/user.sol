@@ -1,5 +1,6 @@
 contract DSTokenSystemUser {
-    DSTokenSystem ts;
+    DSTokenSystem _ts;
     function DSTokenSystemUser( DSTokenSystem ts ) {
+        _ts = ts;
     }
 }

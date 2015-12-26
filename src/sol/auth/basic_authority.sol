@@ -10,16 +10,16 @@ contract DSBasicAuthority is DSAuthority
 {
     mapping(address=>mapping(address=>mapping(bytes4=>bool))) _can_call;
     // See `DSAuthority.sol`
-    function can_call( address caller
-                     , address callee
-                     , bytes4 sig )
+    function canCall( address caller
+                    , address callee
+                    , bytes4 sig )
              returns (bool)
     {
         return _can_call[caller][callee][0x0000] == true
             || _can_call[caller][callee][sig];
     }
     event Updated( address caller, address callee, bytes4 sig, bool can );
-    function set_can_call( address caller
+    function setCanCall( address caller
                          , address callee
                          , bytes4 sig
                          , bool can )

@@ -4,9 +4,9 @@ import 'auth/auth.sol';
 import 'auth/reject.sol';
 
 contract AcceptingAuthority {
-    function can_call( address caller
-                     , address callee
-                     , bytes4 sig )
+    function canCall( address caller
+                    , address callee
+                    , bytes4 sig )
              returns (bool)
     {
         return true;
