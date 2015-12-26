@@ -5,8 +5,9 @@ contract DSMultisigProxy is DSBaseProxy {
     }
     struct action {
         address target;
-        uint value;
         bytes calldata;
+        uint value;
+        uint gas;
 
         uint approvals;
         uint required;
