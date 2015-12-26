@@ -8,19 +8,19 @@ import 'auth/auth.sol';
 contract DSBalanceDB is DSAuth {
     uint _supply;
     mapping( address => uint )  _balances;
-    function get_supply()
+    function getSupply()
              constant
              returns (uint, bool)
     {
         return (_supply, true);
     }
-    function get_balance( address who )
+    function getBalance( address who )
              constant
              returns (uint, bool)
     {
         return (_balances[who], true);
     }
-    function add_balance( address to, uint amount )
+    function addBalance( address to, uint amount )
              auth()
              returns (bool success)
     {
@@ -29,10 +29,10 @@ contract DSBalanceDB is DSAuth {
         }
         _balances[to] += amount;
         _supply += amount;
-        changed_balance( to, amount, true );
+        BalanceChanged( to, amount, true );
         return true;
     }
-    function sub_balance( address from, uint amount )
+    function subBalance( address from, uint amount )
              auth()
              returns (bool success)
     {
@@ -41,10 +41,10 @@ contract DSBalanceDB is DSAuth {
         }
         _balances[from] -= amount;
         _supply -= amount;
-        changed_balance( from, amount, false );
+        BalanceChanged( from, amount, false );
         return true;
     }
-    function move_balance( address from, address to, uint amount )
+    function moveBalance( address from, address to, uint amount )
              auth()
              returns (bool success)
     {
@@ -53,9 +53,9 @@ contract DSBalanceDB is DSAuth {
         }
         _balances[from] -= amount;
         _balances[to] += amount;
-        changed_balance( from, amount, false );
-        changed_balance( to, amount, true );
+        BalanceChanged( from, amount, false );
+        BalanceChanged( to, amount, true );
         return true;
     }
-    event changed_balance( address who, uint amount, bool positive);
+    event BalanceChanged( address who, uint amount, bool positive);
 }

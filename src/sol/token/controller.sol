@@ -19,18 +19,18 @@ contract DSTokenController is DSTokenProxyTarget
     }
     function totalSupply() constant returns (uint supply) {
         bool ok;
-        (supply, ok) = _balances.get_supply();
+        (supply, ok) = _balances.getSupply();
         if( !ok ) throw;
         return supply;
     }
     function balanceOf( address who ) constant returns (uint amount) {
         bool ok;
-        (amount, ok) = _balances.get_balance( who );
+        (amount, ok) = _balances.getBalance( who );
         if( !ok ) throw;
         return amount;
     }
     function transfer( address to, uint value) returns (bool ok) {
-        ok = _balances.move_balance( msg.sender, to, value );
+        ok = _balances.moveBalance( msg.sender, to, value );
         if( ok ) {
             Transfer( msg.sender, to, value );
             _proxy.eventCallback( 0, msg.sender, to, value );
@@ -40,7 +40,7 @@ contract DSTokenController is DSTokenProxyTarget
         uint allowance;
         (allowance, ok) = _approvals.get( from, msg.sender );
         if( ok ) {
-            ok = _balances.move_balance( from, to, value);
+            ok = _balances.moveBalance( from, to, value);
             if( ok ) {
                 Transfer( from, to, value );
                 _proxy.eventCallback( 0, from, to, value );
@@ -67,7 +67,7 @@ contract DSTokenController is DSTokenProxyTarget
              proxy_only() 
              returns (bool ok)
     {
-        ok = _balances.move_balance( caller, to, value );
+        ok = _balances.moveBalance( caller, to, value );
         if( ok ) {
             Transfer( caller, to, value );
             _proxy.eventCallback( 0, caller, to, value );
@@ -80,7 +80,7 @@ contract DSTokenController is DSTokenProxyTarget
         uint allowance;
         (allowance, ok) = _approvals.get( from, caller );
         if( ok && allowance > value ) {
-            ok = _balances.move_balance( from, to, value);
+            ok = _balances.moveBalance( from, to, value);
             if( ok ) {
                 Transfer( from, to, value );
                 _proxy.eventCallback( 0, from, to, value );
