@@ -1,7 +1,8 @@
 import 'actor/base_actor.sol';
 import 'dapple/test.sol';
+import 'dapple/debug.sol';
 
-contract CallReceiver {
+contract CallReceiver is Debug {
     bytes public last_calldata;
     uint public last_value;
     // You can't pass `bytes` around yet...
@@ -41,8 +42,6 @@ contract DSBaseActorTest is Test {
         a.execute( address(cr), calldata, 0, 0 );
         var last = cr.lastCalldataPrefix();
         for( var i = 0; i < 4; i++ ) {
-            log_named_bytes4("last", last[i]);
-            log_named_bytes4("prefix", prefix[i]);
             assertTrue( last[i] == prefix[i] );
         }
     }

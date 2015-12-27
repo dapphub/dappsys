@@ -8,9 +8,10 @@ contract DSBaseActor {
     {
         // 0 is never a reasonable gas amount, so it's a magic value for "all the gas"
         if( gas == 0 ) {
-            gas = msg.gas;
+            return target.call.value(value)(calldata);
+        } else {
+            return target.call.value(value).gas(gas)(calldata);
         }
-        return target.call.value(value).gas(gas)(calldata);
     }
 }
 
