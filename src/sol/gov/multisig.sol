@@ -1,17 +1,22 @@
 import 'actor/base.sol';
 contract DSMultisigActor is DSBaseActor
 {
-    mapping( uint => action )      actions;
-    mapping( address => bool)      is_member;
-    multisig_config                config;
-    uint                           next_action;
+    mapping( uint => action )  public    actions;
+    mapping( address => bool)  public    is_member;
+    multisig_config            public    config;
+    uint                       public    next_action;
 
     mapping( address => mapping( uint => bool ) ) approvals;
 
+    event MemberUpdate( address who, bool what );
+    event Proposal( address target, bytes calldata, uint value, uint gas, uint call_id );
+    event Confirmation( uint call_id );
+
     function DSMultisigActor() {
+
         this.updateMember( msg.sender, true );
         this.updateRequiredSignatures( 1 );
-        this.updateDefaultDuration( 7 days );
+        this.updateDefaultDuration( 3 days );
     }
 
     struct multisig_config {
