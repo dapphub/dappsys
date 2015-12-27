@@ -1,28 +1,6 @@
 import 'actor/base.sol';
 contract DSMultisigActor is DSBaseActor
 {
-    function DSMultisigActor() {
-        this.updateMember( msg.sender, true );
-        this.updateRequiredSignatures( 1 );
-    }
-
-    struct multisig_config {
-        uint required_signatures;
-        uint num_members;
-    }
-    struct action {
-        address target;
-        bytes calldata;
-        uint value;
-        uint gas;
-
-        uint approvals;
-        uint required;
-
-        bool succeeded;
-        bool completed;
-    }
-
     mapping( uint => action )      actions;
     mapping( address => bool)      is_member;
     multisig_config                config;
@@ -30,41 +8,78 @@ contract DSMultisigActor is DSBaseActor
 
     mapping( address => mapping( uint => bool ) ) approvals;
 
+    function DSMultisigActor() {
+        this.updateMember( msg.sender, true );
+        this.updateRequiredSignatures( 1 );
+        this.updateDefaultDuration( 7 days );
+    }
+
+    struct multisig_config {
+        uint required_signatures;
+        uint num_members;
+        uint default_duration; // How long until it expires
+    }
+
+    struct action {
+        address target;
+        bytes calldata;
+        uint value;
+        uint gas;
+
+        uint approvals;
+        uint expiration;
+
+        bool succeeded;
+        bool completed;
+    }
+
+    // Simple way to require multisig approval to self-modify.
+    // Attach to external functions.
+    modifier self_only() {
+        if( msg.sender == address(this) ) {
+            _
+        }
+    }
     function updateRequiredSignatures( uint number )
              external
+             self_only()
              returns (bool)
     {
-        if( msg.sender == address(this) ) {
-            config.required_signatures = number;
-        }
+        config.required_signatures = number;
     }
     function updateMember( address who, bool member )
              external
+             self_only()
              returns (bool)
     {
-        // Can only update via a multisig action.
-        if( msg.sender == address(this) ) {
-            if( member ) {
-                if( !is_member[who] ) {
-                    is_member[who] = member;
-                    config.num_members++;
-                }
-            } else {
-                if( is_member[who] ) {
-                    is_member[who] = member;
-                    config.num_members--;
-                }
+        if( member ) {
+            if( !is_member[who] ) {
+                is_member[who] = member;
+                config.num_members++;
             }
-            return true;
+        } else {
+            if( is_member[who] ) {
+                is_member[who] = member;
+                config.num_members--;
+            }
         }
-        return false;
+        return true;
     }
+    function updateDefaultDuration( uint duration )
+             external
+             self_only()
+             returns (bool)
+    {
+        config.default_duration = duration;
+        return true;
+    }
+
     modifier members_only() {
         if( is_member[msg.sender] ) {
             _
         }
     } 
-    // Propose an action. 
+    // Propose an action.
     function propose( address target, bytes calldata, uint value, uint gas )
              members_only()
              returns (uint call_id)
@@ -73,8 +88,8 @@ contract DSMultisigActor is DSBaseActor
         a.target = target;
         a.value = value;
         a.calldata = calldata;
-        // 0 is never a reasonable gas amount, so it's a magic value for "all the gas"
         a.gas = gas;
+        a.expiration = block.timestamp + config.default_duration;
         next_action++; // increment first because 0 is not a valid call_id
         actions[next_action] = a;
         return next_action;
@@ -118,6 +133,9 @@ contract DSMultisigActor is DSBaseActor
     // the number of confirmations, anyone can trigger the action.
     function trigger( uint call_id ) returns (bool executed, bool call_ret) {
         var action = actions[call_id];
+        if( block.timestamp > action.expiration ) {
+            return (false, false);
+        }
         if( action.approvals > config.required_signatures ) {
             call_ret = exec( action.target, action.calldata, action.value, action.gas );
             executed = true;
