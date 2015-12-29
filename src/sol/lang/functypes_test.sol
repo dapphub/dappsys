@@ -24,7 +24,7 @@ contract SignatureBehaviorTest is Test {
     }
     function testHypothesis() {
         NoIdentifier(wid).transfer( address(this), 100 );
-        assertTrue( wid.transferred() );
+        assertFalse( wid.transferred() ); // assertTrue( wid.transferred() );   wrong hypothesis
     }
     function testReality() {
         NoIdentifier(wid).transfer(address(this), 100);
