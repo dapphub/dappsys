@@ -1,5 +1,5 @@
 contract RejectingAuthority {
-    function can_call( address caller
+    function canCall( address caller
                      , address callee
                      , bytes4 sig )
              returns (bool)
