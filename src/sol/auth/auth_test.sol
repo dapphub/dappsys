@@ -3,7 +3,7 @@ import 'auth/authority.sol';
 import 'auth/auth.sol';
 import 'auth/reject.sol';
 
-contract AcceptingAuthority {
+contract AcceptingAuthority is DSAuthority {
     function canCall( address caller
                     , address callee
                     , bytes4 sig )
