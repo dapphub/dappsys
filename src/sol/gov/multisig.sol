@@ -1,4 +1,5 @@
 import 'actor/base.sol'; // exec
+import 'util/modifiers.sol';
 
 contract DSMultisigActor is DSBaseActor
                           , DSModifiers
@@ -103,7 +104,7 @@ contract DSMultisigActor is DSBaseActor
     // For those you can use the DSMultisigActorUser helper mixin.
     // It should *only* be used atomically with the fallback function!
     // To help enforce this, only contracts are allowed to call this function.
-    uint _next_target; uint _next_value; uint _next_gas;
+    address _next_target; uint _next_value; uint _next_gas;
     function setNextProposalPartialArgs( address target, uint value, uint gas )
              contracts_only()
     {
@@ -195,11 +196,11 @@ contract DSMultisigActorUser {
         for( var i = 0; i < 4; i++ ) {
             //calldata.push(updateMemberSig[i]);
         }
-        var as_bytes = bytes(who);
+        var as_bytes = bytes20(who);
         for( i = 0; i < 20; i++ ) {
-            calldata.push(as_bytes[i]);
+            //calldata.push(as_bytes[i]);
         }
-        calldata.push(bytes(what));
+        //calldata.push(bytes1(uint(what)));
         A.propose( address(A), calldata, 0, 0 );
     }
 }

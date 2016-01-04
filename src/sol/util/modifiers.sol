@@ -5,7 +5,7 @@ contract DSModifiers {
         }
     }
     modifier self_only() {
-        if( msg.sender == address(this) {
+        if( msg.sender == address(this) ) {
             _
         }
     }
