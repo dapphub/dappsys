@@ -31,7 +31,7 @@ contract DSTokenBase is ERC20 {
         if( _approvals[from][msg.sender] >= value ) {
             _approvals[from][msg.sender] -= value;
             _balances[from] -= value;
-            _balances[to] -= value;
+            _balances[to] += value;
             Transfer( from, to, value );
             return true;
         }
