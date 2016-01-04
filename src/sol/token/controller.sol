@@ -39,9 +39,10 @@ contract DSTokenController is DSTokenProxyTarget
     function transferFrom( address from, address to, uint value) returns (bool ok) {
         uint allowance;
         (allowance, ok) = _approvals.get( from, msg.sender );
-        if( ok ) {
+        if( ok && allowance >= value ) {
             ok = _balances.moveBalance( from, to, value);
             if( ok ) {
+                _allowances.set( from, msg.sender, allowance - value );
                 Transfer( from, to, value );
                 _proxy.eventCallback( 0, from, to, value );
             }
