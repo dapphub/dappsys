@@ -1,5 +1,7 @@
-import 'actor/base.sol';
+import 'actor/base.sol'; // exec
+
 contract DSMultisigActor is DSBaseActor
+                          , DSModifiers
 {
     mapping( uint => action )  public    actions;
     mapping( address => bool)  public    is_member;
@@ -21,8 +23,8 @@ contract DSMultisigActor is DSBaseActor
 
     struct multisig_config {
         uint required_signatures;
-        uint expiration_duration; // How long until it expires
-        uint delay_duration;
+        uint expiration_duration; // How long until it expires (no new confirms)
+        uint delay_duration; // How long after it is confirmed
     }
 
     struct action {
@@ -33,19 +35,12 @@ contract DSMultisigActor is DSBaseActor
 
         uint approvals;
         uint expiration; // The last confirmation has to happen before this time.
-        uint action_time; // The action has been approved and can be executed at this time.
+        uint action_time; // The action has been approved and can be triggered at this time.
 
         bool succeeded;
         bool completed;
     }
 
-    // Simple way to require multisig approval to self-modify.
-    // Attach to external functions.
-    modifier self_only() {
-        if( msg.sender == address(this) ) {
-            _
-        }
-    }
     function updateConfig( uint required_signatures
                          , uint expiration_duration
                          , uint delay_duration )
@@ -98,6 +93,26 @@ contract DSMultisigActor is DSBaseActor
         actions[next_action] = a;
         Proposal( target, calldata, value, gas, next_action );
         return next_action;
+    }
+
+    // This helper combined with the fallback function massively simplifies
+    // the process of proposing an action from a contract, because it lets
+    // you avoid having to figure out the function signatures and pack the
+    // calldata yourself. Unfortunately it doesn't work for the self-modification
+    // functions because those will not go to the fallback function.
+    // For those you can use the DSMultisigActorUser helper mixin.
+    // It should *only* be used atomically with the fallback function!
+    // To help enforce this, only contracts are allowed to call this function.
+    uint _next_target; uint _next_value; uint _next_gas;
+    function setNextProposalPartialArgs( address target, uint value, uint gas )
+             contracts_only()
+    {
+        _next_target = target;
+        _next_value = value;
+        _next_gas = gas;
+    }
+    function() contracts_only() {
+        propose( _next_target, msg.data, _next_value, _next_gas );
     }
 
     // Confirms the action and executes it if there were enough confirmations.
@@ -163,5 +178,28 @@ contract DSMultisigActor is DSBaseActor
                 ActionTrigger( call_id, call_ret );
             }
         }
+    }
+}
+
+// This contract is used to help propose actions which can't be proposed via the
+// `setNextProposalPartialArgs` + fallback pattern, which are those functions
+// which are actually defined on DSMultisigActor. This is particularly useful
+// for the multisig self-modifying functions, `updateMember` and `updateConfig`.
+contract DSMultisigActorUser {
+    function proposeUpdateMember( DSMultisigActor A, address who, bool what )
+             internal
+             returns (uint call_id)
+    {
+        bytes4 updateMemberSig = 0x0;
+        bytes memory calldata;
+        for( var i = 0; i < 4; i++ ) {
+            //calldata.push(updateMemberSig[i]);
+        }
+        var as_bytes = bytes(who);
+        for( i = 0; i < 20; i++ ) {
+            calldata.push(as_bytes[i]);
+        }
+        calldata.push(bytes(what));
+        A.propose( address(A), calldata, 0, 0 );
     }
 }

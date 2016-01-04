@@ -4,6 +4,11 @@ contract DSModifiers {
             _
         }
     }
+    modifier self_only() {
+        if( msg.sender == address(this) {
+            _
+        }
+    }
     modifier keys_only() {
         if ( msg.sender == tx.origin ) {
             _
