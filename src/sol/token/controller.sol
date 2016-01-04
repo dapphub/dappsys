@@ -109,8 +109,8 @@ contract DSTokenController is DSTokenProxyTarget
     {
         _proxy = proxy;
     }
-    function updateDBs( DSBalanceDB new_bal_db, address new_bal_auth, uint8 new_bal_auth_mode
-                      , DSApprovalDB new_appr_db, address new_appr_auth, uint8 new_appr_auth_mode )
+    function updateDBs( DSBalanceDB new_bal_db, address new_bal_auth, bool new_bal_auth_mode
+                      , DSApprovalDB new_appr_db, address new_appr_auth, bool new_appr_auth_mode )
              auth()
              returns (bool)
     {
