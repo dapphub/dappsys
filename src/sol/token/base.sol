@@ -29,6 +29,7 @@ contract DSTokenBase is ERC20 {
     }
     function transferFrom( address from, address to, uint value) returns (bool ok) {
         if( _approvals[from][msg.sender] >= value ) {
+            _approvals[from][msg.sender] -= value;
             _balances[from] -= value;
             _balances[to] -= value;
             Transfer( from, to, value );
@@ -36,10 +37,7 @@ contract DSTokenBase is ERC20 {
         }
     }
     function approve(address spender, uint value) returns (bool ok) {
-        var current = _approvals[msg.sender][spender];
-        if( current + value < current )
-            return false;
-        _approvals[msg.sender][spender] += value;
+        _approvals[msg.sender][spender] = value;
         Approval( msg.sender, spender, value );
         return true;
     }
