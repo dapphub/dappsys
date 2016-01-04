@@ -10,14 +10,13 @@ contract BasicAuthorityTest is Test {
     function setUp() {
         a = new DSBasicAuthority();
         v = new Vault();
-        v._ds_update_authority(a, 1);
-	//logs("setup done");
+        v._ds_update_authority(a, true);
     }
     function testExportAuthorized() {
         v.breach();
         this.assertFalse( v.breached() );
-        var ok = a.export_authorized( DSAuth(v), address(this), 0 );
-	assertTrue( ok, "failed to export" );
+        var ok = a.export_authorized( DSAuth(v), address(this), false );
+        assertTrue( ok, "failed to export" );
         v.breach();
         assertTrue( v.breached(), "couldn't breach w/ permission" );
     }

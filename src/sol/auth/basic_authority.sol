@@ -31,7 +31,7 @@ contract DSBasicAuthority is DSAuthority
         return true;
     }
     // Be sure you set the correct mode.
-    function export_authorized( DSAuth who, address new_authority, uint8 mode )
+    function export_authorized( DSAuth who, address new_authority, bool mode )
              auth()
              returns (bool)
     {

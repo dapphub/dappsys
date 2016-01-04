@@ -51,22 +51,22 @@ contract AuthTest is Test {
         assertTrue(v.breached(), "owner failed to call");
     }
     function testNonOwnerCantBreach() {
-        v._ds_update_authority( DSAuthority(0x0), 0 );
+        v._ds_update_authority( DSAuthority(0x0), false );
         v.breach();
     }
     function testTransferToAcceptAuthority() {
-        v._ds_update_authority( AA, 1 );
+        v._ds_update_authority( AA, true );
         v.breach();
         assertTrue( v.breached(), "authority failed to accept");
     }
     function testTransferToRejectAuthority() {
-        v._ds_update_authority( RA, 1 );
+        v._ds_update_authority( RA, true );
         v.breach();
         this.assertFalse( v.breached(), "authority failed to reject");
     }
     // This test was used to confirm we need an explicit auth mode argument
     function testTransferToNullAuthority() {
-        var ok = v._ds_update_authority( DSAuthority(address(bytes32(0x3))), 0 );
+        var ok = v._ds_update_authority( DSAuthority(address(bytes32(0x3))), false );
 	assertTrue(ok, "couldn't update authority!");
         v.breach();
         this.assertFalse( v.breached(), "authority failed to reject");
