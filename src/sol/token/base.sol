@@ -28,13 +28,16 @@ contract DSTokenBase is ERC20 {
         }
     }
     function transferFrom( address from, address to, uint value) returns (bool ok) {
-        if( _approvals[from][msg.sender] >= value ) {
-            _approvals[from][msg.sender] -= value;
-            _balances[from] -= value;
-            _balances[to] += value;
-            Transfer( from, to, value );
-            return true;
+        if( _balances[from] >= value ) {
+            if( _approvals[from][msg.sender] >= value ) {
+                _approvals[from][msg.sender] -= value;
+                _balances[from] -= value;
+                _balances[to] += value;
+                Transfer( from, to, value );
+                return true;
+            }
         }
+        return false;
     }
     function approve(address spender, uint value) returns (bool ok) {
         _approvals[msg.sender][spender] = value;
