@@ -42,7 +42,7 @@ contract DSTokenController is DSTokenProxyTarget
         if( ok && allowance >= value ) {
             ok = _balances.moveBalance( from, to, value);
             if( ok ) {
-                _allowances.set( from, msg.sender, allowance - value );
+                _approvals.set( from, msg.sender, allowance - value );
                 Transfer( from, to, value );
                 _proxy.eventCallback( 0, from, to, value );
             }

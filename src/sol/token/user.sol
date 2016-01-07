@@ -14,21 +14,21 @@ contract DSTokenUser {
         }
     }
     // Ensure specified address has enough tokens.
-    modifier costs( address who, uint value ) {
+    modifier costsFrom( address who, uint value ) {
         if( _t.balanceOf(address(who)) >= value ) {
-            if( _t.allowance(who, value) >= value ) {
+            if( _t.allowance(address(who), address(this)) >= value ) {
                 _
             }
         }
     }
     // Charge sender and proceed on success.
     modifier charges( uint value ) {
-        if( charge( value ) )
+        if( charge( value ) ) {
             _
         }
     }
     // Charge specified address and proceed on success.
-    modifier charges( address from, uint value ) {
+    modifier chargesFrom( address from, uint value ) {
         if( charge( from, value ) ) {
             _
         }

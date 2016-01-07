@@ -2,9 +2,9 @@
 // the storage locally and there are no extra functions (initial issuance
 // is done via constructor argument).
 // Contracts that plan to ever export data should be using `token/controller.sol`.
-import 'token/erc20.sol';
+import 'token/token.sol';
 
-contract DSTokenBase is ERC20 {
+contract DSTokenBase is DSToken {
     mapping( address => uint ) _balances;
     mapping( address => mapping( address => uint ) ) _approvals;
     uint _supply;
