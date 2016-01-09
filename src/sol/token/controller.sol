@@ -2,18 +2,18 @@
 // interface.
 import 'auth/auth.sol';
 import 'token/token.sol';
-import 'token/proxy.sol';
+import 'token/frontend.sol';
 
-// Does NOT implement stateful ERC20 functions
-contract DSTokenController is DSTokenStateless
-                            , DSTokenEvents
-                            , DSAuth
+// Does NOT implement stateful ERC20 functions - those require you to pass
+// through the msg.sender
+contract DSTokenControllerImpl is DSTokenController
+                                , DSAuth
 {
     DSBalanceDB                public  _balances;
     DSApprovalDB               public  _approvals;
     
     // Trust calls from this address and report events here.
-    DSTokenProxyEventLogger    public  _proxy;
+    DSTokenFrontend            public  _proxy;
 
     function DSTokenController( DSBalanceDB baldb, DSApprovalDB apprdb ) {
         _balances = baldb;
@@ -79,7 +79,7 @@ contract DSTokenController is DSTokenStateless
             _
         }
     }
-    function setProxy( DSTokenProxy proxy )
+    function setProxy( DSTokenFrontend proxy )
              auth()
              returns (bool ok)
     {
