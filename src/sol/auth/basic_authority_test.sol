@@ -15,7 +15,7 @@ contract BasicAuthorityTest is Test {
     function testExportAuthorized() {
         v.breach();
         this.assertFalse( v.breached() );
-        var ok = a.export_authorized( DSAuth(v), address(this), false );
+        var ok = a.exportAuthorized( DSAuth(v), address(this), false );
         assertTrue( ok, "failed to export" );
         v.breach();
         assertTrue( v.breached(), "couldn't breach w/ permission" );

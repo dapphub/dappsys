@@ -64,6 +64,5 @@ contract DSStaticAuthorized {
     }
     // Optionally implement missing DSAuth functions with your constant address
     // to be fully compatible - no way to do this in general
-    // `function _ds_get_authority() constant returns (address authority);`
     // `function updateAuthority( address new_authority ) returns (bool success);`
 }
