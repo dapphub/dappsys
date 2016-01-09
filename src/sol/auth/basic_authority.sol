@@ -35,6 +35,6 @@ contract DSBasicAuthority is DSAuthority
              auth()
              returns (bool)
     {
-        return who._ds_update_authority( address(new_authority), mode );
+        return who.updateAuthority( address(new_authority), mode );
     }
 }

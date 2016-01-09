@@ -14,4 +14,3 @@ contract DSTokenController is ERC20Stateless, ERC20Events {
     function transferFrom( address caller, address from, address to, uint value) returns (bool ok);
     function approve( address caller, address spender, uint value) returns (bool ok);
 }
-contract DSTokenFrontend is ERC20, DSTokenEventCallback {}

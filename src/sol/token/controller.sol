@@ -90,11 +90,11 @@ contract DSTokenControllerImpl is DSTokenController
              auth()
              returns (bool)
     {
-        var ok = _balances._ds_update_authority( new_bal_auth, new_bal_auth_mode );
+        var ok = _balances.updateAuthority( new_bal_auth, new_bal_auth_mode );
         if( ok ) {
             _balances = new_bal_db;
         }
-        ok = _approvals._ds_update_authority( new_appr_auth, new_appr_auth_mode );
+        ok = _approvals.updateAuthority( new_appr_auth, new_appr_auth_mode );
         if( ok ) {
             _approvals = new_appr_db;
         }

@@ -10,7 +10,7 @@ contract BasicAuthorityTest is Test {
     function setUp() {
         a = new DSBasicAuthority();
         v = new Vault();
-        v._ds_update_authority(a, true);
+        v.updateAuthority(a, true);
     }
     function testExportAuthorized() {
         v.breach();
