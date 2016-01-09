@@ -4,7 +4,9 @@ import 'auth/auth.sol';
 import 'token/token.sol';
 import 'token/proxy.sol';
 
-contract DSTokenController is DSTokenProxyTarget
+// Does NOT implement stateful ERC20 functions
+contract DSTokenController is DSTokenStateless
+                            , DSTokenEvents
                             , DSAuth
 {
     DSBalanceDB                public  _balances;
@@ -28,33 +30,6 @@ contract DSTokenController is DSTokenProxyTarget
         (amount, ok) = _balances.getBalance( who );
         if( !ok ) throw;
         return amount;
-    }
-    function transfer( address to, uint value) returns (bool ok) {
-        ok = _balances.moveBalance( msg.sender, to, value );
-        if( ok ) {
-            Transfer( msg.sender, to, value );
-            _proxy.eventCallback( 0, msg.sender, to, value );
-        }
-    }
-    function transferFrom( address from, address to, uint value) returns (bool ok) {
-        uint allowance;
-        (allowance, ok) = _approvals.get( from, msg.sender );
-        if( ok && allowance >= value ) {
-            ok = _balances.moveBalance( from, to, value);
-            if( ok ) {
-                _approvals.set( from, msg.sender, allowance - value );
-                Transfer( from, to, value );
-                _proxy.eventCallback( 0, from, to, value );
-            }
-        }
-    }
-    function approve(address spender, uint value) returns (bool ok) {
-        ok = _approvals.set( msg.sender, spender, value );
-        if( ok ) {
-            Approval( msg.sender, spender, value);
-            _proxy.eventCallback( 1, msg.sender, spender, value );
-        }
-        return ok;
     }
     function allowance(address owner, address spender) constant returns (uint _allowance) {
         var (allowance, ok) = _approvals.get(owner, spender);
