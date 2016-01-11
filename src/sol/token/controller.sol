@@ -51,27 +51,31 @@ contract DSTokenControllerImpl is DSTokenController
     }
     function transferFrom( address caller, address from, address to, uint value)
              proxy_only()
-             returns (bool ok)
+             returns (bool)
     {
-        uint allowance;
-        (allowance, ok) = _approvals.get( from, caller );
-        if( ok && allowance > value ) {
+        var (allowance, ok) = _approvals.get( from, caller );
+        if( ok && allowance >= value ) {
             ok = _balances.moveBalance( from, to, value);
+            _approvals.set( from, to, allowance - value );
             if( ok ) {
                 Transfer( from, to, value );
                 _proxy.eventCallback( 0, from, to, value );
+                return true;
             }
         }
+        return false;
     }
     function approve( address caller, address spender, uint value)
              proxy_only()
-             returns (bool ok)
+             returns (bool)
     {
-        ok = _approvals.set( caller, spender, value );
+        var ok = _approvals.set( caller, spender, value );
         if( ok ) {
             Approval( caller, spender, value);
             _proxy.eventCallback( 1, caller, spender, value );
+            return true;
         }
+        return false;
     }
 
     modifier proxy_only() {

@@ -8,13 +8,14 @@ import 'token/base.sol';
 // https://github.com/NexusDevelopment/dapple/issues/63
 contract TokenTester is Test {
     function runTest( DSToken t ) constant returns (bool success) {
-        Tester Bob;
-        address bob;
-        address self;
-        Bob = new Tester();
-        bob = address(Bob);
-        self = address(this);
-        assertEq( t.balanceOf(self), 100, "precondition");
+        // TODO move to Test definition
+        var Alice = new Tester();
+        var alice = address(Alice);
+        var Bob = new Tester();
+        var bob = address(Bob);
+        var self = address(this);
+
+        assertEq( t.balanceOf(self), 100, "test precondition");
 
         t.transfer( bob, 50 );
         assertEq( t.balanceOf(bob), 50 );
