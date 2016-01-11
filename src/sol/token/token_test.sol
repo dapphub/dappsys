@@ -11,10 +11,10 @@ contract TokenTester is Test {
         Tester Bob;
         address bob;
         address self;
-        t = new DSTokenBase( 100 );
         Bob = new Tester();
         bob = address(Bob);
         self = address(this);
+        assertEq( t.balanceOf(self), 100, "precondition");
 
         t.transfer( bob, 50 );
         assertEq( t.balanceOf(bob), 50 );
@@ -51,7 +51,8 @@ contract BaseTokenTest is Test {
     function testBaseToken() {
         var tester = new TokenTester();
         DSToken t = new DSTokenBase(100);
+        // Satisfy test precondition
+        t.transfer( address(tester), 100 );
         assertTrue( tester.runTest( t ) );
-        
     }
 }
