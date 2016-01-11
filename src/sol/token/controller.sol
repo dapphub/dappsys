@@ -88,6 +88,7 @@ contract DSTokenControllerImpl is DSTokenController
              returns (bool ok)
     {
         _proxy = proxy;
+        return true;
     }
     function updateDBs( DSBalanceDB new_bal_db, address new_bal_auth, bool new_bal_auth_mode
                       , DSApprovalDB new_appr_db, address new_appr_auth, bool new_appr_auth_mode )
