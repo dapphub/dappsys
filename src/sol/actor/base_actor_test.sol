@@ -2,6 +2,7 @@ import 'actor/base_actor.sol';
 import 'dapple/test.sol';
 import 'dapple/debug.sol';
 
+// Test helper: record calldata from fallback and compare.
 contract CallReceiver is Debug {
     bytes last_calldata;
     uint last_value;
@@ -34,12 +35,9 @@ contract DSBaseActorTest is Test {
         cr = new CallReceiver();
     }
     function testProxyCall() {
-        calldata.push(byte(0x0));
-        calldata.push(byte(0x1));
-        calldata.push(byte(0x2));
-        calldata.push(byte(0x3));
-        calldata.push(byte(0x4));
-
+        for( var i = 0; i < 35; i++ ) {
+            calldata.push(byte(i));
+        }
         a.execute( address(cr), calldata, 0, 0 );
         var length = cr.compareLastCalldata( calldata );
         assertTrue( cr.compareLastCalldata( calldata ) );
