@@ -1,4 +1,11 @@
 contract DSModifiers {
+    mapping(bytes4=>bool) _executed_functions;
+    modifier only_once() {
+        if( !_executed_functions[msg.sig] ) {
+            _executed_functions[msg.sig] = true;
+            _
+        }
+    }
     modifier only_if( bool what ) {
         if( what ) {
             _
