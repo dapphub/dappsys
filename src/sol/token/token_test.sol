@@ -2,19 +2,20 @@ import 'dapple/test.sol';
 import 'token/erc20.sol';
 import 'token/base.sol';
 
-
-contract BaseTokenTest is Test {
-    DSToken t;
-    Tester Bob;
-    address bob;
-    address self;
-    function setUp() {
+// Rough rewrite of old Test contract into generic tester
+// which must be invoked by actual `test` functions
+// Doing this in a cleaner way is part of
+// https://github.com/NexusDevelopment/dapple/issues/63
+contract TokenTester is Test {
+    function runTest( DSToken t ) constant returns (bool success) {
+        Tester Bob;
+        address bob;
+        address self;
         t = new DSTokenBase( 100 );
         Bob = new Tester();
         bob = address(Bob);
         self = address(this);
-    }
-    function testBasics() {
+
         t.transfer( bob, 50 );
         assertEq( t.balanceOf(bob), 50 );
         assertEq( t.balanceOf(self), 50 );
@@ -40,5 +41,17 @@ contract BaseTokenTest is Test {
         assertFalse( t.transferFrom(bob, self, 1) );
         assertEq( t.balanceOf(bob), 25 );
         assertEq( t.balanceOf(self), 75 );
+        return !failed;
+    }
+}
+
+contract BaseTokenTest is Test {
+    function setUp() {
+    }
+    function testBaseToken() {
+        var tester = new TokenTester();
+        DSToken t = new DSTokenBase(100);
+        assertTrue( tester.runTest( t ) );
+        
     }
 }

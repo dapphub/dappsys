@@ -15,7 +15,7 @@ contract DSTokenControllerImpl is DSTokenController
     // Trust calls from this address and report events here.
     DSTokenFrontend            public  _proxy;
 
-    function DSTokenController( DSBalanceDB baldb, DSApprovalDB apprdb ) {
+    function DSTokenControllerImpl( DSBalanceDB baldb, DSApprovalDB apprdb ) {
         _balances = baldb;
         _approvals = apprdb;
     }
