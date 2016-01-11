@@ -3,7 +3,7 @@
 //  at the contract level.
 import 'token/token.sol';
 
-contract DSTokenFrontend is ERC20
+contract DSTokenFrontend is DSToken
                           , DSTokenEventCallback
                           , DSAuth
 {
