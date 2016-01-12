@@ -1,4 +1,4 @@
-// An implementation of ERC20 with updateable databases contracts and a proxy
+// An implementation of ERC20 with updateable databases contracts and a frontend
 // interface.
 import 'auth/auth.sol';
 import 'token/token.sol';
@@ -13,24 +13,23 @@ contract DSTokenController is DSTokenControllerType
     DSBalanceDB                _balances;
     DSApprovalDB               _approvals;
     // Trust calls from this address and report events here.
-    DSTokenFrontend            _proxy;
+    DSTokenFrontend            _frontend;
 
     // Setup and admin functions
     function DSTokenController( DSBalanceDB baldb, DSApprovalDB apprdb ) {
         _balances = baldb;
         _approvals = apprdb;
     }
-    function getProxy() constant returns (DSTokenFrontend) {
-        return _proxy;
+    function getFrontend() constant returns (DSTokenFrontend) {
+        return _frontend;
     }
-    function setProxy( DSTokenFrontend proxy )
+    function setFrontend( DSTokenFrontend frontend )
              auth()
              returns (bool ok)
     {
-        _proxy = proxy;
+        _frontend = frontend;
         return true;
     }
-
     function getDBs() constant returns (DSBalanceDB, DSApprovalDB) {
         return (_balances, _approvals);
     }
@@ -50,8 +49,8 @@ contract DSTokenController is DSTokenControllerType
         return true;
     }
 
-    // Stateless ERC20 functions. Doesn't need to ask who the sender is.
 
+    // Stateless ERC20 functions. Doesn't need to ask who the sender is.
     function totalSupply() constant returns (uint supply) {
         bool ok;
         (supply, ok) = _balances.getSupply();
@@ -71,25 +70,25 @@ contract DSTokenController is DSTokenControllerType
     }
 
 
-    // Proxy functions (stateful ERC20 functions). Needs to string sender's sender through.
+    // Frontend functions (stateful ERC20 functions). Needs to string sender's sender through.
     // Only the frontend can call us.
-    modifier proxy_only() {
-        if( msg.sender == address(_proxy) ) {
+    modifier frontend_only() {
+        if( msg.sender == address(_frontend) ) {
             _
         }
     }
     function transfer( address caller, address to, uint value)
-             proxy_only() 
+             frontend_only() 
              returns (bool ok)
     {
         ok = _balances.moveBalance( caller, to, value );
         if( ok ) {
             Transfer( caller, to, value );
-            _proxy.eventCallback( 0, caller, to, value );
+            _frontend.eventCallback( 0, caller, to, value );
         }
     }
     function transferFrom( address caller, address from, address to, uint value)
-             proxy_only()
+             frontend_only()
              returns (bool)
     {
         var (allowance, ok) = _approvals.get( from, caller );
@@ -98,20 +97,20 @@ contract DSTokenController is DSTokenControllerType
             _approvals.set( from, to, allowance - value );
             if( ok ) {
                 Transfer( from, to, value );
-                _proxy.eventCallback( 0, from, to, value );
+                _frontend.eventCallback( 0, from, to, value );
                 return true;
             }
         }
         return false;
     }
     function approve( address caller, address spender, uint value)
-             proxy_only()
+             frontend_only()
              returns (bool)
     {
         var ok = _approvals.set( caller, spender, value );
         if( ok ) {
             Approval( caller, spender, value);
-            _proxy.eventCallback( 1, caller, spender, value );
+            _frontend.eventCallback( 1, caller, spender, value );
             return true;
         }
         return false;
