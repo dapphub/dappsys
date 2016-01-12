@@ -23,7 +23,7 @@ contract DSTokenDeployer is DSAuth
         var controller = new DSTokenController(bal_db, appr_db);
         var frontend = new DSTokenFrontend( controller );
 
-        controller.setProxy( frontend );
+        controller.setFrontend( frontend );
     
         bal_db.addBalance( initial_owner, initial_balance );
         bal_db.updateAuthority( address(controller), false );
