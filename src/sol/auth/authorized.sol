@@ -9,8 +9,8 @@ contract DSAuthorized {
     // call should be allowed. (It also first does the "owner" mode check,
     // which massively writing and using `DSAuthority` implementations without
     // changing the security properties very much.)
-    bool    public _auth_mode;
-    address public _authority;
+    bool    _auth_mode;
+    address _authority;
 
     event DSAuthUpdate( address auth, bool mode );
 
@@ -36,6 +36,10 @@ contract DSAuthorized {
             var A = DSAuthority(_authority);
             return A.canCall( msg.sender, address(this), msg.sig );
         }    
+    }
+
+    function getAuthority() constant returns (address authority, bool mode ) {
+        return (_authority, _auth_mode);
     }
     // This function is used to both transfer the authority and update the mode.
     // Be extra careful about setting *both* correctly every time.
