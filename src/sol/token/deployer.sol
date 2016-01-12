@@ -3,22 +3,20 @@ import 'data/approval_db.sol';
 import 'data/balance_db.sol';
 import 'token/controller.sol';
 import 'token/frontend.sol';
-import 'util/ephemeral.sol';
 import 'util/modifiers.sol';
 import 'util/false.sol';
 
 // cleanUp, only_once
-contract DSTokenDeployer is DSEphemeral
+contract DSTokenDeployer is DSAuth
                           , DSModifiers
                           , DSFalseFallback
 {
-    // 
     mapping(bytes32=>address) public contracts;
     // TODO(v2) optionally accept factories as arguments.
     function DSTokenDeployer() {
     }
     function deploy( address initial_owner, uint initial_balance )
-             only_once()
+             auth()
     {
         var bal_db = new DSBalanceDB();
         var appr_db = new DSApprovalDB();
@@ -38,5 +36,8 @@ contract DSTokenDeployer is DSEphemeral
         contracts["appr_db"] = appr_db;
         contracts["controller"] = controller;
         contracts["frontend"] = frontend;
+    }
+    function cleanUp() auth() {
+        suicide(msg.sender);
     }
 }
