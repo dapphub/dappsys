@@ -1,8 +1,8 @@
-import 'actor/base.sol'; // exec
+import 'actor/base.sol';
 import 'util/modifiers.sol';
 
-contract DSMultisigActor is DSBaseActor
-                          , DSModifiers
+contract DSMultisigActor is DSBaseActor // for `exec`
+                          , DSModifiers // for `self_only`
 {
     mapping( uint => action )  public    actions;
     mapping( address => bool)  public    is_member;

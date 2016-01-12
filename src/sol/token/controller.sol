@@ -6,19 +6,52 @@ import 'token/frontend.sol';
 
 // Does NOT implement stateful ERC20 functions - those require you to pass
 // through the msg.sender
-contract DSTokenControllerImpl is DSTokenController
-                                , DSAuth
+contract DSTokenController is DSTokenControllerType
+                            , DSAuth
 {
-    DSBalanceDB                public  _balances;
-    DSApprovalDB               public  _approvals;
-    
+    // Swappable database contracts
+    DSBalanceDB                _balances;
+    DSApprovalDB               _approvals;
     // Trust calls from this address and report events here.
-    DSTokenFrontend            public  _proxy;
+    DSTokenFrontend            _proxy;
 
-    function DSTokenControllerImpl( DSBalanceDB baldb, DSApprovalDB apprdb ) {
+    // Setup and admin functions
+    function DSTokenController( DSBalanceDB baldb, DSApprovalDB apprdb ) {
         _balances = baldb;
         _approvals = apprdb;
     }
+    function getProxy() constant returns (DSTokenFrontend) {
+        return _proxy;
+    }
+    function setProxy( DSTokenFrontend proxy )
+             auth()
+             returns (bool ok)
+    {
+        _proxy = proxy;
+        return true;
+    }
+
+    function getDBs() constant returns (DSBalanceDB, DSApprovalDB) {
+        return (_balances, _approvals);
+    }
+    function updateDBs( DSBalanceDB new_bal_db, address new_bal_auth, bool new_bal_auth_mode
+                      , DSApprovalDB new_appr_db, address new_appr_auth, bool new_appr_auth_mode )
+             auth()
+             returns (bool)
+    {
+        var ok = _balances.updateAuthority( new_bal_auth, new_bal_auth_mode );
+        if( ok ) {
+            _balances = new_bal_db;
+        }
+        ok = _approvals.updateAuthority( new_appr_auth, new_appr_auth_mode );
+        if( ok ) {
+            _approvals = new_appr_db;
+        }
+        return true;
+    }
+
+    // Stateless ERC20 functions. Doesn't need to ask who the sender is.
+
     function totalSupply() constant returns (uint supply) {
         bool ok;
         (supply, ok) = _balances.getSupply();
@@ -37,8 +70,14 @@ contract DSTokenControllerImpl is DSTokenController
         return allowance;
     }
 
-    // Proxy functions
 
+    // Proxy functions (stateful ERC20 functions). Needs to string sender's sender through.
+    // Only the frontend can call us.
+    modifier proxy_only() {
+        if( msg.sender == address(_proxy) ) {
+            _
+        }
+    }
     function transfer( address caller, address to, uint value)
              proxy_only() 
              returns (bool ok)
@@ -76,33 +115,5 @@ contract DSTokenControllerImpl is DSTokenController
             return true;
         }
         return false;
-    }
-
-    modifier proxy_only() {
-        if( msg.sender == address(_proxy) ) {
-            _
-        }
-    }
-    function setProxy( DSTokenFrontend proxy )
-             auth()
-             returns (bool ok)
-    {
-        _proxy = proxy;
-        return true;
-    }
-    function updateDBs( DSBalanceDB new_bal_db, address new_bal_auth, bool new_bal_auth_mode
-                      , DSApprovalDB new_appr_db, address new_appr_auth, bool new_appr_auth_mode )
-             auth()
-             returns (bool)
-    {
-        var ok = _balances.updateAuthority( new_bal_auth, new_bal_auth_mode );
-        if( ok ) {
-            _balances = new_bal_db;
-        }
-        ok = _approvals.updateAuthority( new_appr_auth, new_appr_auth_mode );
-        if( ok ) {
-            _approvals = new_appr_db;
-        }
-        return true;
     }
 }
