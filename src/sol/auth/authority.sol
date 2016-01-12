@@ -1,4 +1,4 @@
-// `DSAuthority` is the interface which `DSAuth` contracts expect
+// `DSAuthority` is the interface which `DSAuthorized` (`DSAuth`) contracts expect
 // their authority to be when they are in the remote auth mode.
 contract DSAuthority {
     // `can_call` will be called with these arguments in the caller's
@@ -9,3 +9,8 @@ contract DSAuthority {
                     , bytes4 sig )
              returns (bool);
 }
+
+import 'util/true.sol';
+import 'util/false.sol';
+contract AcceptingAuthority is DSTrueFallback {}
+contract RejectingAuthority is DSFalseFallback {}

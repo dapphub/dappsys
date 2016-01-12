@@ -1,10 +1,14 @@
-// `DSAuthorized` is a mixin contract which enables standard authorization patterns. It has a shorter alias `auth/auth.sol: DSAuth` because it is so common.
+// `DSAuthorized` is a mixin contract which enables standard authorization patterns.
+// It has a shorter alias `auth/auth.sol: DSAuth` because it is so common.
 contract DSAuthorized {
     // There are two "modes":
     // * "owner mode", where `auth()` simply checks if the sender is `_authority`.
     //   This is the default mode, when `_auth_mode` is false.
-    // * "authority mode", where `auth()` first makes a call to
-    // `DSAuthority(_authority).canCall(sender, this, sig)`
+    // * "authority mode", where `auth()` makes a call to
+    // `DSAuthority(_authority).canCall(sender, this, sig)` to ask if the
+    // call should be allowed. (It also first does the "owner" mode check,
+    // which massively writing and using `DSAuthority` implementations without
+    // changing the security properties very much.)
     bool    public _auth_mode;
     address public _authority;
 

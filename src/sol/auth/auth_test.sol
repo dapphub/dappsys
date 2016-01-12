@@ -1,17 +1,6 @@
 import 'dapple/test.sol';
 import 'auth/authority.sol';
 import 'auth/auth.sol';
-import 'auth/reject.sol';
-
-contract AcceptingAuthority is DSAuthority {
-    function canCall( address caller
-                    , address callee
-                    , bytes4 sig )
-             returns (bool)
-    {
-        return true;
-    }
-}
 
 contract Vault is DSAuth { //, DSSigHelperMixin {
     bool public breached;

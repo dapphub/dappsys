@@ -10,7 +10,7 @@ import 'util/false.sol';
 // cleanUp, only_once
 contract DSTokenDeployer is DSEphemeral
                           , DSModifiers
-                          , False // Fallback returns false
+                          , DSFalseFallback
 {
     // 
     mapping(bytes32=>address) public contracts;

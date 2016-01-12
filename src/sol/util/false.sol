@@ -1,4 +1,4 @@
-contract False {
+contract DSFalseFallback {
     function() returns (bool) {
         return false;
     }

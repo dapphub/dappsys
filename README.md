@@ -16,6 +16,13 @@ Modules
 ---
 
 ### v1 modules
+
+#### `actor`
+##### `actor/base.sol`
+##### `actor/base_actor.sol`
+##### `actor/base_actor_test.sol`
+
+
 #### `auth`
 
 Base command-and-control contracts. 
