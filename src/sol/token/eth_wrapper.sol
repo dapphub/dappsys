@@ -6,6 +6,7 @@ contract EthToken is DSTokenBase(0) {
     function withdraw( uint amount ) returns (bool ok) {
         if( _balances[msg.sender] > amount ) {
             _balances[msg.sender] -= amount;
+            _supply -= amount;
             if( msg.sender.send( amount ) ) {
                 Withdrawal( msg.sender, amount );
                 return true;
