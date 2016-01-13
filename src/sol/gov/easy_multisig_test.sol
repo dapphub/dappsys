@@ -50,8 +50,8 @@ contract DSEasyMultisigTest is Test
     function testEasyPropose() {
         var h = new helper();
         // TODO test with `value` once dapple supports it
-        ms.easyPropose( address(h), 0, 0 );
         helper(ms).doSomething(1);
+        ms.easyPropose( address(h), 0, 0 );
         assertEq( h.lastArg(), 0, "call shouldn't have succeeded" );
         var (r, m, e, id) = ms.getInfo();
         assertEq( id, 1, "wrong last action id");
