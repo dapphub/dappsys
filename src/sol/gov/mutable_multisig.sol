@@ -1,8 +1,8 @@
 import 'actor/base.sol';
 import 'util/modifiers.sol';
 
-contract DSMultisigActor is DSBaseActor // for `exec`
-                          , DSModifiers // for `self_only`
+contract DSMutableMultisigActor is DSBaseActor // for `exec`
+                                 , DSModifiers // for `self_only`
 {
     mapping( uint => action )  public    actions;
     mapping( address => bool)  public    is_member;
@@ -186,7 +186,7 @@ contract DSMultisigActor is DSBaseActor // for `exec`
 // `setNextProposalPartialArgs` + fallback pattern, which are those functions
 // which are actually defined on DSMultisigActor. This is particularly useful
 // for the multisig self-modifying functions, `updateMember` and `updateConfig`.
-contract DSMultisigActorUser {
+contract DSMutableMultisigActorUser {
     function proposeUpdateMember( DSMultisigActor A, address who, bool what )
              internal
              returns (uint call_id)

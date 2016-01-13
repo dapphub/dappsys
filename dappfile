@@ -11,3 +11,4 @@ ignore:
     - "proxy/proxy_actor.sol"
     - "proxy/proxy_actor_test.sol"
     - "token/old_asset/*"
+    - "gov/mutable_multisig.sol"
