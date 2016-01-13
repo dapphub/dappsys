@@ -99,21 +99,18 @@ contract DSEasyMultisig is DSBaseActor, Debug
     }
     function confirm( uint action_id ) returns (bool triggered) {
         //log_named_uint("entering confirm for id", action_id);
-        if( is_member[msg.sender] ) {
-            //logs("...is member");
-            if( !confirmations[action_id][msg.sender] ) {
-                logs("no existing confirmations for sender");
-                confirmations[action_id][msg.sender] = true;
-                var a = actions[action_id];
-                var confs = a.confirmations;
-                //log_named_uint("current confirmations", confs);
-                a.confirmations = a.confirmations + 1;
-                //log_named_uint("confirmations after increment", a.confirmations);
-                actions[action_id] = a;
-                //log_named_uint("confirmations after ++/store", actions[action_id].confirmations);
-                Confirmed(action_id, msg.sender);
-                return trigger(action_id);
-            }
+        if( is_member[msg.sender] && !confirmations[action_id][msg.sender] ) {
+            logs("no existing confirmations for member");
+            confirmations[action_id][msg.sender] = true;
+            var a = actions[action_id];
+            var confs = a.confirmations;
+            //log_named_uint("current confirmations", confs);
+            a.confirmations = a.confirmations + 1;
+            //log_named_uint("confirmations after increment", a.confirmations);
+            actions[action_id] = a;
+            //log_named_uint("confirmations after ++/store", actions[action_id].confirmations);
+            Confirmed(action_id, msg.sender);
+            return trigger(action_id);
         }
         return false;
     }
@@ -129,8 +126,12 @@ contract DSEasyMultisig is DSBaseActor, Debug
             return false;
         }
         a.result = exec( a.target, a.calldata, a.value, a.gas );
-        //log_named_bool("exec result", a.result);
-        //logs("triggered action");
+        logs("triggered action");
+        if( a.result ) {
+            logs("result success");
+        } else {
+            logs("result success");
+        }
         a.triggered = true;
         actions[action_id] = a;
         Triggered(action_id, a.result);

@@ -2,10 +2,11 @@ import 'actor/base_actor_test.sol'; // CallReceiver
 import 'gov/easy_multisig.sol';
 import 'dapple/test.sol';
 
-contract helper {
+contract helper is Debug {
     uint _arg;
     uint _value;
     function lastArg() returns (uint) {
+        log_named_uint("_arg in lastArg", _arg);
         return _arg;
     }
     function lastValue() returns (uint) {
@@ -13,6 +14,7 @@ contract helper {
     }
     function doSomething(uint arg) {
         _arg = arg;
+        log_named_uint("_arg in doSomething", _arg);
         _value = msg.value;
     }
 }
