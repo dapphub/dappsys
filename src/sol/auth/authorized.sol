@@ -1,3 +1,5 @@
+import 'auth/authority.sol';
+
 // `DSAuthorized` is a mixin contract which enables standard authorization patterns.
 // It has a shorter alias `auth/auth.sol: DSAuth` because it is so common.
 contract DSAuthorized {
