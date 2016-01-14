@@ -1,12 +1,12 @@
 // A contract that is simply a fresh storage address space.
-// TODO use storage space directly as soon as possible.
+// TODO use storage space directly as soon as possible (direct-map)
 contract DSMap is DSAuth {
 	mapping( bytes32 => bytes32 ) _storage;
-	function get( bytes32 key ) returns (bytes32 value, bool ok) {
-		 return (_storage[key], true);
+	function get( bytes32 key ) returns (bytes32 value) {
+		 return _storage[key];
 	}
 	function set( bytes32 key, bytes32 value )
-		 auth()
+             auth()
 	    	 returns (bool ok) 
 	{
 		_storage[key] = value;

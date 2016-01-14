@@ -1,14 +1,4 @@
 layout:
     sol_sources: "src/sol"
     build_dir: "build"
-ignore:
-    - "alarm/*"
-    - "data/direct_map.sol"
-    - "data/fast_balance_db.sol"
-    - "kern/*"
-    - "math/*"
-    - "proxy/*"
-    - "proxy/proxy_actor.sol"
-    - "proxy/proxy_actor_test.sol"
-    - "token/old_asset/*"
-    - "gov/mutable_multisig.sol"
+ignore: []
