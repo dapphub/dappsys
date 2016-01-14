@@ -4,7 +4,7 @@ import 'dapple/debug.sol';
 // The user never has to pack their own calldata (using easyPropose),
 // eliminating the need for UI support or helper contracts.
 // 
-contract DSEasyMultisig is DSBaseActor, Debug
+contract DSEasyMultisig is DSBaseActor
 {
     uint _required;
     uint _member_count;
@@ -98,39 +98,28 @@ contract DSEasyMultisig is DSBaseActor, Debug
         return _last_action_id;
     }
     function confirm( uint action_id ) returns (bool triggered) {
-        //log_named_uint("entering confirm for id", action_id);
         if( is_member[msg.sender] && !confirmations[action_id][msg.sender] ) {
-            //logs("no existing confirmations for member");
             confirmations[action_id][msg.sender] = true;
             var a = actions[action_id];
             var confs = a.confirmations;
-            //log_named_uint("current confirmations", confs);
             a.confirmations = a.confirmations + 1;
-            //log_named_uint("confirmations after increment", a.confirmations);
             actions[action_id] = a;
-            //log_named_uint("confirmations after ++/store", actions[action_id].confirmations);
             Confirmed(action_id, msg.sender);
             return trigger(action_id);
         }
         return false;
     }
     function trigger( uint action_id ) returns (bool triggered) {
-        //logs("entering trigger");
         var a = actions[action_id];
         if( a.confirmations < _required ) {
-            //logs("too few confirmations, skipping");
             return false;
         }
         if( block.timestamp > a.expiration ) {
-            //logs("too far in the future, skipping");
             return false;
         }
         a.result = exec( a.target, a.calldata, a.value, a.gas );
-        //logs("triggered action");
         if( a.result ) {
-            //logs("result success");
         } else {
-            //logs("result success");
         }
         a.triggered = true;
         actions[action_id] = a;
