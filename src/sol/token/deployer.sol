@@ -9,14 +9,13 @@ import 'util/false.sol';
 contract DSTokenDeployer is DSAuth
                           , DSModifiers
                           , DSFalseFallback
-                          , DSFactoryUser                         
 {
     mapping(bytes32=>address) public contracts;
     DSFactory _factory;
     // TODO use constant macro to remove need for constructor arg
     function DSTokenDeployer( DSFactory factory )
-             DSFactoryUser( factory )
     {
+        _factory = factory;
     }
     function deploy( address initial_owner, uint initial_balance )
              auth()

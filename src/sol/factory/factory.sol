@@ -3,7 +3,9 @@
 // Limited by block gas limit. 
 
 contract DSFactory {
-    function buildMap() returns (DSMap);
     function buildDSBalanceDB() returns (DSBalanceDB);
     function buildDSApprovalDB() returns (DSApprovalDB);
+    function buildDSTokenController( DSBalanceDB bal_db, DSApprovalDB appr_db )
+             returns (DSTokenController);
+    function buildDSTokenFrontend( DSTokenController cont ) returns (DSTokenFrontend);
 }

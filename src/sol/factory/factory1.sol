@@ -30,9 +30,4 @@ contract DSFactory1 is DSFactory {
         c.updateAuthority(msg.sender, false);
         return c;
     }
-/*
-    function buildDSEasyMultisig( uint n, uint m, uint expiration ) returns (DSEasyMultisig) {
-        var c = new DSEasyMultisig( n, m, expiration );
-    }
-*/
 }
