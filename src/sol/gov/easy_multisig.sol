@@ -100,7 +100,7 @@ contract DSEasyMultisig is DSBaseActor, Debug
     function confirm( uint action_id ) returns (bool triggered) {
         //log_named_uint("entering confirm for id", action_id);
         if( is_member[msg.sender] && !confirmations[action_id][msg.sender] ) {
-            logs("no existing confirmations for member");
+            //logs("no existing confirmations for member");
             confirmations[action_id][msg.sender] = true;
             var a = actions[action_id];
             var confs = a.confirmations;
@@ -118,19 +118,19 @@ contract DSEasyMultisig is DSBaseActor, Debug
         //logs("entering trigger");
         var a = actions[action_id];
         if( a.confirmations < _required ) {
-            logs("too few confirmations, skipping");
+            //logs("too few confirmations, skipping");
             return false;
         }
         if( block.timestamp > a.expiration ) {
-            logs("too far in the future, skipping");
+            //logs("too far in the future, skipping");
             return false;
         }
         a.result = exec( a.target, a.calldata, a.value, a.gas );
-        logs("triggered action");
+        //logs("triggered action");
         if( a.result ) {
-            logs("result success");
+            //logs("result success");
         } else {
-            logs("result success");
+            //logs("result success");
         }
         a.triggered = true;
         actions[action_id] = a;

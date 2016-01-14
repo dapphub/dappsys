@@ -6,7 +6,7 @@ contract helper is Debug {
     uint _arg;
     uint _value;
     function lastArg() returns (uint) {
-        log_named_uint("_arg in lastArg", _arg);
+        //log_named_uint("_arg in lastArg", _arg);
         return _arg;
     }
     function lastValue() returns (uint) {
@@ -14,7 +14,7 @@ contract helper is Debug {
     }
     function doSomething(uint arg) {
         _arg = arg;
-        log_named_uint("_arg in doSomething", _arg);
+        //log_named_uint("_arg in doSomething", _arg);
         _value = msg.value;
     }
 }
@@ -26,7 +26,7 @@ contract DSEasyMultisigTest is Test
     DSEasyMultisig ms;
     bytes calldata;
     function setUp() {
-        ms = new DSEasyMultisig(2, 3, uint8(3 days));
+        ms = new DSEasyMultisig(2, 3, 3 days);
         T1 = new Tester(); t1 = address(T1);
         T2 = new Tester(); t2 = address(T2);
         T1._target( ms );
