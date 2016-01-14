@@ -7,19 +7,7 @@ import 'data/map.sol';
 import 'token/frontend.sol';
 import 'token/controller.sol';
 
-contract DSFactory1Helper1 {
-}
-
 contract DSFactory1 is DSFactory {
-    DSFactory1Helper1 _h1;
-    function DSFactory1( DSFactory1Helper1 h1 ) {
-        _h1 = h1;
-    }
-    function buildMap() returns (DSMap) {
-        var c = new DSMap();
-        c.updateAuthority(msg.sender, false);
-        return c;
-    }
     function buildDSBalanceDB() returns (DSBalanceDB) {
         var c = new DSBalanceDB();
         c.updateAuthority(msg.sender, false);

@@ -16,11 +16,3 @@ contract DSApprovalDB is DSAuth {
         return (approvals[holder][spender], true);
     }
 }
-
-contract DSApprovalDBFactory {
-    function build() returns (DSApprovalDB) {
-        var db = new DSApprovalDB();
-        db.updateAuthority(msg.sender, false);
-        return db;
-    }
-}
