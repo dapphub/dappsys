@@ -24,7 +24,7 @@ Part 1: Simple Contracts
 ##### `data/balance_db_test.sol`
 ##### `data/approval_db.sol`
 ##### `data/approval_db_test.sol`
-
+##### `data/map.sol`
 
 #### `util`
 ##### `util/ephemeral.sol`
@@ -34,6 +34,8 @@ Part 1: Simple Contracts
 
 Part 2: Token and Multisig
 ---
+
+(note: added `data/map.sol` to part 1 list, but it is only in tag 2)
 
 #### `token`
 ##### `token/base.sol`

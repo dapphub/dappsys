@@ -1,5 +1,5 @@
 // Static proxy for Tokens. Allows you to give a single address to
-// UI devs, but requires your dapp to manage implementation updates
+// UI devs, but requires your dapp to manage controllerementation updates
 //  at the contract level.
 import 'token/token.sol';
 
@@ -7,16 +7,19 @@ contract DSTokenFrontend is DSToken
                           , DSTokenEventCallback
                           , DSAuth
 {
-    DSTokenController _impl;
-    function DSTokenFrontend( DSTokenController impl ) {
-        setImpl( impl );
+    DSTokenController _controller;
+    function DSTokenFrontend( DSTokenController controller ) {
+        setController( controller );
     }
-    function setImpl( DSTokenController impl )
+    function setController( DSTokenController controller )
              auth()
              returns (bool)
     {
-        _impl = impl;
+        _controller = controller;
         return true;
+    }
+    function getController() constant returns (DSTokenController controller) {
+        return _controller;
     }
 
     // ERCEvents
@@ -36,24 +39,24 @@ contract DSTokenFrontend is DSToken
 
     // ERC20Stateless
     function totalSupply() constant returns (uint supply) {
-        return _impl.totalSupply();
+        return _controller.totalSupply();
     }
     function balanceOf( address who ) constant returns (uint value) {
-        return _impl.balanceOf( who );
+        return _controller.balanceOf( who );
     }
     function allowance(address owner, address spender) constant returns (uint _allowance) {
-        return _impl.allowance( owner, spender );
+        return _controller.allowance( owner, spender );
     }
 
     // ERC20Stateful
     function transfer( address to, uint value) returns (bool ok) {
-        return _impl.transfer( msg.sender, to, value );
+        return _controller.transfer( msg.sender, to, value );
     }
     function transferFrom( address from, address to, uint value) returns (bool ok) {
-        return _impl.transferFrom( msg.sender, from, to, value );
+        return _controller.transferFrom( msg.sender, from, to, value );
     }
     function approve(address spender, uint value) returns (bool ok) {
-        return _impl.approve( msg.sender, spender, value );
+        return _controller.approve( msg.sender, spender, value );
     }
 }
 
