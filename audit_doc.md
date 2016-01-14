@@ -31,3 +31,18 @@ Part 1: Simple Contracts
 ##### `util/modifiers.sol`
 ##### `util/true.sol`
 ##### `util/false.sol`
+
+Part 2: Token and Multisig
+---
+
+#### `token`
+##### `token/base.sol`
+##### `token/controller.sol`
+##### `token/deployer.sol`
+##### `token/erc20.sol`
+##### `token/eth_wrapper.sol`
+##### `token/frontend.sol`
+##### `token/token.sol`
+
+#### `gov`
+#### `gov/easy_multisig.sol`
