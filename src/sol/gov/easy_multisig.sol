@@ -1,18 +1,31 @@
 import 'actor/base.sol';
 import 'dapple/debug.sol';
-// A multisig actor optimized for ease of use.
-// The user never has to pack their own calldata (using easyPropose),
-// eliminating the need for UI support or helper contracts.
-// 
+
+/* A multisig actor optimized for ease of use.
+ * The user never has to pack their own calldata. Instead, use `easyPropose`.
+ * This eliminates the need for UI support or helper contracts.
+ * 
+ * The `easyPropose` workflow is:
+ * 1) `MyTargetType(my_multisig).myAction(arg1, arg2);`
+ * 2) `my_multisig.easyPropose(address(my_target), 0, 0);`
+ * 
+ * This is equivalent to `propose(address(my_target), <calldata>, 0, 0);`,
+ * where calldata is correctly formatted for `MyTargetType: myAction(arg1, arg2)`
+ */
 contract DSEasyMultisig is DSBaseActor
 {
+    // How many confirmations an action needs to execute.
     uint _required;
+    // How many members this multisig has.
     uint _member_count;
+    // Maximum time between proposal time and trigger time.
     uint _expiration;
     uint _last_action_id;
+
     // temporary setup storage
-    address _tmp_authority;
-    uint _members_added;
+    address _setup_authority;
+    uint _setup_members_added;
+
     struct action {
         address target;
         bytes calldata;
@@ -20,26 +33,54 @@ contract DSEasyMultisig is DSBaseActor
         uint gas;
 
         uint confirmations; // If this number reaches `required`, you can trigger
-        uint expiration;
-        bool triggered;
-        bool result;
+        uint expiration; // Last timestamp this action can execute
+        bool triggered; // Have we tried to trigger this action
+        bool result; // What is the result of the action which we tried to trigger
     }
     mapping( uint => action ) public actions;
+    // action_id -> member -> confirmed
     mapping( uint => mapping( address => bool ) ) confirmations;
+    // A record of the last fallback calldata recorded for this sender.
+    // This is an easy way to create proposals for most actions.
     mapping( address => bytes ) easy_calldata;
+    // Can this address add confirmations?
     mapping( address => bool ) is_member;
-
+    
     event Proposed( uint action_id );
     event Confirmed( uint action_id, address who );
     event Triggered( uint action_id, bool result );
 
     function DSEasyMultisig( uint required, uint member_count, uint expiration ) {
-        _tmp_authority = msg.sender;
+        // `_setup_authority` is the address which is allowed to instantiate the initial members.
+        // It is like a temporary owner address.
+        _setup_authority = msg.sender;
         _required = required;
         _member_count = member_count;
         _expiration = expiration;
     }
-    function getInfo() constant returns (uint required, uint members, uint expiration, uint last_proposed_action)
+    // The setup authority can add members until they reach `member_count`, after which the
+    // contract is finalized.
+    function addMember( address who ) returns (bool)
+    {
+        if( msg.sender != _setup_authority ) {
+            return false;
+        }
+        if( is_member[who] ) {
+            return false;
+        }
+        is_member[who] = true;
+        _setup_members_added++;
+        if( _setup_members_added == _member_count ) {
+            delete _setup_authority;
+            delete _setup_members_added;
+        }
+        return true;
+    }
+
+    // Some constant getters
+    function getInfo()
+             constant
+             returns (uint required, uint members, uint expiration, uint last_proposed_action)
     {
         return (_required, _member_count, _expiration, _last_action_id);
     }
@@ -50,36 +91,23 @@ contract DSEasyMultisig is DSBaseActor
         var a = actions[action_id];
         return (a.confirmations, a.expiration, a.triggered, a.result);
     }
-    function addMember( address who ) returns (bool)
-    {
-        if( msg.sender != _tmp_authority ) {
-            return false;
-        }
-        if( is_member[who] ) {
-            return false;
-        }
-        is_member[who] = true;
-        _members_added++;
-        if( _members_added == _member_count ) {
-            delete _tmp_authority;
-            delete _members_added;
-        }
-        return true;
-    }
     function isMember( address who ) constant returns (bool) {
         return is_member[who];
     }
+
+
+    // `propose` an action using the calldata from this sender's last call.
     function easyPropose( address target, uint value, uint gas ) returns (uint action_id) {
         return propose( target, easy_calldata[msg.sender], value, gas );
     }
     function() {
         easy_calldata[msg.sender] = msg.data;
     }
+
     // Propose an action.
-    // Return value 0 means error.
-    // Anyone can propose - only members can confirm so others are just wasting gas
-    // if they try to do anything silly.
-    // This does mean you need to be careful about checking that your transactions confirmed.
+    // Anyone can propose an action.
+    // Attempts to also confirm (and then trigger) the action.
+    // Only members can confirm actions.
     // Warning! Don't forget 0 gas means "all the gas"!
     function propose( address target, bytes calldata, uint value, uint gas )
              returns (uint action_id)
@@ -97,6 +125,9 @@ contract DSEasyMultisig is DSBaseActor
         confirm(_last_action_id);
         return _last_action_id;
     }
+    // Attempts to confirm the action.
+    // Only members can confirm actions.
+    // Attempts to trigger the action 
     function confirm( uint action_id ) returns (bool triggered) {
         if( is_member[msg.sender] && !confirmations[action_id][msg.sender] ) {
             confirmations[action_id][msg.sender] = true;
@@ -109,6 +140,8 @@ contract DSEasyMultisig is DSBaseActor
         }
         return false;
     }
+    // Attempts to trigger the action.
+    // Fails if there are not enough confirmations or if the action has expired.
     function trigger( uint action_id ) returns (bool triggered) {
         var a = actions[action_id];
         if( a.confirmations < _required ) {
@@ -118,9 +151,6 @@ contract DSEasyMultisig is DSBaseActor
             return false;
         }
         a.result = exec( a.target, a.calldata, a.value, a.gas );
-        if( a.result ) {
-        } else {
-        }
         a.triggered = true;
         actions[action_id] = a;
         Triggered(action_id, a.result);

@@ -1,15 +1,9 @@
-import 'gov/easy_multisig.sol';
 import 'dapple/test.sol';
+import 'gov/easy_multisig.sol';
 
 contract helper is Debug {
-    uint _arg;
-    uint _value;
-    function lastArg() returns (uint) {
-        return _arg;
-    }
-    function lastValue() returns (uint) {
-        return _value;
-    }
+    uint public _arg;
+    uint public _value;
     function doSomething(uint arg) {
         _arg = arg;
         _value = msg.value;
@@ -48,7 +42,7 @@ contract DSEasyMultisigTest is Test
         var h = new helper();
         helper(ms).doSomething(1);
         ms.easyPropose( address(h), 0, 0 );
-        assertEq( h.lastArg(), 0, "call shouldn't have succeeded" );
+        assertEq( h._arg(), 0, "call shouldn't have succeeded" );
         var (r, m, e, id) = ms.getInfo();
         assertEq( id, 1, "wrong last action id");
         uint c; bool t; bool res;
@@ -57,7 +51,7 @@ contract DSEasyMultisigTest is Test
         DSEasyMultisig(t1).confirm(1);
         (c, e, t, res) = ms.getActionStatus(1);
         assertTrue( c == 2, "wrong number of confirmations" );
-        assertEq( h.lastArg(), 1, "wrong last arg" );
-        assertEq( h.lastValue(), 0, "wrong last value" );
+        assertEq( h._arg(), 1, "wrong last arg" );
+        assertEq( h._value(), 0, "wrong last value" );
     }
 }
