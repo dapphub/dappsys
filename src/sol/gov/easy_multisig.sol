@@ -6,11 +6,11 @@ import 'dapple/debug.sol';
  * This eliminates the need for UI support or helper contracts.
  * 
  * The `easyPropose` workflow is:
- * 1) `MyTargetType(my_multisig).myAction(arg1, arg2);`
- * 2) `my_multisig.easyPropose(address(my_target), 0, 0);`
+ * 1) `TargetType(address(multisig)).doAction(arg1, arg2);`
+ * 2) `multisig.easyPropose(address(target), value, gas);`
  * 
- * This is equivalent to `propose(address(my_target), <calldata>, 0, 0);`,
- * where calldata is correctly formatted for `MyTargetType: myAction(arg1, arg2)`
+ * This is equivalent to `propose(address(my_target), <calldata>, value, gas);`,
+ * where calldata is correctly formatted for `TargetType(target).doAction(arg1, arg2)`
  */
 contract DSEasyMultisig is DSBaseActor
 {
@@ -30,7 +30,7 @@ contract DSEasyMultisig is DSBaseActor
         address target;
         bytes calldata;
         uint value;
-        uint gas;
+        uint gas; // 0 means "all"!
 
         uint confirmations; // If this number reaches `required`, you can trigger
         uint expiration; // Last timestamp this action can execute
@@ -59,7 +59,7 @@ contract DSEasyMultisig is DSBaseActor
         _expiration = expiration;
     }
     // The setup authority can add members until they reach `member_count`, after which the
-    // contract is finalized.
+    // contract is finalized (`_setup_authority` set to address 0).
     function addMember( address who ) returns (bool)
     {
         if( msg.sender != _setup_authority ) {
@@ -84,6 +84,7 @@ contract DSEasyMultisig is DSBaseActor
     {
         return (_required, _member_count, _expiration, _last_action_id);
     }
+    // Public getter for the action mapping doesn't work in web3.js yet
     function getActionStatus(uint action_id) 
              constant
              returns (uint confirmations, uint expiration, bool triggered, bool result)
@@ -94,7 +95,6 @@ contract DSEasyMultisig is DSBaseActor
     function isMember( address who ) constant returns (bool) {
         return is_member[who];
     }
-
 
     // `propose` an action using the calldata from this sender's last call.
     function easyPropose( address target, uint value, uint gas ) returns (uint action_id) {
