@@ -59,3 +59,11 @@ contract DSBalanceDB is DSAuth {
     }
     event BalanceChanged( address who, uint amount, bool positive);
 }
+
+contract DSBalanceDBFactory {
+    function build() returns (DSBalanceDB) {
+        var db = new DSBalanceDB();
+        db.updateAuthority(msg.sender, false);
+        return db;
+    }
+}
