@@ -5,7 +5,15 @@ import 'dapple/debug.sol';
  * The user never has to pack their own calldata. Instead, use `easyPropose`.
  * This eliminates the need for UI support or helper contracts.
  * 
- * The `easyPropose` workflow is:
+ * First, call the multisig contract itself as if it were your target contract,
+ * with the correct calldata. You can make Solidity and web3.js to do this for
+ * you very easily by casting the multisig address as the target type.
+ * Then, you call `easyPropose` with the missing arguments. This calls `propose`.
+ *
+ * "last calldata" is "local" to the `msg.sender`. This makes it usable directly
+ * from keys (but still not as secure as if it were atomic using a helper contract).
+ * 
+ * In Soldity:
  * 1) `TargetType(address(multisig)).doAction(arg1, arg2);`
  * 2) `multisig.easyPropose(address(target), value, gas);`
  * 
@@ -19,10 +27,11 @@ contract DSEasyMultisig is DSBaseActor
     uint _required;
     // How many members this multisig has.
     uint _member_count;
-    // Auto-locks once this reaches zero.
+    // Auto-locks once this reaches zero - easy setup phase.
     uint _members_remaining;
     // Maximum time between proposal time and trigger time.
     uint _expiration;
+    // Action counter
     uint _last_action_id;
 
 
@@ -34,8 +43,8 @@ contract DSEasyMultisig is DSBaseActor
 
         uint confirmations; // If this number reaches `required`, you can trigger
         uint expiration; // Last timestamp this action can execute
-        bool triggered; // Have we tried to trigger this action
-        bool result; // What is the result of the action which we tried to trigger
+        bool triggered; // Did we try to trigger this action
+        bool result; // What was the return value of `.send` for the action, if we triggered it
     }
     mapping( uint => action ) public actions;
     // action_id -> member -> confirmed
@@ -43,10 +52,11 @@ contract DSEasyMultisig is DSBaseActor
     // A record of the last fallback calldata recorded for this sender.
     // This is an easy way to create proposals for most actions.
     mapping( address => bytes ) easy_calldata;
-    // Can this address add confirmations?
+    // Only these addresses can add confirmations
     mapping( address => bool ) is_member;
-   
+
     event MemberAdded( address who ); 
+
     event Proposed( uint action_id );
     event Confirmed( uint action_id, address who );
     event Triggered( uint action_id, bool result );
@@ -57,8 +67,8 @@ contract DSEasyMultisig is DSBaseActor
         _members_remaining = member_count;
         _expiration = expiration;
     }
-    // The setup authority can add members until they reach `member_count`, after which the
-    // contract is finalized (`_authority` is set to 0).
+    // The authority can add members until they reach `member_count`, after which the
+    // contract is finalized (`updateAuthority(0, false)`).
     function addMember( address who ) auth() returns (bool)
     {
         if( is_member[who] ) {
@@ -68,8 +78,7 @@ contract DSEasyMultisig is DSBaseActor
         MemberAdded(who);
         _members_remaining--;
         if( _members_remaining == 0 ) {
-            _authority = address(0x0);
-            _auth_mode = false;
+            updateAuthority(address(0x0), false);
         }
         return true;
     }
