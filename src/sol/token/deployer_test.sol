@@ -9,7 +9,7 @@ contract TokenSetupTest is Test {
     DSTokenDeployer deployer;
     DSToken t;
     function setUp() {
-        f = new DSFactory1();
+        f = (new DSFactoryTestFactory()).buildFactory();
         deployer = new DSTokenDeployer(f);
         tester = new TokenTester();
         deployer.deploy(address(tester), 100);
