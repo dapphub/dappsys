@@ -32,20 +32,24 @@ contract DSFactory1 is DSFactory {
         _ms = ms;
     }
 
-    function buildDSBalanceDB() returns (DSBalanceDB) {
-        return _data.buildDSBalanceDB();
+    function buildDSBalanceDB() returns (DSBalanceDB c) {
+        c = _data.buildDSBalanceDB();
+        c.updateAuthority(msg.sender, false);
     }
-    function buildDSApprovalDB() returns (DSApprovalDB) {
-        return _data.buildDSApprovalDB();
+    function buildDSApprovalDB() returns (DSApprovalDB c) {
+        c = _data.buildDSApprovalDB();
+        c.updateAuthority(msg.sender, false);
     }
     function buildDSTokenController( DSBalanceDB bal_db, DSApprovalDB appr_db )
-             returns (DSTokenController)
+             returns (DSTokenController c)
     {
-        return _token.buildDSTokenController( bal_db, appr_db );
+        c = _token.buildDSTokenController( bal_db, appr_db );
+        c.updateAuthority(msg.sender, false);
     }
-    function buildDSTokenFrontend( DSTokenController cont ) returns (DSTokenFrontend)
+    function buildDSTokenFrontend( DSTokenController cont ) returns (DSTokenFrontend c)
     {
-        return _token.buildDSTokenFrontend( cont );
+        c = _token.buildDSTokenFrontend( cont );
+        c.updateAuthority(msg.sender, false);
     }
 }
 
