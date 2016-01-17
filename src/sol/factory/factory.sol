@@ -18,6 +18,7 @@ contract DSFactory {
     function buildDSTokenController( DSBalanceDB bal_db, DSApprovalDB appr_db )
              returns (DSTokenController);
     function buildDSTokenFrontend( DSTokenController cont ) returns (DSTokenFrontend);
+    function buildDSEasyMultisig( uint n, uint m, uint expiration ) returns (DSEasyMultisig);
 }
 contract DSFactory1 is DSFactory {
     DSDataFactory _data;
@@ -50,6 +51,12 @@ contract DSFactory1 is DSFactory {
     {
         c = _token.buildDSTokenFrontend( cont );
         c.updateAuthority(msg.sender, false);
+    }
+    function buildDSEasyMultisig( uint n, uint m, uint expiration ) returns (DSEasyMultisig)
+    {
+        var c = _ms.buildDSEasyMultisig( n, m, expiration );
+        c.updateAuthority(msg.sender, false);
+        return c;
     }
 }
 
