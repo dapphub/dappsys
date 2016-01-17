@@ -1,4 +1,5 @@
 import 'dapple/test.sol';
+import 'data/approval_db.sol';
 
 contract DSApprovalDB_Test is Test {
     DSApprovalDB db;

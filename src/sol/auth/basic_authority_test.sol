@@ -1,6 +1,7 @@
 import 'dapple/test.sol';
 import 'auth/authority.sol';
 import 'auth/auth_test.sol';  // Vault
+import 'auth/basic_authority.sol';
 
 
 contract BasicAuthorityTest is Test {

@@ -1,3 +1,6 @@
+import 'data/balance_db.sol';
+import 'token/controller.sol';
+
 contract DSTokenFactory {
     function buildDSTokenController( DSBalanceDB bal_db, DSApprovalDB appr_db )
              returns (DSTokenController)
