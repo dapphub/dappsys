@@ -1,6 +1,8 @@
 // Static proxy for Tokens. Allows you to give a single address to
 // UI devs, but requires your dapp to manage controllerementation updates
 //  at the contract level.
+import 'token/controller.sol';
+import 'token/event_callback.sol';
 import 'token/token.sol';
 
 contract DSTokenFrontend is DSToken

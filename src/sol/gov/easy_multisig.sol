@@ -1,10 +1,11 @@
 import 'actor/base.sol';
+import 'auth/auth.sol';
 import 'dapple/debug.sol';
 
 /* A multisig actor optimized for ease of use.
  * The user never has to pack their own calldata. Instead, use `easyPropose`.
  * This eliminates the need for UI support or helper contracts.
- * 
+ *
  * First, call the multisig contract itself as if it were your target contract,
  * with the correct calldata. You can make Solidity and web3.js to do this for
  * you very easily by casting the multisig address as the target type.
@@ -12,11 +13,11 @@ import 'dapple/debug.sol';
  *
  * "last calldata" is "local" to the `msg.sender`. This makes it usable directly
  * from keys (but still not as secure as if it were atomic using a helper contract).
- * 
+ *
  * In Soldity:
  * 1) `TargetType(address(multisig)).doAction(arg1, arg2);`
  * 2) `multisig.easyPropose(address(target), value, gas);`
- * 
+ *
  * This is equivalent to `propose(address(my_target), <calldata>, value, gas);`,
  * where calldata is correctly formatted for `TargetType(target).doAction(arg1, arg2)`
  */
@@ -55,7 +56,7 @@ contract DSEasyMultisig is DSBaseActor
     // Only these addresses can add confirmations
     mapping( address => bool ) is_member;
 
-    event MemberAdded( address who ); 
+    event MemberAdded( address who );
 
     event Proposed( uint action_id );
     event Confirmed( uint action_id, address who );
@@ -94,7 +95,7 @@ contract DSEasyMultisig is DSBaseActor
         return (_required, _member_count, _expiration, _last_action_id);
     }
     // Public getter for the action mapping doesn't work in web3.js yet
-    function getActionStatus(uint action_id) 
+    function getActionStatus(uint action_id)
              constant
              returns (uint confirmations, uint expiration, bool triggered, bool result)
     {
@@ -132,7 +133,7 @@ contract DSEasyMultisig is DSBaseActor
     }
     // Attempts to confirm the action.
     // Only members can confirm actions.
-    // Attempts to trigger the action 
+    // Attempts to trigger the action
     function confirm( uint action_id ) returns (bool triggered) {
         if( is_member[msg.sender] && !confirmations[action_id][msg.sender] ) {
             confirmations[action_id][msg.sender] = true;
