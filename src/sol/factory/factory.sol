@@ -19,20 +19,28 @@ contract DSFactory {
              returns (DSTokenController);
     function buildDSTokenFrontend( DSTokenController cont ) returns (DSTokenFrontend);
     function buildDSEasyMultisig( uint n, uint m, uint expiration ) returns (DSEasyMultisig);
+    function buildDSBasicAuthority() returns (DSBasicAuthority);
 }
 contract DSFactory1 is DSFactory {
     DSDataFactory _data;
     DSTokenFactory _token;
     DSMultisigFactory _ms;
+    DSAuthFactory _auth;
     function DSFactory1( DSDataFactory data
                        , DSTokenFactory token
-                       , DSMultisigFactory ms )
+                       , DSMultisigFactory ms
+                       , DSAuthFactory auth )
     {
         _data = data;
         _token = token;
         _ms = ms;
+        _auth = auth;
     }
 
+    function buildDSBasicAuthority() returns (DSBasicAuthority c) {
+        c = _auth.buildDSBasicAuthority();
+        c.updateAuthority(msg.sender, false);
+    }
     function buildDSBalanceDB() returns (DSBalanceDB c) {
         c = _data.buildDSBalanceDB();
         c.updateAuthority(msg.sender, false);
@@ -58,6 +66,9 @@ contract DSFactory1 is DSFactory {
         c.updateAuthority(msg.sender, false);
         return c;
     }
+    function() returns (bytes32) {
+        return 0x0;
+    }
 }
 
 
@@ -68,7 +79,8 @@ contract DSFactoryTestFactory {
         var data = new DSDataFactory();
         var token = new DSTokenFactory();
         var ms = new DSMultisigFactory();
-        var f = new DSFactory1(data, token, ms);
+        var auth = new DSAuthFactory();
+        var f = new DSFactory1(data, token, ms, auth);
         return f;
     }
 }

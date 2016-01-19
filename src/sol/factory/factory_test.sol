@@ -5,12 +5,14 @@ contract FactoryTest is Test {
     DSDataFactory data;
     DSTokenFactory token;
     DSMultisigFactory ms;
+    DSAuthFactory auth;
     DSFactory f;
     function setUp() {
-        var data = new DSDataFactory();
-        var token = new DSTokenFactory();
-        var ms = new DSMultisigFactory();
-        var f = new DSFactory1(data, token, ms);
+        data = new DSDataFactory();
+        token = new DSTokenFactory();
+        ms = new DSMultisigFactory();
+        auth = new DSAuthFactory();
+        var f = new DSFactory1(data, token, ms, auth);
     }
     function testCreateCostData() logs_gas() {
         var data = new DSDataFactory();
@@ -21,7 +23,10 @@ contract FactoryTest is Test {
     function testCreateCostMultisig() logs_gas() {
         var ms = new DSMultisigFactory();
     }
+    function testCreateCostAuth() logs_gas() {
+        var ms = new DSAuthFactory();
+    }
     function testCreateCostMain() logs_gas() {
-        var f = new DSFactory1(data, token, ms);
+        var f = new DSFactory1(data, token, ms, auth);
     }
 }
