@@ -13,13 +13,18 @@ import 'factory/multisig_factory.sol';
 // Motivated by and limited by block gas limit. 
 
 contract DSFactory {
+    // auth
+    function buildDSBasicAuthority() returns (DSBasicAuthority);
+    // data
     function buildDSBalanceDB() returns (DSBalanceDB);
     function buildDSApprovalDB() returns (DSApprovalDB);
+    function buildDSMap() returns (DSMap);
+    // token
     function buildDSTokenController( DSBalanceDB bal_db, DSApprovalDB appr_db )
              returns (DSTokenController);
     function buildDSTokenFrontend( DSTokenController cont ) returns (DSTokenFrontend);
+    // gov
     function buildDSEasyMultisig( uint n, uint m, uint expiration ) returns (DSEasyMultisig);
-    function buildDSBasicAuthority() returns (DSBasicAuthority);
 }
 contract DSFactory1 is DSFactory {
     DSDataFactory _data;
@@ -43,6 +48,10 @@ contract DSFactory1 is DSFactory {
     }
     function buildDSBalanceDB() returns (DSBalanceDB c) {
         c = _data.buildDSBalanceDB();
+        c.updateAuthority(msg.sender, false);
+    }
+    function buildDSMap() returns (DSMap c) {
+        c = _data.buildDSMap();
         c.updateAuthority(msg.sender, false);
     }
     function buildDSApprovalDB() returns (DSApprovalDB c) {
