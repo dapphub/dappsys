@@ -1,9 +1,11 @@
+import 'auth/basic_authority.sol';
 import 'data/balance_db.sol';
 import 'data/approval_db.sol';
 import 'gov/easy_multisig.sol';
 import 'token/controller.sol';
 import 'token/frontend.sol';
 
+import 'factory/auth_factory.sol';
 import 'factory/data_factory.sol';
 import 'factory/token_factory.sol';
 import 'factory/multisig_factory.sol';
