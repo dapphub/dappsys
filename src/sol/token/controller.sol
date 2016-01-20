@@ -72,7 +72,7 @@ contract DSTokenController is DSTokenControllerType
     }
 
 
-    // Stateless ERC20 functions. Doesn't need to ask who the sender is.
+    // Stateless ERC20 functions. Doesn't need to know who the sender is.
     function totalSupply() constant returns (uint supply) {
         bool ok;
         (supply, ok) = _balances.getSupply();
@@ -92,8 +92,11 @@ contract DSTokenController is DSTokenControllerType
     }
 
 
-    // Frontend functions (stateful ERC20 functions). Needs to string sender's sender through.
-    // Only the frontend can call us.
+    // Each stateful ERC20 function signature has an parallel function
+    // which takes a `msg.sender` as the first argument. Each such "implementation"
+    // function needs to report any events back to the "frontend" contract.
+
+    // Only trust calls from the frontend contract.
     modifier frontend_only() {
         if( msg.sender == address(_frontend) ) {
             _

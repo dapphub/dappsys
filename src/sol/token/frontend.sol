@@ -1,6 +1,6 @@
 // Static proxy for Tokens. Allows you to give a single address to
-// UI devs, but requires your dapp to manage controllerementation updates
-//  at the contract level.
+// UI devs, but requires your dapp to manage controller updates
+// at the contract level.
 import 'auth/auth.sol';
 import 'token/controller.sol';
 import 'token/event_callback.sol';
