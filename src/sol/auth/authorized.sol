@@ -37,7 +37,8 @@ contract DSAuthorized {
         if( _auth_mode == true ) {
             var A = DSAuthority(_authority);
             return A.canCall( msg.sender, address(this), msg.sig );
-        }    
+        }
+        return false;
     }
 
     function getAuthority() constant returns (address authority, bool mode ) {
@@ -54,25 +55,4 @@ contract DSAuthorized {
         DSAuthUpdate( new_authority, mode );
         return true;
     }
-}
-
-// Use the auth() pattern, but compile the address into code instead
-// of into storage. This is useful if you need to use the entire address
-// space, for example. The tradeoff is that you cannot update the authority.
-contract DSStaticAuthorized {
-    function isAuthorized( address _authority ) internal returns (bool is_authorized) {
-        if( msg.sender == _authority ) {
-            return true;
-        }
-        var A = DSAuthority(_authority);
-        return A.canCall( msg.sender, address(this), msg.sig );
-    }
-    modifier static_auth( address _authority ) {
-        if( isAuthorized( _authority ) ) {
-            _
-        }
-    }
-    // Optionally implement missing DSAuth functions with your constant address
-    // to be fully compatible - no way to do this in general
-    // `function updateAuthority( address new_authority ) returns (bool success);`
 }

@@ -2,16 +2,16 @@ This is a summary of changes made due to recommendations in section 4 of the rep
 Test coverage is addressed in a separate document.
 
 
-1.1) accept
-1.2) accept
+1.1) accepted
+1.2) accepted
 
-2.1) accept
-2.2) accept
+2.1) possibly accept - TODO discussion about public enums
+2.2) accept ^^
 2.3) accept some variant  TODO discussion about enums
-2.4) accept
-2.5) accept
-2.6) accept
-2.7) accept
+2.4) possibly reject - isn't this useful for natspec?
+2.5) see 2.4
+2.6) accepted
+2.7) discuss - could be confusing since _authority is often a key or direct-owner which doesn't implement `DSAuthority`. A union type would be more appropriate, a dependent type on `mode`
 2.8) accept for later version - delete for re-review
 
 * 3.1) accept.

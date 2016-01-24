@@ -2,6 +2,16 @@ import 'actor/base_actor.sol';
 import 'dapple/test.sol';
 import 'dapple/debug.sol';
 
+// Simple example and passthrough for testing
+contract DSSimpleActor is DSBaseActor {
+    function execute( address target, bytes calldata, uint value, uint gas )
+             returns (bool call_ret )
+    {
+        return exec( target, calldata, value, gas );
+    }
+}
+
+
 // Test helper: record calldata from fallback and compare.
 contract CallReceiver is Debug {
     bytes last_calldata;

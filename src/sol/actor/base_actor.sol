@@ -15,13 +15,3 @@ contract DSBaseActor {
     }
 }
 
-// Simple example and passthrough for testing
-contract DSSimpleActor is DSBaseActor {
-    function execute( address target, bytes calldata, uint value, uint gas )
-             returns (bool call_ret )
-    {
-        return exec( target, calldata, value, gas );
-    }
-}
-
-
