@@ -14,13 +14,13 @@ Test coverage is addressed in a separate document.
 2.7) discuss - could be confusing since _authority is often a key or direct-owner which doesn't implement `DSAuthority`. A union type would be more appropriate, a dependent type on `mode`
 2.8) accept for later version - delete for re-review
 
-* 3.1) accept.
+* 3.1) accept
 3.2) N/A if 3.1 accepted.
-3.3) accept: use "caller_address" vs "code_address"
+3.3) accepted: used "caller_address" vs "code_address"
 3.4) possibly reject  TODO discussion about marking functions constant on general interfaces (ie `canCall` w/ a counter)
 3.5) bad copy/paste of 3.6? This is not true, would be critical if it were, and the fix makes no sense
-3.6) possibly reject in connection with 
-3.7) accept
+3.6) possibly reject - future-proofing concerns
+3.7) accepted
 
 4.1) reject, it is specifically not an ERC20 implementation and these functions could not be renamed to match the ERC20 signatures without being misleading
 * 4.2) accept, this is an artifact of when BalanceDBs had stronger assumptions
