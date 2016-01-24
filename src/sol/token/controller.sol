@@ -7,9 +7,6 @@ import 'token/event_callback.sol';
 import 'token/frontend.sol';
 import 'token/token.sol';
 
-// TODO: possibly use enums. Issues with defining enums in subpackages.
-// 0 == transfer
-// 1 == approval
 contract DSTokenControllerType is ERC20Stateless, ERC20Events {
     // ERC20Stateful proxies
     function transfer( address caller, address to, uint value) returns (bool ok);
@@ -20,9 +17,8 @@ contract DSTokenControllerType is ERC20Stateless, ERC20Events {
     function getFrontend() constant returns (DSTokenFrontend);
     function setFrontend( DSTokenFrontend frontend ) returns (bool);
     function getDBs() constant returns (DSBalanceDB, DSApprovalDB);
-    function updateDBs( DSBalanceDB new_bal_db, address new_bal_auth, bool new_bal_auth_mode
-                      , DSApprovalDB new_appr_db, address new_appr_auth, bool new_appr_auth_mode )
-             returns (bool);
+    function setBalanceDB( DSBalanceDB new_db, address new_authority, bool new_auth_mode ) returns (bool);
+    function setApprovalDB( DSApprovalDB new_db, address new_authority, bool new_auth_mode ) returns (bool);
 
 }
 
@@ -55,21 +51,34 @@ contract DSTokenController is DSTokenControllerType
     function getDBs() constant returns (DSBalanceDB, DSApprovalDB) {
         return (_balances, _approvals);
     }
-    function updateDBs( DSBalanceDB new_bal_db, address new_bal_auth, bool new_bal_auth_mode
-                      , DSApprovalDB new_appr_db, address new_appr_auth, bool new_appr_auth_mode )
+    function setBalanceDB( DSBalanceDB new_db
+                         , address new_authority
+                         , bool new_auth_mode )
              auth()
              returns (bool)
     {
-        var ok = _balances.updateAuthority( new_bal_auth, new_bal_auth_mode );
+        var ok = _balances.updateAuthority( new_authority, new_auth_mode );
         if( ok ) {
-            _balances = new_bal_db;
+            _balances = new_db;
+            return true;
         }
-        ok = _approvals.updateAuthority( new_appr_auth, new_appr_auth_mode );
-        if( ok ) {
-            _approvals = new_appr_db;
-        }
-        return true;
+        return false;
     }
+
+    function setApprovalDB( DSApprovalDB new_db
+                          , address new_authority
+                          , bool new_auth_mode )
+             auth()
+             returns (bool)
+    {
+        var ok = _approvals.updateAuthority( new_authority, new_auth_mode );
+        if( ok ) {
+            _approvals = new_db;
+            return true;
+        }
+        return false;
+    }
+
 
 
     // Stateless ERC20 functions. Doesn't need to know who the sender is.
@@ -106,20 +115,23 @@ contract DSTokenController is DSTokenControllerType
              frontend_only()
              returns (bool ok)
     {
-        ok = _balances.moveBalance( caller, to, value );
-        if( ok ) {
-            Transfer( caller, to, value );
-            _frontend.eventCallback( 0, caller, to, value );
-        }
+        return transferFrom( caller, caller, to, value );
     }
     function transferFrom( address caller, address from, address to, uint value)
              frontend_only()
              returns (bool)
     {
-        var (allowance, ok) = _approvals.get( from, caller );
-        if( ok && allowance >= value ) {
-            ok = _balances.moveBalance( from, to, value);
+        var (bal, ok) = _balances.getBalance( from );
+        if( bal >= value ) {
+            uint allowance;
+            (allowance, ok) = _approvals.get( from, caller );
+            bool hasApproval = (ok && allowance >= value);
+        }
+        if( hasApproval ) {
             _approvals.set( from, to, allowance - value );
+        }
+        if( from == caller || hasApproval ) {
+            ok = _balances.moveBalance( from, to, value);
             if( ok ) {
                 Transfer( from, to, value );
                 _frontend.eventCallback( 0, from, to, value );
