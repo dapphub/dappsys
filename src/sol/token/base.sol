@@ -1,4 +1,4 @@
-// A base contract for single-contract tokens. All the data is held in 
+// A base contract for single-contract tokens. All the data is held in
 // the storage locally and there are no extra functions (initial issuance
 // is done via constructor argument).
 // Contracts that plan to ever export data should be using `token/controller.sol`.
@@ -19,18 +19,17 @@ contract DSTokenBase is DSToken {
         return _balances[who];
     }
     function transfer( address to, uint value) returns (bool ok) {
-        var from = msg.sender;
-        if( _balances[from] >= value ) {
-            _balances[from] -= value;
-            _balances[to] += value;
-            Transfer( from, to, value );
-            return true;
-        }
+        return transferFrom( msg.sender, to, value );
     }
     function transferFrom( address from, address to, uint value) returns (bool ok) {
         if( _balances[from] >= value ) {
-            if( _approvals[from][msg.sender] >= value ) {
+            bool hasApproval = (_approvals[from][msg.sender] >= value);
+
+            if( hasApproval ) {
                 _approvals[from][msg.sender] -= value;
+            }
+
+            if( from == msg.sender || hasApproval ) {
                 _balances[from] -= value;
                 _balances[to] += value;
                 Transfer( from, to, value );
