@@ -16,10 +16,10 @@ contract BasicAuthorityTest is Test {
     function testExportAuthorized() {
         v.breach();
         this.assertFalse( v.breached() );
-        var ok = a.exportAuthorized( DSAuth(v), address(this), false );
-        assertTrue( ok, "failed to export" );
+        a.setCanCall( address(this), address(v), 0x0, true );
+        a.updateAuthority( address(this), false );
         v.breach();
-        assertTrue( v.breached(), "couldn't breach w/ permission" );
+        assertTrue( v.breached(), "couldn't after export attempt" );
     }
     function testNormalWhitelistAdd() {
         v.breach();
