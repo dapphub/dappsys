@@ -26,18 +26,17 @@ contract DSTokenFrontend is DSToken
     }
 
     // ERCEvents
-    function eventCallback( uint8 event_type, address arg1, address arg2, uint amount )
+    function eventTransfer( address from, address to, uint amount )
              auth()
              returns (bool)
     {
-        if( event_type == 0 ) {
-            Transfer( arg1, arg2, amount );
-        } else if ( event_type == 1 ) {
-            Approval( arg1, arg2, amount );
-        } else {
-            return false;
-        }
-        return true;
+        Transfer( from, to, amount );
+    }
+    function eventApproval( address holder, address spender, uint amount )
+             auth()
+             returns (bool)
+    {
+        Approval( holder, spender, amount );
     }
 
     // ERC20Stateless

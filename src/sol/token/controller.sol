@@ -134,7 +134,7 @@ contract DSTokenController is DSTokenControllerType
             ok = _balances.moveBalance( from, to, value);
             if( ok ) {
                 Transfer( from, to, value );
-                _frontend.eventCallback( 0, from, to, value );
+                _frontend.eventTransfer( from, to, value );
                 return true;
             }
         }
@@ -147,7 +147,7 @@ contract DSTokenController is DSTokenControllerType
         var ok = _approvals.set( caller, spender, value );
         if( ok ) {
             Approval( caller, spender, value);
-            _frontend.eventCallback( 1, caller, spender, value );
+            _frontend.eventApproval( caller, spender, value );
             return true;
         }
         return false;
