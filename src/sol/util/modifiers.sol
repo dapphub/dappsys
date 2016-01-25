@@ -1,8 +1,8 @@
 contract DSModifiers {
-    mapping(bytes4=>bool) _executed_functions;
+    mapping(bytes4=>bool) __executed_functions;
     modifier only_once() {
-        if( !_executed_functions[msg.sig] ) {
-            _executed_functions[msg.sig] = true;
+        if( !__executed_functions[msg.sig] ) {
+            __executed_functions[msg.sig] = true;
             _
         }
     }
@@ -16,20 +16,9 @@ contract DSModifiers {
             _
         }
     }
-    modifier keys_only() {
-        if ( msg.sender == tx.origin ) {
-            _
-        }
-    }
-    modifier contracts_only() {
-        if( msg.sender != tx.origin ) {
-            _
-        } 
-    }
-    modifier static_auth( address auth ) {
+    modifier simple_static_auth( address auth ) {
         if( msg.sender == auth ) {
             _
         }
     }
- 
 }
