@@ -31,12 +31,14 @@ contract DSTokenFrontend is DSToken
              returns (bool)
     {
         Transfer( from, to, amount );
+        return true;
     }
     function eventApproval( address holder, address spender, uint amount )
              auth()
              returns (bool)
     {
         Approval( holder, spender, amount );
+        return true;
     }
 
     // ERC20Stateless
