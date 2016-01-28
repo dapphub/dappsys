@@ -1,4 +1,7 @@
-contract DSModifiers {
+// Utility modifiers. If you're looking for "owned" or similar, look
+// in `auth/authorized.sol`.
+
+contract DSOnlyOnce {
     mapping(bytes4=>bool) __executed_functions;
     modifier only_once() {
         if( !__executed_functions[msg.sig] ) {
@@ -6,19 +9,32 @@ contract DSModifiers {
             _
         }
     }
+}
+contract DSOnlyIf {
     modifier only_if( bool what ) {
         if( what ) {
             _
         }
     }
-    modifier self_only() {
+}
+contract DSOnlySelf() {
+    modifier only_self() {
         if( msg.sender == address(this) ) {
             _
         }
     }
-    modifier simple_static_auth( address auth ) {
-        if( msg.sender == auth ) {
+}
+contract DSOnlyAddress {
+    modifier only_address( address who ) {
+        if( msg.sender == who ) {
             _
         }
     }
+}
+
+contract DSModifiers is DSOnlyOnce
+                      , DSOnlyIf
+                      , DSOnlySelf
+                      , DSOnlyAddress
+{
 }
