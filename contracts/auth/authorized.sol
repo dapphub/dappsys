@@ -26,8 +26,17 @@ contract DSAuthorized {
     modifier auth() {
         if( isAuthorized() ) {
             _
+        } else {
+            throw;
         }
     }
+    // A version of `auth()` which implicitly returns 0 instead of throwing.
+    modifier try_auth() {
+        if( isAuthorized() ) {
+            _
+        }
+    }
+
     // An internal helper function for if you want to use the `auth()` logic
     // someplace other than the modifier (like in a fallback function).
     function isAuthorized() internal returns (bool is_authorized) {
