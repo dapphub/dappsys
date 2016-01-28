@@ -54,11 +54,9 @@ contract DSAuthorized {
     // sig:6cd22eaf
     function updateAuthority( address new_authority, bool mode )
              auth()
-             returns (bool success)
     {
         _authority = new_authority;
         _auth_mode = mode;
         DSAuthUpdate( new_authority, mode );
-        return true;
     }
 }

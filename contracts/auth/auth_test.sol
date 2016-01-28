@@ -34,9 +34,9 @@ contract AuthTest is Test {
         assertTrue(v.breached(), "owner failed to call");
     }
     function testTransferToAcceptAuthority() {
-        //v.updateAuthority( AA, true );
-        //v.breach();
-        //assertTrue( v.breached(), "authority failed to accept");
+        v.updateAuthority( AA, true );
+        v.breach();
+        assertTrue( v.breached(), "authority failed to accept");
     }
 
     function testErrorNonOwnerCantBreach() {
@@ -49,8 +49,7 @@ contract AuthTest is Test {
     }
     // This test was used to confirm we need an explicit auth mode argument
     function testErrorTransferToNullAuthority() {
-        var ok = v.updateAuthority( DSAuthority(address(bytes32(0x3))), false );
-        assertTrue(ok, "couldn't update authority!");
+        v.updateAuthority( DSAuthority(address(bytes32(0x3))), false );
         v.breach();
     }
 }
