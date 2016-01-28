@@ -12,15 +12,16 @@ contract DSBasicAuthority is DSAuthority
     function canCall( address caller_address
                     , address code_address
                     , bytes4 sig )
+             constant
              returns (bool)
     {
         return _can_call[caller_address][code_address][sig];
     }
 
-    event DSAuthorityUpdated( address caller_address
-                            , address code_address
-                            , bytes4 sig
-                            , bool can );
+    event DSSetCanCall( address caller_address
+                      , address code_address
+                      , bytes4 sig
+                      , bool can );
     function setCanCall( address caller_address
                        , address code_address
                        , bytes4 sig
@@ -29,7 +30,7 @@ contract DSBasicAuthority is DSAuthority
              returns (bool success)
     {
         _can_call[caller_address][code_address][sig] = can;
-        DSAuthorityUpdated( caller_address, code_address, sig, can );
+        DSSetCanCall( caller_address, code_address, sig, can );
         return true;
     }
 }

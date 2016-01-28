@@ -24,7 +24,7 @@ contract BasicAuthorityTest is Test {
     function testNormalWhitelistAdd() {
         v.breach();
         this.assertFalse( v.breached() );
-        a.setCanCall( me, address(v), 0x0b6142fc, true );
+        a.setCanCall( me, address(v), bytes4(sha3("breach()")), true );
         v.breach();
         assertTrue( v.breached() );
         v.reset();
