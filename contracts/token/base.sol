@@ -22,21 +22,24 @@ contract DSTokenBase is DSToken {
         return transferFrom( msg.sender, to, value );
     }
     function transferFrom( address from, address to, uint value) returns (bool ok) {
-        if( _balances[from] >= value ) {
-            bool hasApproval = (_approvals[from][msg.sender] >= value);
-
-            if( hasApproval ) {
+        // if you don't have enough balance, return false
+        if( _balances[from] < value ) {
+            return false;
+        }
+        if( from != msg.sender ) {
+            // if you aren't the owner and don't have approval, return false
+            if( _approvals[from][msg.sender] < value ) {
+                return false;
+            } else {
+                // if you aren't the owner but do have approval, subtract value
                 _approvals[from][msg.sender] -= value;
             }
-
-            if( from == msg.sender || hasApproval ) {
-                _balances[from] -= value;
-                _balances[to] += value;
-                Transfer( from, to, value );
-                return true;
-            }
         }
-        return false;
+        // transfer and return true
+        _balances[from] -= value;
+        _balances[to] += value;
+        Transfer( from, to, value );
+        return true;
     }
     function approve(address spender, uint value) returns (bool ok) {
         _approvals[msg.sender][spender] = value;

@@ -15,10 +15,10 @@ contract DSTokenControllerType is ERC20Stateless, ERC20Events {
 
     // Administrative functions
     function getFrontend() constant returns (DSTokenFrontend);
-    function setFrontend( DSTokenFrontend frontend ) returns (bool);
+    function setFrontend( DSTokenFrontend frontend );
     function getDBs() constant returns (DSBalanceDB, DSApprovalDB);
-    function setBalanceDB( DSBalanceDB new_db, address new_authority, bool new_auth_mode ) returns (bool);
-    function setApprovalDB( DSApprovalDB new_db, address new_authority, bool new_auth_mode ) returns (bool);
+    function setBalanceDB( DSBalanceDB new_db, address new_authority, bool new_auth_mode );
+    function setApprovalDB( DSApprovalDB new_db, address new_authority, bool new_auth_mode );
 
 }
 
@@ -43,10 +43,8 @@ contract DSTokenController is DSTokenControllerType
     }
     function setFrontend( DSTokenFrontend frontend )
              auth()
-             returns (bool ok)
     {
         _frontend = frontend;
-        return true;
     }
     function getDBs() constant returns (DSBalanceDB, DSApprovalDB) {
         return (_balances, _approvals);
@@ -55,49 +53,31 @@ contract DSTokenController is DSTokenControllerType
                          , address new_authority
                          , bool new_auth_mode )
              auth()
-             returns (bool)
     {
-        var ok = _balances.updateAuthority( new_authority, new_auth_mode );
-        if( ok ) {
-            _balances = new_db;
-            return true;
-        }
-        return false;
+        _balances.updateAuthority( new_authority, new_auth_mode );
+        _balances = new_db;
     }
 
     function setApprovalDB( DSApprovalDB new_db
                           , address new_authority
                           , bool new_auth_mode )
              auth()
-             returns (bool)
     {
-        var ok = _approvals.updateAuthority( new_authority, new_auth_mode );
-        if( ok ) {
-            _approvals = new_db;
-            return true;
-        }
-        return false;
+        _approvals.updateAuthority( new_authority, new_auth_mode );
+        _approvals = new_db;
     }
 
 
 
     // Stateless ERC20 functions. Doesn't need to know who the sender is.
     function totalSupply() constant returns (uint supply) {
-        bool ok;
-        (supply, ok) = _balances.getSupply();
-        if( !ok ) throw;
-        return supply;
+        return _balances.getSupply();
     }
     function balanceOf( address who ) constant returns (uint amount) {
-        bool ok;
-        (amount, ok) = _balances.getBalance( who );
-        if( !ok ) throw;
-        return amount;
+        return _balances.getBalance( who );
     }
     function allowance(address owner, address spender) constant returns (uint _allowance) {
-        var (allowance, ok) = _approvals.get(owner, spender);
-        if( !ok ) throw;
-        return allowance;
+        return _approvals.get(owner, spender);
     }
 
 
@@ -121,35 +101,33 @@ contract DSTokenController is DSTokenControllerType
              frontend_only()
              returns (bool)
     {
-        var (bal, ok) = _balances.getBalance( from );
-        if( bal >= value ) {
-            uint allowance;
-            (allowance, ok) = _approvals.get( from, caller );
-            bool hasApproval = (ok && allowance >= value);
+        var from_balance = _balances.getBalance( from );
+        // if you don't have enough balance, return false
+        if( from_balance < value ) {
+            return false;
         }
-        if( hasApproval ) {
-            _approvals.set( from, to, allowance - value );
-        }
-        if( from == caller || hasApproval ) {
-            ok = _balances.moveBalance( from, to, value);
-            if( ok ) {
-                Transfer( from, to, value );
-                _frontend.eventTransfer( from, to, value );
-                return true;
+        // if you aren't the owner and don't have approval, return false
+        if( from != caller ) {
+            var allowance = _approvals.get( from, caller );
+            if( allowance < value ) {
+                return false;
+            } else {
+                // if you aren't the owner but do have approval, subtract value
+                _approvals.set( from, to, allowance - value );
             }
         }
-        return false;
+        // transfer and return true
+        _balances.moveBalance( from, to, value);
+        Transfer( from, to, value );
+        _frontend.eventTransfer( from, to, value );
+        return true;
     }
     function approve( address caller, address spender, uint value)
              frontend_only()
              returns (bool)
     {
-        var ok = _approvals.set( caller, spender, value );
-        if( ok ) {
-            Approval( caller, spender, value);
-            _frontend.eventApproval( caller, spender, value );
-            return true;
-        }
-        return false;
+        _approvals.set( caller, spender, value );
+        Approval( caller, spender, value);
+        _frontend.eventApproval( caller, spender, value );
     }
 }
