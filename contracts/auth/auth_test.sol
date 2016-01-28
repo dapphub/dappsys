@@ -33,7 +33,7 @@ contract AuthTest is Test {
         v.breach();
         assertTrue(v.breached(), "owner failed to call");
     }
-    function testErrorTransferToAcceptAuthority() {
+    function testTransferToAcceptAuthority() {
         //v.updateAuthority( AA, true );
         //v.breach();
         //assertTrue( v.breached(), "authority failed to accept");
