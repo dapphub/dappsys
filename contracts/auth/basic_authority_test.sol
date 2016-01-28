@@ -16,8 +16,8 @@ contract BasicAuthorityTest is Test {
     function testExportAuthorized() {
         v.breach();
         this.assertFalse( v.breached() );
-        a.setCanCall( address(this), address(v), 0x0, true );
-        a.updateAuthority( address(this), false );
+        a.setCanCall( address(this), address(v), bytes4(sha3("updateAuthority(address,bool)")), true );
+        v.updateAuthority( address(this), false );
         v.breach();
         assertTrue( v.breached(), "couldn't after export attempt" );
     }

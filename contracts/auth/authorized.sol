@@ -45,6 +45,7 @@ contract DSAuthorized {
     }
     // This function is used to both transfer the authority and update the mode.
     // Be extra careful about setting *both* correctly every time.
+    // sig:b479ab4c
     function updateAuthority( address new_authority, bool mode )
              auth()
              returns (bool success)
