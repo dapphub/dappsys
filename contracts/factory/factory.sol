@@ -11,8 +11,8 @@ import 'factory/token_factory.sol';
 import 'factory/multisig_factory.sol';
 
 
-// One singleton factory per dappsys version. 
-// Motivated by and limited by block gas limit. 
+// One singleton factory per dappsys version.
+// Motivated by and limited by block gas limit.
 
 contract DSFactory {
     // auth
@@ -23,6 +23,8 @@ contract DSFactory {
     function buildDSMap() returns (DSMap);
     // token
     function buildDSTokenController( DSBalanceDB bal_db, DSApprovalDB appr_db )
+             returns (DSTokenController);
+    function buildDSTokenDeployer( address initial_owner, uint initial_bal )
              returns (DSTokenController);
     function buildDSTokenFrontend( DSTokenController cont ) returns (DSTokenFrontend);
     // gov
@@ -66,6 +68,13 @@ contract DSFactory1 is DSFactory {
         c = _token.buildDSTokenController( bal_db, appr_db );
         c.updateAuthority(msg.sender, false);
     }
+    function buildDSTokenDeployer( address initial_owner, uint initial_bal )
+             returns (DSTokenDeployer c)
+    {
+        c = _token.buildDSTokenDeployer( this, initial_owner, initial_bal );
+        c.updateAuthority(msg.sender, false);
+    }
+
     function buildDSTokenFrontend( DSTokenController cont ) returns (DSTokenFrontend c)
     {
         c = _token.buildDSTokenFrontend( cont );
