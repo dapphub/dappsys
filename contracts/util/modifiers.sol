@@ -17,7 +17,7 @@ contract DSOnlyIf {
         }
     }
 }
-contract DSOnlySelf() {
+contract DSOnlySelf {
     modifier only_self() {
         if( msg.sender == address(this) ) {
             _
