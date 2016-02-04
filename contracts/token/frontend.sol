@@ -33,6 +33,11 @@ contract DSTokenFrontend is DSToken
     {
         Transfer( from, to, amount );
     }
+    function eventTransferFrom( address from, address to, uint amount )
+             auth()
+    {
+        TransferFrom( from, to, amount );
+    }
     function eventApproval( address holder, address spender, uint amount )
              auth()
     {

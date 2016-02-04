@@ -7,11 +7,14 @@ import 'token/event_callback.sol';
 import 'token/frontend.sol';
 import 'token/token.sol';
 
-import 'dapple/debug.sol';
+import 'util/safety.sol';
 
 // Does NOT implement stateful ERC20 functions - those require you to pass
 // through the msg.sender
-contract DSTokenControllerType is ERC20Stateless, ERC20Events {
+contract DSTokenControllerType is ERC20Stateless
+                                , ERC20Events
+                                , DSSafeAddSub
+{
     // ERC20Stateful proxies
     function transfer( address caller, address to, uint value) returns (bool ok);
     function transferFrom( address caller, address from, address to, uint value) returns (bool ok);
@@ -92,7 +95,15 @@ contract DSTokenController is DSTokenControllerType
              auth()
              returns (bool ok)
     {
-        return transferFrom( caller, caller, to, value );
+        if( _balances.getBalance(caller) < value ) {
+            return false;
+        }
+        if( !safeToAdd(_balances.getBalance(to), value) ) {
+            return false;
+        }
+        _balances.moveBalance(caller, to, value);
+        Transfer( caller, to, value );
+        return true;
     }
     function transferFrom( address caller, address from, address to, uint value)
              auth()
@@ -100,23 +111,23 @@ contract DSTokenController is DSTokenControllerType
     {
         var from_balance = _balances.getBalance( from );
         // if you don't have enough balance, return false
-        if( from_balance < value ) {
+        if( _balances.getBalance(from) < value ) {
             return false;
         }
-        // if you aren't the owner and don't have approval, return false
-        if( from != caller ) {
-            var allowance = _approvals.get( from, caller );
-            if( allowance < value ) {
-                return false;
-            } else {
-                // if you aren't the owner but do have approval, subtract value
-                _approvals.set( from, to, allowance - value );
-            }
+
+        // if you don't have approval, return false
+        var allowance = _approvals.get( from, caller );
+        if( allowance < value ) {
+            return false;
         }
-        // transfer and return true
+
+        if( !safeToAdd(_balances.getBalance(to), value) ) {
+            return false;
+        }
+        _approvals.set( from, to, allowance - value );
         _balances.moveBalance( from, to, value);
-        Transfer( from, to, value );
-        _frontend.eventTransfer( from, to, value );
+        TransferFrom( from, to, value );
+        _frontend.eventTransferFrom( from, to, value );
         return true;
     }
     function approve( address caller, address spender, uint value)

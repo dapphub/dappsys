@@ -3,8 +3,11 @@
 // is done via constructor argument).
 // Contracts that plan to ever export data should be using `token/controller.sol`.
 import 'token/token.sol';
+import 'util/safety.sol';
 
-contract DSTokenBase is DSToken {
+contract DSTokenBase is DSToken 
+                      , DSSafeAddSub
+{
     mapping( address => uint ) _balances;
     mapping( address => mapping( address => uint ) ) _approvals;
     uint _supply;
@@ -19,26 +22,34 @@ contract DSTokenBase is DSToken {
         return _balances[who];
     }
     function transfer( address to, uint value) returns (bool ok) {
-        return transferFrom( msg.sender, to, value );
+        if( _balances[msg.sender] < value ) {
+            return false;
+        }
+        if( !safeToAdd(_balances[to], value) ) {
+            return false;
+        }
+        _balances[msg.sender] -= value;
+        _balances[to] += value;
+        Transfer( msg.sender, to, value );
+        return true;
     }
     function transferFrom( address from, address to, uint value) returns (bool ok) {
         // if you don't have enough balance, return false
         if( _balances[from] < value ) {
             return false;
         }
-        if( from != msg.sender ) {
-            // if you aren't the owner and don't have approval, return false
-            if( _approvals[from][msg.sender] < value ) {
-                return false;
-            } else {
-                // if you aren't the owner but do have approval, subtract value
-                _approvals[from][msg.sender] -= value;
-            }
+        // if you don't have approval, return false
+        if( _approvals[from][msg.sender] < value ) {
+            return false;
+        }
+        if( !safeToAdd(_balances[to], value) ) {
+            return false;
         }
         // transfer and return true
+        _approvals[from][msg.sender] -= value;
         _balances[from] -= value;
         _balances[to] += value;
-        Transfer( from, to, value );
+        TransferFrom( from, to, value );
         return true;
     }
     function approve(address spender, uint value) returns (bool ok) {

@@ -51,6 +51,7 @@ contract DSTokenDeployer is DSAuth
 
         // The controller calls back to the forntend for 3 events.
         authority.setCanCall( controller, frontend, bytes4(sha3("eventTransfer(address,address,uint256)")), true );
+        authority.setCanCall( controller, frontend, bytes4(sha3("eventTransferFrom(address,address,uint256)")), true );
         authority.setCanCall( controller, frontend, bytes4(sha3("eventApproval(address,address,uint256)")), true );
 
         // The frontend can call the proxy functions.
