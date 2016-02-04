@@ -21,7 +21,7 @@ contract TokenTester is Test {
         assertEq( t.balanceOf(bob), 50 );
         assertEq( t.balanceOf(self), 50 );
         assertEq( t.totalSupply(), 100 );
-
+/*
         Bob._target(address(t));
         DSToken(bob).approve(self, 25);
         assertEq( t.allowance(bob, self), 25, "wrong allowance" );
@@ -38,6 +38,7 @@ contract TokenTester is Test {
         DSToken(bob).approve(self, 5);
         assertTrue( t.transferFrom(bob, self, 5) );
         assertEq( t.balanceOf(bob), 25 );
+*/
         
         //assertFalse( t.transferFrom(bob, self, 1) );
         //assertEq( t.balanceOf(bob), 25 );

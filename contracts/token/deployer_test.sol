@@ -12,8 +12,8 @@ contract TokenSetupTest is Test {
         f = (new DSFactoryTestFactory()).buildFactory();
         deployer = new DSTokenDeployer(f);
         tester = new TokenTester();
-        deployer.deploy(address(tester), 100);
-        t = DSTokenFrontend( deployer.contracts("frontend") );
+        deployer.deploy(DSBasicAuthority(0x0), address(tester), 100);
+        t = DSTokenFrontend( deployer.frontend() );
     }
     function testSystem() {
         assertTrue( tester.runTest( t ) );

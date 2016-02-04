@@ -7,6 +7,8 @@ import 'token/event_callback.sol';
 import 'token/frontend.sol';
 import 'token/token.sol';
 
+import 'dapple/debug.sol';
+
 // Does NOT implement stateful ERC20 functions - those require you to pass
 // through the msg.sender
 contract DSTokenControllerType is ERC20Stateless, ERC20Events {
