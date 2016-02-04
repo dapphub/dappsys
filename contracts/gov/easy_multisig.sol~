@@ -144,14 +144,8 @@ contract DSEasyMultisig is DSBaseActor
         if( action_id > _last_action_id ) {
             return false;
         }
-        var a = actions[action_id];
-        if( block.timestamp > a.expiration ) {
-            return false;
-        }
-        if( a.triggered ) {
-            return false;
-        }
         confirmations[action_id][msg.sender] = true;
+        var a = actions[action_id];
         var confs = a.confirmations;
         a.confirmations = a.confirmations + 1;
         actions[action_id] = a;
@@ -169,11 +163,8 @@ contract DSEasyMultisig is DSBaseActor
         if( block.timestamp > a.expiration ) {
             return false;
         }
-        if( a.triggered ) {
-            return false;
-        }
-        a.triggered = true;
         a.result = exec( a.target, a.calldata, a.value, a.gas );
+        a.triggered = true;
         actions[action_id] = a;
         Triggered(action_id, a.result);
         return true;

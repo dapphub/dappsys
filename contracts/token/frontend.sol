@@ -6,6 +6,8 @@ import 'token/controller.sol';
 import 'token/event_callback.sol';
 import 'token/token.sol';
 
+import 'dapple/debug.sol';
+
 contract DSTokenFrontend is DSToken
                           , DSTokenEventCallback
                           , DSAuth
@@ -28,17 +30,13 @@ contract DSTokenFrontend is DSToken
     // ERCEvents
     function eventTransfer( address from, address to, uint amount )
              auth()
-             returns (bool)
     {
         Transfer( from, to, amount );
-        return true;
     }
     function eventApproval( address holder, address spender, uint amount )
              auth()
-             returns (bool)
     {
         Approval( holder, spender, amount );
-        return true;
     }
 
     // ERC20Stateless

@@ -56,7 +56,7 @@ contract DSBalanceDB is DSAuth {
 
 
     function safeToAdd(uint a, uint b) internal returns (bool) {
-        return (a + b < a);
+        return (a + b > a);
     }
     function safeAdd(uint a, uint b) internal returns (uint) {
         if (!safeToAdd(a, b)) throw;

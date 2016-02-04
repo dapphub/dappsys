@@ -14,22 +14,23 @@ contract BasicAuthorityTest is Test {
         v.updateAuthority(a, true);
     }
     function testExportAuthorized() {
-        v.breach();
-        this.assertFalse( v.breached() );
         a.setCanCall( address(this), address(v), bytes4(sha3("updateAuthority(address,bool)")), true );
         v.updateAuthority( address(this), false );
         v.breach();
         assertTrue( v.breached(), "couldn't after export attempt" );
     }
     function testNormalWhitelistAdd() {
+        a.setCanCall( me, address(v), bytes4(sha3("breach()")), true );
         v.breach();
-        this.assertFalse( v.breached() );
+        assertTrue( v.breached() );
+        v.reset();
+    }
+    function testFailNormalWhitelistReset() {
         a.setCanCall( me, address(v), bytes4(sha3("breach()")), true );
         v.breach();
         assertTrue( v.breached() );
         v.reset();
         a.setCanCall( me, address(v), 0x0b6142fc, false );
         v.breach();
-        this.assertFalse( v.breached() );
     }
 }

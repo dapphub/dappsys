@@ -7,6 +7,10 @@ import 'token/event_callback.sol';
 import 'token/frontend.sol';
 import 'token/token.sol';
 
+import 'dapple/debug.sol';
+
+// Does NOT implement stateful ERC20 functions - those require you to pass
+// through the msg.sender
 contract DSTokenControllerType is ERC20Stateless, ERC20Events {
     // ERC20Stateful proxies
     function transfer( address caller, address to, uint value) returns (bool ok);
@@ -22,8 +26,6 @@ contract DSTokenControllerType is ERC20Stateless, ERC20Events {
 
 }
 
-// Does NOT implement stateful ERC20 functions - those require you to pass
-// through the msg.sender
 contract DSTokenController is DSTokenControllerType
                             , DSAuth
 {
@@ -86,19 +88,14 @@ contract DSTokenController is DSTokenControllerType
     // function needs to report any events back to the "frontend" contract.
 
     // Only trust calls from the frontend contract.
-    modifier frontend_only() {
-        if( msg.sender == address(_frontend) ) {
-            _
-        }
-    }
     function transfer( address caller, address to, uint value)
-             frontend_only()
+             auth()
              returns (bool ok)
     {
         return transferFrom( caller, caller, to, value );
     }
     function transferFrom( address caller, address from, address to, uint value)
-             frontend_only()
+             auth()
              returns (bool)
     {
         var from_balance = _balances.getBalance( from );
@@ -123,7 +120,7 @@ contract DSTokenController is DSTokenControllerType
         return true;
     }
     function approve( address caller, address spender, uint value)
-             frontend_only()
+             auth()
              returns (bool)
     {
         _approvals.set( caller, spender, value );

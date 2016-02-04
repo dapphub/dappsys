@@ -23,7 +23,7 @@ contract DSEasyMultisigTest is Test
         T1._target( ms );
         T2._target( ms );
         ms.addMember( t1 );
-        assertTrue( ms.addMember( t2 ), "should be able to add t2" );
+        ms.addMember( t2 );
         ms.addMember( address(this) );
     }
     function testSetup() {
