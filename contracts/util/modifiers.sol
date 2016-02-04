@@ -10,6 +10,7 @@ contract DSOnlyOnce {
         }
     }
 }
+
 contract DSOnlyIf {
     modifier only_if( bool what ) {
         if( what ) {
@@ -17,13 +18,15 @@ contract DSOnlyIf {
         }
     }
 }
-contract DSOnlySelf() {
+
+contract DSOnlySelf {
     modifier only_self() {
         if( msg.sender == address(this) ) {
             _
         }
     }
 }
+
 contract DSOnlyAddress {
     modifier only_address( address who ) {
         if( msg.sender == who ) {
