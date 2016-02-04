@@ -70,10 +70,10 @@ contract DSEasyMultisig is DSBaseActor
     }
     // The authority can add members until they reach `member_count`, after which the
     // contract is finalized (`updateAuthority(0, false)`).
-    function addMember( address who ) auth() returns (bool)
+    function addMember( address who ) auth()
     {
         if( is_member[who] ) {
-            return false;
+            throw;
         }
         is_member[who] = true;
         MemberAdded(who);
@@ -81,7 +81,6 @@ contract DSEasyMultisig is DSBaseActor
         if( _members_remaining == 0 ) {
             updateAuthority(address(0x0), false);
         }
-        return true;
     }
     function isMember( address who ) constant returns (bool) {
         return is_member[who];
@@ -131,21 +130,35 @@ contract DSEasyMultisig is DSBaseActor
         confirm(_last_action_id);
         return _last_action_id;
     }
+
     // Attempts to confirm the action.
     // Only members can confirm actions.
     // Attempts to trigger the action
-    function confirm( uint action_id ) returns (bool triggered) {
-        if( is_member[msg.sender] && !confirmations[action_id][msg.sender] ) {
-            confirmations[action_id][msg.sender] = true;
-            var a = actions[action_id];
-            var confs = a.confirmations;
-            a.confirmations = a.confirmations + 1;
-            actions[action_id] = a;
-            Confirmed(action_id, msg.sender);
-            return trigger(action_id);
+    function confirm( uint action_id ) returns (bool confirmed) {
+        if( !is_member[msg.sender] ) {
+            return false;
         }
-        return false;
+        if( confirmations[action_id][msg.sender] ) {
+            return false;
+        }
+        if( action_id > _last_action_id ) {
+            return false;
+        }
+        var a = actions[action_id];
+        if( block.now > a.expiration ) {
+            return false;
+        }
+        if( a.triggered ) {
+            return false;
+        }
+        confirmations[action_id][msg.sender] = true;
+        var confs = a.confirmations;
+        a.confirmations = a.confirmations + 1;
+        actions[action_id] = a;
+        Confirmed(action_id, msg.sender);
+        return true;
     }
+
     // Attempts to trigger the action.
     // Fails if there are not enough confirmations or if the action has expired.
     function trigger( uint action_id ) returns (bool triggered) {
@@ -156,8 +169,11 @@ contract DSEasyMultisig is DSBaseActor
         if( block.timestamp > a.expiration ) {
             return false;
         }
-        a.result = exec( a.target, a.calldata, a.value, a.gas );
+        if( a.triggered ) {
+            return false;
+        }
         a.triggered = true;
+        a.result = exec( a.target, a.calldata, a.value, a.gas );
         actions[action_id] = a;
         Triggered(action_id, a.result);
         return true;
