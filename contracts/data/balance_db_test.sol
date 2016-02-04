@@ -27,7 +27,7 @@ contract DSBalanceDB_Test is Test {
         db.addBalance(bob, 4);
         db.addBalance(bob, 1);
     }
-    function testAdminTransfer() {
+    function testMoveBalance() {
         db.addBalance(bob, 100);
         db.moveBalance(bob, me, 40);
         var bal = db.getBalance(me);

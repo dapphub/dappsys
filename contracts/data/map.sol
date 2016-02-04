@@ -8,7 +8,7 @@ contract DSMap is DSAuth {
 
     event Set( bytes32 indexed key, bytes32 indexed value );
 
-	function get( bytes32 key ) returns (bytes32 value) 
+	function get( bytes32 key ) constant returns (bytes32 value) 
     {
 		 return _storage[key];
 	}
