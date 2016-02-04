@@ -17,13 +17,17 @@ contract DSTokenDeployer is DSAuth
     {
         _factory = factory;
     }
-    function deploy( address initial_owner, uint initial_balance )
+    // Specify 0x0 for auth to get a new BasicAuth instance owned by the deployer.
+    function deploy( address initial_owner, uint initial_balance, address auth )
              auth()
     {
         var bal_db = _factory.buildDSBalanceDB();
         var appr_db = _factory.buildDSApprovalDB();
         var controller = _factory.buildDSTokenController( bal_db, appr_db );
         var frontend = _factory.buildDSTokenFrontend( controller );
+        if( auth == address(0x0) ) {
+            var auth = _factory.buildDSBasicAuthority();
+        }
 
         controller.setFrontend( frontend );
     
@@ -34,6 +38,8 @@ contract DSTokenDeployer is DSAuth
         controller.updateAuthority( initial_owner, false );
         frontend.updateAuthority( initial_owner, false );
 
+
+        contracts["auth"] = auth;
         contracts["bal_db"] = bal_db;
         contracts["appr_db"] = appr_db;
         contracts["controller"] = controller;
