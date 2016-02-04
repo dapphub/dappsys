@@ -96,10 +96,10 @@ contract DSTokenController is DSTokenControllerType
              returns (bool ok)
     {
         if( _balances.getBalance(caller) < value ) {
-            return false;
+            throw;
         }
         if( !safeToAdd(_balances.getBalance(to), value) ) {
-            return false;
+            throw;
         }
         _balances.moveBalance(caller, to, value);
         Transfer( caller, to, value );
@@ -110,19 +110,19 @@ contract DSTokenController is DSTokenControllerType
              returns (bool)
     {
         var from_balance = _balances.getBalance( from );
-        // if you don't have enough balance, return false
+        // if you don't have enough balance, throw
         if( _balances.getBalance(from) < value ) {
-            return false;
+            throw;
         }
 
-        // if you don't have approval, return false
+        // if you don't have approval, throw
         var allowance = _approvals.get( from, caller );
         if( allowance < value ) {
-            return false;
+            throw;
         }
 
         if( !safeToAdd(_balances.getBalance(to), value) ) {
-            return false;
+            throw;
         }
         _approvals.set( from, to, allowance - value );
         _balances.moveBalance( from, to, value);

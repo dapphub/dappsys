@@ -2,6 +2,9 @@
 // the storage locally and there are no extra functions (initial issuance
 // is done via constructor argument).
 // Contracts that plan to ever export data should be using `token/controller.sol`.
+
+// Everything throws instead of returning false on failure.
+
 import 'token/token.sol';
 import 'util/safety.sol';
 
@@ -23,10 +26,10 @@ contract DSTokenBase is DSToken
     }
     function transfer( address to, uint value) returns (bool ok) {
         if( _balances[msg.sender] < value ) {
-            return false;
+            throw;
         }
         if( !safeToAdd(_balances[to], value) ) {
-            return false;
+            throw;
         }
         _balances[msg.sender] -= value;
         _balances[to] += value;
@@ -34,16 +37,16 @@ contract DSTokenBase is DSToken
         return true;
     }
     function transferFrom( address from, address to, uint value) returns (bool ok) {
-        // if you don't have enough balance, return false
+        // if you don't have enough balance, throw
         if( _balances[from] < value ) {
-            return false;
+            throw;
         }
-        // if you don't have approval, return false
+        // if you don't have approval, throw
         if( _approvals[from][msg.sender] < value ) {
-            return false;
+            throw;
         }
         if( !safeToAdd(_balances[to], value) ) {
-            return false;
+            throw;
         }
         // transfer and return true
         _approvals[from][msg.sender] -= value;

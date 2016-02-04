@@ -3,12 +3,10 @@ import 'token/eth_wrapper.sol';
 import 'token/token_test.sol';
 
 
-contract EthTokenTest is Test {
-    TokenTester tt;
+contract EthTokenTest is TokenTest {
     EthToken eth;
     Tester Bob;
     function setUp() {
-        tt = new TokenTester();
         eth = new EthToken();
         Bob = new Tester();
         // check precondition

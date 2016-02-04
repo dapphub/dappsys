@@ -3,20 +3,26 @@ import 'token/erc20.sol';
 import 'token/base.sol';
 
 // Rough rewrite of old Test contract into generic tester
-// which must be invoked by actual `test` functions
-// Doing this in a cleaner way is part of
-// https://github.com/NexusDevelopment/dapple/issues/63
-contract TokenTester is Test {
-    function runTest( DSToken t ) constant returns (bool success) {
-        // TODO move to Test definition
-        var Alice = new Tester();
-        var alice = address(Alice);
-        var Bob = new Tester();
-        var bob = address(Bob);
-        var self = address(this);
-
-        assertEq( t.balanceOf(self), 100, "test precondition");
-
+// for which you can override setUp.
+contract TokenTest is Test {
+    DSToken t;
+    Tester Alice; address alice;
+    Tester Bob; address bob;
+    address self;
+    function TokenTest() {
+        Alice = new Tester();
+        alice = address(Alice);
+        Bob = new Tester();
+        bob = address(Bob);
+        self = address(this);
+    }
+    function setUp() {
+        t = new DSTokenBase(100);
+    }
+    function testSetupPrecondition() {
+        assertEq( t.balanceOf(self), 100 );
+    }
+    function testTransferBasics() {
         t.transfer( bob, 50 );
         assertEq( t.balanceOf(bob), 50 );
         assertEq( t.balanceOf(self), 50 );
@@ -32,29 +38,20 @@ contract TokenTester is Test {
         DSToken(bob).approve(self, 0);
         assertEq( t.allowance(bob, self), 0, "wrong allowance" );
 
-        //assertFalse( t.transferFrom(bob, self, 1), "transferFrom without permission" );
-        //assertEq( t.balanceOf(bob), 30, "wrong balance after transferFrom" );
-
         DSToken(bob).approve(self, 5);
         assertTrue( t.transferFrom(bob, self, 5) );
         assertEq( t.balanceOf(bob), 25 );
 
-        
-        //assertFalse( t.transferFrom(bob, self, 1) );
-        //assertEq( t.balanceOf(bob), 25 );
-        //assertEq( t.balanceOf(self), 75 );
-        return !failed;
     }
-}
+    function testFailTransferFromWithoutPermission() {
+        t.transfer( bob, 50 );
 
-contract BaseTokenTest is Test {
-    function setUp() {
-    }
-    function testBaseToken() {
-        var tester = new TokenTester();
-        DSToken t = new DSTokenBase(100);
-        // Satisfy test precondition
-        t.transfer( address(tester), 100 );
-        assertTrue( tester.runTest( t ) );
+        Bob._target(address(t));
+        DSToken(bob).approve(self, 25);
+        DSToken(bob).approve(self, 0);
+
+        assertEq( t.allowance(bob, self), 0, "wrong allowance" );
+
+        t.transferFrom(bob, self, 1); // throw!
     }
 }
