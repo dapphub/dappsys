@@ -25,7 +25,7 @@ contract DSFactory {
     function buildDSTokenController( DSBalanceDB bal_db, DSApprovalDB appr_db )
              returns (DSTokenController);
     function buildDSTokenDeployer( address initial_owner, uint initial_bal )
-             returns (DSTokenController);
+             returns (DSTokenDeployer);
     function buildDSTokenFrontend( DSTokenController cont ) returns (DSTokenFrontend);
     // gov
     function buildDSEasyMultisig( uint n, uint m, uint expiration ) returns (DSEasyMultisig);
