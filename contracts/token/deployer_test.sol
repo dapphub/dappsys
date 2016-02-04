@@ -8,15 +8,19 @@ contract TokenSetupTest is Test {
     DSFactory f;
     DSTokenDeployer deployer;
     DSToken t;
+    DSBasicAuthority auth;
     function setUp() {
         f = (new DSFactoryTestFactory()).buildFactory();
         deployer = new DSTokenDeployer(f);
         tester = new TokenTester();
-        deployer.deploy(DSBasicAuthority(0x0), address(tester), 100);
-        t = DSTokenFrontend( deployer.frontend() );
+        (t, auth) = deployer.deploy(DSBasicAuthority(0x0), address(tester), 100);
     }
     function testSystem() {
         assertTrue( tester.runTest( t ) );
+    }
+    function testOwnAuth() {
+        assertTrue( auth._authority() == address(this) );
+        assertTrue( auth._auth_mode() == false );
     }
 }
 
