@@ -30,13 +30,15 @@ contract DSEasyMultisigTest is Test
         assertTrue( ms.isMember(address(this)) );
         assertTrue( ms.isMember( t1 ), "t1 should be member" );
         assertTrue( ms.isMember( t2 ), "t2 should be member" );
-        assertFalse( ms.addMember( address(0x1) ), "added over limit" );
         assertFalse( ms.isMember( address(0x1) ), "shouldn't be member" );
         var (r, m, e, n) = ms.getInfo();
         assertTrue(r == 2, "wrong required signatures");
         assertTrue(m == 3, "wrong member count");
         assertTrue(e == 3 days, "wrong expiration");
         assertTrue(n == 0, "wrong last action");
+    }
+    function testFailTooManyMembers() {
+        ms.addMember( address(0x1) );
     }
     function testEasyPropose() {
         var h = new helper();
