@@ -53,6 +53,7 @@ contract DSEasyMultisigTest is Test
         DSEasyMultisig(t1).confirm(1);
         (c, e, t, res) = ms.getActionStatus(1);
         assertTrue( c == 2, "wrong number of confirmations" );
+        DSEasyMultisig(t1).trigger(1);
         assertEq( h._arg(), 1, "wrong last arg" );
         assertEq( h._value(), 0, "wrong last value" );
     }
