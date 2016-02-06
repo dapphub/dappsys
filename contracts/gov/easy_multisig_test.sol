@@ -24,7 +24,7 @@ contract DSEasyMultisigTest is Test
         T2._target( ms );
         ms.addMember( t1 );
         ms.addMember( t2 );
-        ms.addMember( address(this) );
+        ms.addMember( address(this) ); // making ourselves a member to make EasyPropose easier.
     }
     function testSetup() {
         assertTrue( ms.isMember(address(this)) );

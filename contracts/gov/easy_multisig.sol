@@ -69,7 +69,7 @@ contract DSEasyMultisig is DSBaseActor
         _expiration = expiration;
     }
     // The authority can add members until they reach `member_count`, after which the
-    // contract is finalized (`updateAuthority(0, false)`).
+    // contract is finalized (`updateAuthority(0, false)`) meaning addMember will always throw.
     function addMember( address who ) auth()
     {
         if( is_member[who] ) {
@@ -170,6 +170,9 @@ contract DSEasyMultisig is DSBaseActor
             return false;
         }
         if( a.triggered ) {
+            return false;
+        }
+        if( this.balance < a.value ) {
             return false;
         }
         a.triggered = true;
