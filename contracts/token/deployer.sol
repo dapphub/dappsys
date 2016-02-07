@@ -1,4 +1,5 @@
 // Sets up a token frontend, controller, and databases.
+import 'auth/basic_authority.sol';
 import 'token/controller.sol';
 import 'token/frontend.sol';
 import 'factory/user.sol';
@@ -42,7 +43,7 @@ contract DSTokenDeployer is DSAuth
         frontend = _factory.buildDSTokenFrontend( controller );
 
         controller.setFrontend( frontend );
-    
+
         balance_db.addBalance( initial_balance_owner, initial_balance );
 
         balance_db.updateAuthority( authority, true );
