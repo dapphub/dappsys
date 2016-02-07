@@ -1,8 +1,11 @@
 // Balance database contract for Tokens and token-like contracts.
 
 import 'auth/auth.sol';
+import 'util/safety.sol';
 
-contract DSBalanceDB is DSAuth {
+contract DSBalanceDB is DSAuth 
+                      , DSSafeAddSub
+{
     uint _supply;
     mapping( address => uint )  _balances;
     event BalanceUpdate( address who, uint new_amount );
@@ -54,20 +57,4 @@ contract DSBalanceDB is DSAuth {
         BalanceUpdate( to, _balances[to] );
     }
 
-
-    function safeToAdd(uint a, uint b) internal returns (bool) {
-        return (a + b > a);
-    }
-    function safeAdd(uint a, uint b) internal returns (uint) {
-        if (!safeToAdd(a, b)) throw;
-        return a + b;
-    }
-
-    function safeToSubtract(uint a, uint b) internal returns (bool) {
-        return (b <= a);
-    }
-    function safeSub(uint a, uint b) internal returns (uint) {
-        if (!safeToSubtract(a, b)) throw;
-        return a - b;
-    } 
 }

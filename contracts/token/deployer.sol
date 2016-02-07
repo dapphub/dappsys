@@ -10,13 +10,8 @@ import 'util/false.sol';
 contract DSTokenDeployer is DSAuth
                           , DSFalseFallback
 {
-    DSBalanceDB public balance_db;
-    DSApprovalDB public approval_db;
-    DSTokenController public controller;
-    DSTokenFrontend public frontend;
-
     DSFactory _factory;
-    // TODO use constant macro to remove need for constructor arg
+    // TODO use constant macro to remove need for constructor arg ?
     function DSTokenDeployer( DSFactory factory )
     {
         _factory = factory;
@@ -27,7 +22,7 @@ contract DSTokenDeployer is DSAuth
     // If you specify address 0x0, deploy will build a new BasicAuthority.
     function deploy( DSBasicAuthority authority, address initial_balance_owner, uint initial_balance )
              auth()
-             returns( address new_authority, address token_frontend )
+             returns( DSTokenFrontend token_frontend, DSBasicAuthority new_authority )
     {
         if( authority == address(0x0) ) {
             authority = _factory.buildDSBasicAuthority();
@@ -37,10 +32,10 @@ contract DSTokenDeployer is DSAuth
                 throw;
             }
         }
-        balance_db = _factory.buildDSBalanceDB();
-        approval_db = _factory.buildDSApprovalDB();
-        controller = _factory.buildDSTokenController( balance_db, approval_db );
-        frontend = _factory.buildDSTokenFrontend( controller );
+        var balance_db = _factory.buildDSBalanceDB();
+        var approval_db = _factory.buildDSApprovalDB();
+        var controller = _factory.buildDSTokenController( balance_db, approval_db );
+        var frontend = _factory.buildDSTokenFrontend( controller );
 
         controller.setFrontend( frontend );
 
@@ -57,16 +52,17 @@ contract DSTokenDeployer is DSAuth
 
         // The controller calls back to the forntend for 3 events.
         authority.setCanCall( controller, frontend, bytes4(sha3("eventTransfer(address,address,uint256)")), true );
+        authority.setCanCall( controller, frontend, bytes4(sha3("eventTransferFrom(address,address,uint256)")), true );
         authority.setCanCall( controller, frontend, bytes4(sha3("eventApproval(address,address,uint256)")), true );
 
         // The frontend can call the proxy functions.
         authority.setCanCall( frontend, controller, bytes4(sha3("transfer(address,address,uint256)")), true );
         authority.setCanCall( frontend, controller, bytes4(sha3("transferFrom(address,address,address,uint256)")), true );
-        authority.setCanCall( frontend, controller, bytes4(sha3("approve(address,address,address,uint256)")), true );
+        authority.setCanCall( frontend, controller, bytes4(sha3("approve(address,address,uint256)")), true );
 
         authority.updateAuthority(msg.sender, false);
 
-        return (authority, frontend);
+        return (frontend, authority);
     }
     function kill() auth() {
         suicide(msg.sender);
