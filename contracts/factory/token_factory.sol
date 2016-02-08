@@ -1,3 +1,4 @@
+import 'auth/basic_authority.sol';
 import 'data/balance_db.sol';
 import 'factory/factory.sol';
 import 'token/controller.sol';
@@ -21,6 +22,6 @@ contract DSTokenFactory {
     {
         c = new DSTokenDeployer( factory );
         c.updateAuthority(msg.sender, false);
-        c.deploy(owner, initial_bal);
+        c.deploy(DSBasicAuthority(0x0), owner, initial_bal);
     }
 }
