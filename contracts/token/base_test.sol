@@ -36,73 +36,75 @@ contract BaseTokenTest is Test {
     uint constant issuedAmount = 1000;
 
     DSTokenBase Token;
-    BaseTokenTester User1;
-    BaseTokenTester User2;
-    address user1;
-    address user2;
+    BaseTokenTester user1;
+    BaseTokenTester user2;
+    address userAddress1;
+    address userAddress2;
 
     function BaseTokenTest() {
         Token = new DSTokenBase(issuedAmount);
     }
 
     function setUp() {
-        User1 = new BaseTokenTester();
-        User2 = new BaseTokenTester();
-        User1._target(address(Token));
-        User2._target(address(Token));
-        user1 = address(User1);
-        user2 = address(User2);
+        user1 = new BaseTokenTester();
+        user2 = new BaseTokenTester();
+        user1._target(address(Token));
+        user2._target(address(Token));
+        userAddress1 = address(user1);
+        userAddress2 = address(user2);
 
-        Token.transfer(user1, issuedAmount);
+        Token.transfer(userAddress1, issuedAmount);
     }
 
     function testAllowanceStartsAtZero() logs_gas {
-        assertEq(User1.doAllowance(user1, user2), 0);
+        assertEq(user1.doAllowance(userAddress1, userAddress2), 0);
     }
 
     function testValidTransfers() logs_gas {
         uint sentAmount = 250;
-        User1.doTransfer(user2, sentAmount);
-        assertEq(User2.doBalanceOf(user2), sentAmount);
-        assertEq(User1.doBalanceOf(user1), issuedAmount - sentAmount);
+        user1.doTransfer(userAddress2, sentAmount);
+        assertEq(user2.doBalanceOf(userAddress2), sentAmount);
+        assertEq(user1.doBalanceOf(userAddress1), issuedAmount - sentAmount);
     }
 
     function testFailWrongAccountTransfers() logs_gas {
         uint sentAmount = 250;
-        User1.doTransferFrom(user2, user1, sentAmount);
+        user1.doTransferFrom(userAddress2, userAddress1, sentAmount);
     }
 
     function testFailInsufficientFundsTransfers() logs_gas {
         uint sentAmount = 250;
-        Token.transfer(user1, issuedAmount);
-        User1.doTransfer(user2, issuedAmount+1);
+        Token.transfer(userAddress1, issuedAmount);
+        user1.doTransfer(userAddress2, issuedAmount+1);
     }
 
     function testApproveSetsAllowance() logs_gas {
-        User1.doApprove(user2, 25);
-        assertEq(User1.doAllowance(user1, user2), 25, "wrong allowance");
+        user1.doApprove(userAddress2, 25);
+        assertEq(user1.doAllowance(userAddress1, userAddress2), 25,
+                 "wrong allowance");
     }
 
     function testChargesAmountApproved() logs_gas {
         uint amountApproved = 20;
-        User1.doApprove(user2, amountApproved);
-        assertTrue(User2.doTransferFrom(user1, user2, amountApproved),
-                   "couldn't transferFrom");
-        assertEq(User1.doBalanceOf(user1), issuedAmount - amountApproved,
+        user1.doApprove(userAddress2, amountApproved);
+        assertTrue(user2.doTransferFrom(
+            userAddress1, userAddress2, amountApproved),
+            "couldn't transferFrom");
+        assertEq(user1.doBalanceOf(userAddress1), issuedAmount - amountApproved,
                  "wrong balance after transferFrom");
     }
 
     function testFailTransferWithoutApproval() logs_gas {
         address self = address(this);
-        Token.transfer(user1, 50);
-        Token.transferFrom(user1, self, 1);
+        Token.transfer(userAddress1, 50);
+        Token.transferFrom(userAddress1, self, 1);
     }
 
     function testFailChargeMoreThanApproved() logs_gas {
         address self = address(this);
-        Token.transfer(user1, 50);
-        User1.doApprove(self, 20);
-        Token.transferFrom(user1, self, 21);
+        Token.transfer(userAddress1, 50);
+        user1.doApprove(self, 20);
+        Token.transferFrom(userAddress1, self, 21);
     }
 
     function runTest( DSToken t ) constant returns (bool success) {
