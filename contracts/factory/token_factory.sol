@@ -1,5 +1,8 @@
+import 'auth/basic_authority.sol';
 import 'data/balance_db.sol';
+import 'factory/factory.sol';
 import 'token/controller.sol';
+import 'token/deployer.sol';
 
 contract DSTokenFactory {
     function buildDSTokenController( DSBalanceDB bal_db, DSApprovalDB appr_db )
@@ -13,5 +16,12 @@ contract DSTokenFactory {
         var c = new DSTokenFrontend( cont );
         c.updateAuthority(msg.sender, false);
         return c;
+    }
+    function buildDSTokenDeployer( DSFactory factory, address owner, uint initial_bal )
+             returns (DSTokenDeployer c)
+    {
+        c = new DSTokenDeployer( factory );
+        c.updateAuthority(msg.sender, false);
+        c.deploy(DSBasicAuthority(0x0), owner, initial_bal);
     }
 }
