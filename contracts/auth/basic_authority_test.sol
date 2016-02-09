@@ -19,6 +19,9 @@ contract BasicAuthorityTest is Test {
         v.breach();
         assertTrue( v.breached(), "couldn't after export attempt" );
     }
+    function testFailBreach() {
+        v.breach(); // throws
+    }
     function testNormalWhitelistAdd() {
         a.setCanCall( me, address(v), bytes4(sha3("breach()")), true );
         v.breach();
@@ -29,8 +32,7 @@ contract BasicAuthorityTest is Test {
         a.setCanCall( me, address(v), bytes4(sha3("breach()")), true );
         v.breach();
         assertTrue( v.breached() );
-        v.reset();
-        a.setCanCall( me, address(v), 0x0b6142fc, false );
+        a.setCanCall( me, address(v), bytes4(sha3("breach()")), false );
         v.breach();
     }
 }

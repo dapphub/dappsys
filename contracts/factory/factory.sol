@@ -3,6 +3,7 @@ import 'data/balance_db.sol';
 import 'data/approval_db.sol';
 import 'gov/easy_multisig.sol';
 import 'token/controller.sol';
+import 'token/deployer.sol';
 import 'token/frontend.sol';
 
 import 'factory/auth_factory.sol';
@@ -11,8 +12,8 @@ import 'factory/token_factory.sol';
 import 'factory/multisig_factory.sol';
 
 
-// One singleton factory per dappsys version. 
-// Motivated by and limited by block gas limit. 
+// One singleton factory per dappsys version.
+// Motivated by and limited by block gas limit.
 
 contract DSFactory {
     // auth
@@ -24,6 +25,8 @@ contract DSFactory {
     // token
     function buildDSTokenController( DSBalanceDB bal_db, DSApprovalDB appr_db )
              returns (DSTokenController);
+    function buildDSTokenDeployer( address initial_owner, uint initial_bal )
+             returns (DSTokenDeployer);
     function buildDSTokenFrontend( DSTokenController cont ) returns (DSTokenFrontend);
     // gov
     function buildDSEasyMultisig( uint n, uint m, uint expiration ) returns (DSEasyMultisig);
@@ -66,6 +69,13 @@ contract DSFactory1 is DSFactory {
         c = _token.buildDSTokenController( bal_db, appr_db );
         c.updateAuthority(msg.sender, false);
     }
+    function buildDSTokenDeployer( address initial_owner, uint initial_bal )
+             returns (DSTokenDeployer c)
+    {
+        c = _token.buildDSTokenDeployer( this, initial_owner, initial_bal );
+        c.updateAuthority(msg.sender, false);
+    }
+
     function buildDSTokenFrontend( DSTokenController cont ) returns (DSTokenFrontend c)
     {
         c = _token.buildDSTokenFrontend( cont );

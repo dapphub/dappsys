@@ -8,7 +8,7 @@
 import 'token/token.sol';
 import 'util/safety.sol';
 
-contract DSTokenBase is DSToken 
+contract DSTokenBase is DSToken
                       , DSSafeAddSub
 {
     mapping( address => uint ) _balances;
