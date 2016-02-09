@@ -82,7 +82,7 @@ contract DSTokenController is DSTokenControllerType
         return _balances.getBalance( who );
     }
     function allowance(address owner, address spender) constant returns (uint _allowance) {
-        return _approvals.get(owner, spender);
+        return _approvals.getApproval(owner, spender);
     }
 
 
@@ -116,7 +116,7 @@ contract DSTokenController is DSTokenControllerType
         }
 
         // if you don't have approval, throw
-        var allowance = _approvals.get( from, caller );
+        var allowance = _approvals.getApproval( from, _caller );
         if( allowance < value ) {
             throw;
         }
@@ -124,7 +124,7 @@ contract DSTokenController is DSTokenControllerType
         if( !safeToAdd(_balances.getBalance(to), value) ) {
             throw;
         }
-        _approvals.set( from, caller, allowance - value );
+        _approvals.setApproval( from, _caller, allowance - value );
         _balances.moveBalance( from, to, value);
         TransferFrom( from, to, value );
         _frontend.eventTransferFrom( from, to, value );
@@ -134,7 +134,7 @@ contract DSTokenController is DSTokenControllerType
              auth()
              returns (bool)
     {
-        _approvals.set( caller, spender, value );
+        _approvals.setApproval( caller, spender, value );
         Approval( caller, spender, value);
         _frontend.eventApproval( caller, spender, value );
     }

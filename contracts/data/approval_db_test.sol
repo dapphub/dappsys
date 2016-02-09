@@ -9,8 +9,8 @@ contract DSApprovalDB_Test is Test {
         bob = address(bytes32("bob"));
     }
     function testSetGet() {
-        db.set(me, bob, 100);
-        var bal = db.get(me, bob);
+        db.setApproval(me, bob, 100);
+        var bal = db.getApproval(me, bob);
         assertEq( 100, bal );
     }
 }
