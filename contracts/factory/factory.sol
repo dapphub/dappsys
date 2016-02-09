@@ -2,8 +2,8 @@ import 'auth/basic_authority.sol';
 import 'data/balance_db.sol';
 import 'data/approval_db.sol';
 import 'gov/easy_multisig.sol';
+import 'token/base.sol';
 import 'token/controller.sol';
-import 'token/deployer.sol';
 import 'token/frontend.sol';
 
 import 'factory/auth_factory.sol';
@@ -25,9 +25,9 @@ contract DSFactory {
     // token
     function buildDSTokenController( DSBalanceDB bal_db, DSApprovalDB appr_db )
              returns (DSTokenController);
-    function buildDSTokenDeployer( address initial_owner, uint initial_bal )
-             returns (DSTokenDeployer);
     function buildDSTokenFrontend( DSTokenController cont ) returns (DSTokenFrontend);
+    function buildDSTokenBasicSystem( DSBasicAuthority authority ) 
+             returns( DSTokenFrontend token_frontend, DSBasicAuthority new_authority );
     // gov
     function buildDSEasyMultisig( uint n, uint m, uint expiration ) returns (DSEasyMultisig);
 }
@@ -69,17 +69,24 @@ contract DSFactory1 is DSFactory {
         c = _token.buildDSTokenController( bal_db, appr_db );
         c.updateAuthority(msg.sender, false);
     }
-    function buildDSTokenDeployer( address initial_owner, uint initial_bal )
-             returns (DSTokenDeployer c)
-    {
-        c = _token.buildDSTokenDeployer( this, initial_owner, initial_bal );
-        c.updateAuthority(msg.sender, false);
+    function buildDSTokenBase( uint initial_balance ) returns (DSTokenBase c) {
+        c = _token.buildDSTokenBase( initial_balance );
+        c.transfer(msg.sender, initial_balance );
+        // no authority
     }
-
+    function buildDSTokenBasicSystem( DSBasicAuthority authority )
+             returns (DSTokenFrontend frontend, DSBasicAuthority)
+    {
+        authority.updateAuthority(_token, false);
+        (frontend, authority) = _token.buildDSTokenBasicSystem( authority );
+        authority.updateAuthority( msg.sender, false );
+        return (frontend, authority);
+    }
     function buildDSTokenFrontend( DSTokenController cont ) returns (DSTokenFrontend c)
     {
         c = _token.buildDSTokenFrontend( cont );
         c.updateAuthority(msg.sender, false);
+        return c;
     }
     function buildDSEasyMultisig( uint n, uint m, uint expiration ) returns (DSEasyMultisig)
     {
@@ -91,19 +98,4 @@ contract DSFactory1 is DSFactory {
         return 0x0;
     }
 }
-
-
-// If you need the latest factory in assembled form for a private
-// chain or VM tests.
-contract DSFactoryTestFactory {
-    function buildFactory() returns (DSFactory) {
-        var data = new DSDataFactory();
-        var token = new DSTokenFactory();
-        var ms = new DSMultisigFactory();
-        var auth = new DSAuthFactory();
-        var f = new DSFactory1(data, token, ms, auth);
-        return f;
-    }
-}
-
 

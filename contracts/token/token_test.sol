@@ -1,6 +1,9 @@
 import 'dapple/test.sol';
 import 'token/erc20.sol';
 import 'token/base.sol';
+import 'auth/authority.sol';
+import 'factory/factory.sol';
+import 'factory/factory_test.sol';
 
 // Rough rewrite of old Test contract into generic tester
 // for which you can override setUp.
@@ -53,5 +56,33 @@ contract TokenTest is Test {
         assertEq( t.allowance(bob, self), 0, "wrong allowance" );
 
         t.transferFrom(bob, self, 1); // throw!
+    }
+    function testTransferCost() logs_gas() {
+        t.transfer( address(0), 10 );
+    }
+}
+
+
+contract TokenSystemTest is TokenTest, TestFactoryUser {
+    DSBasicAuthority auth;
+    function setUp() {
+        auth = f.buildDSBasicAuthority();
+        auth.updateAuthority(address(f), false);
+        (t, auth) = f.buildDSTokenBasicSystem(auth);
+        // satisfy the precondition
+        var baldb = DSTokenFrontend(t).getController().getBalanceDB();
+        var sig = bytes4(sha3("setBalance(address,uint256)"));
+        auth.setCanCall(address(this), baldb, sig, true);
+        baldb.setBalance(address(this), 100);
+        auth.setCanCall(address(this), baldb, sig, false);
+    }
+    function testBalanceAuth() {
+        var baldb = DSTokenFrontend(t).getController().getBalanceDB();
+        assertTrue( baldb._authority() == address(auth) );
+        assertTrue( baldb._auth_mode() );
+    }
+    function testOwnAuth() {
+        assertTrue( auth._authority() == address(this) );
+        assertFalse( auth._auth_mode() );
     }
 }
