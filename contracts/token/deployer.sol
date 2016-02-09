@@ -2,6 +2,7 @@
 import 'auth/basic_authority.sol';
 import 'token/controller.sol';
 import 'token/frontend.sol';
+import 'factory/factory.sol';
 import 'factory/user.sol';
 import 'util/modifiers.sol';
 import 'util/false.sol';
