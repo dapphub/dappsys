@@ -124,7 +124,7 @@ contract DSTokenController is DSTokenControllerType
         if( !safeToAdd(_balances.getBalance(to), value) ) {
             throw;
         }
-        _approvals.set( from, to, allowance - value );
+        _approvals.set( from, caller, allowance - value );
         _balances.moveBalance( from, to, value);
         TransferFrom( from, to, value );
         _frontend.eventTransferFrom( from, to, value );
