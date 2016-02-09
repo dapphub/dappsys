@@ -9,10 +9,10 @@ import 'token/token.sol';
 
 import 'util/safety.sol';
 
-// Does NOT implement stateful ERC20 functions - those require you to pass
-// through the msg.sender
+// Does NOT implement ERC20.
+// The frontend contract passes the msg.sender through as caller for some functions.
+// This controller calls back into the frontend to fire events.
 contract DSTokenControllerType is ERC20Stateless
-                                , ERC20Events
                                 , DSSafeAddSub
 {
     // ERC20Stateful proxies
@@ -102,7 +102,7 @@ contract DSTokenController is DSTokenControllerType
             throw;
         }
         _balances.moveBalance(caller, to, value);
-        Transfer( caller, to, value );
+        _frontend.eventTransfer( caller, to, value );
         return true;
     }
     function transferFrom( address caller, address from, address to, uint value)
@@ -126,8 +126,7 @@ contract DSTokenController is DSTokenControllerType
         }
         _approvals.set( from, caller, allowance - value );
         _balances.moveBalance( from, to, value);
-        TransferFrom( from, to, value );
-        _frontend.eventTransferFrom( from, to, value );
+        _frontend.eventTransfer( from, to, value );
         return true;
     }
     function approve( address caller, address spender, uint value)
@@ -135,7 +134,6 @@ contract DSTokenController is DSTokenControllerType
              returns (bool)
     {
         _approvals.set( caller, spender, value );
-        Approval( caller, spender, value);
         _frontend.eventApproval( caller, spender, value );
     }
 }
