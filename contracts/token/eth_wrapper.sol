@@ -1,6 +1,6 @@
 import 'token/base.sol';
 
-contract EthToken is DSTokenBase(0) {
+contract DSEthToken is DSTokenBase(0) {
     event Deposit( address indexed who, uint amount );
     event Withdrawal( address indexed who, uint amount );
     function totalSupply() constant returns (uint supply) {

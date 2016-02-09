@@ -9,7 +9,7 @@ contract DSMockTokenRegistry is DSTokenRegistry {
     function DSMockTokenRegistry() {
         var dai = new DSTokenBase(100 * 10**18);
         dai.transfer(msg.sender, 100 * 10**18);
-        var eth = new EthToken();
+        var eth = new DSEthToken();
         set("DAI", bytes32(address(dai)));
         set("ETH", bytes32(address(eth)));
     }

@@ -52,7 +52,7 @@ contract DSTokenBase is DSToken
         _approvals[from][msg.sender] -= value;
         _balances[from] -= value;
         _balances[to] += value;
-        TransferFrom( from, to, value );
+        Transfer( from, to, value );
         return true;
     }
     function approve(address spender, uint value) returns (bool ok) {

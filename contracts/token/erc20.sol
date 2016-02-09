@@ -12,7 +12,6 @@ contract ERC20Stateful {
 }
 contract ERC20Events {
     event Transfer(address indexed from, address indexed to, uint value);
-    event TransferFrom(address indexed from, address indexed to, uint value);
     event Approval( address indexed owner, address indexed spender, uint value);
 }
 contract ERC20 is ERC20Stateless, ERC20Stateful, ERC20Events {}
