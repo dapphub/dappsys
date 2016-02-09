@@ -14,6 +14,7 @@ import 'util/safety.sol';
 // This controller calls back into the frontend to fire events.
 contract DSTokenControllerType is ERC20Stateless
                                 , DSSafeAddSub
+                                , Debug
 {
     // ERC20Stateful proxies
     function transfer( address caller, address to, uint value) returns (bool ok);
@@ -91,11 +92,11 @@ contract DSTokenController is DSTokenControllerType
     // function needs to report any events back to the "frontend" contract.
 
     // Only trust calls from the frontend contract.
-    function transfer( address caller, address to, uint value)
+    function transfer(address _caller, address to, uint value)
              auth()
              returns (bool ok)
     {
-        if( _balances.getBalance(caller) < value ) {
+        if( _balances.getBalance(_caller) < value ) {
             throw;
         }
         if( !safeToAdd(_balances.getBalance(to), value) ) {
@@ -105,7 +106,7 @@ contract DSTokenController is DSTokenControllerType
         _frontend.eventTransfer( caller, to, value );
         return true;
     }
-    function transferFrom( address caller, address from, address to, uint value)
+    function transferFrom(address _caller, address from, address to, uint value)
              auth()
              returns (bool)
     {
