@@ -28,12 +28,12 @@ contract DSTokenFrontend is DSToken
     }
 
     // ERCEvents
-    function eventTransfer( address from, address to, uint amount )
+    function emitTransfer( address from, address to, uint amount )
              auth()
     {
         Transfer( from, to, amount );
     }
-    function eventApproval( address holder, address spender, uint amount )
+    function emitApproval( address holder, address spender, uint amount )
              auth()
     {
         Approval( holder, spender, amount );

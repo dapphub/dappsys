@@ -106,7 +106,7 @@ contract DSTokenController is DSTokenControllerType
             throw;
         }
         _balances.moveBalance(caller, to, value);
-        _frontend.eventTransfer( caller, to, value );
+        _frontend.emitTransfer( caller, to, value );
         return true;
     }
     function transferFrom( address caller, address from, address to, uint value)
@@ -130,7 +130,7 @@ contract DSTokenController is DSTokenControllerType
         }
         _approvals.set( from, caller, allowance - value );
         _balances.moveBalance( from, to, value);
-        _frontend.eventTransfer( from, to, value );
+        _frontend.emitTransfer( from, to, value );
         return true;
     }
     function approve( address caller, address spender, uint value)
@@ -138,6 +138,6 @@ contract DSTokenController is DSTokenControllerType
              returns (bool)
     {
         _approvals.set( caller, spender, value );
-        _frontend.eventApproval( caller, spender, value );
+        _frontend.emitApproval( caller, spender, value );
     }
 }
