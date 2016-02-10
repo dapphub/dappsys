@@ -23,9 +23,10 @@ contract DSTokenControllerType is ERC20Stateless
     // Administrative functions
     function getFrontend() constant returns (DSTokenFrontend);
     function setFrontend( DSTokenFrontend frontend );
-    function getDBs() constant returns (DSBalanceDB, DSApprovalDB);
     function setBalanceDB( DSBalanceDB new_db, address new_authority, bool new_auth_mode );
+    function getBalanceDB() constant returns (DSBalanceDB);
     function setApprovalDB( DSApprovalDB new_db, address new_authority, bool new_auth_mode );
+    function getApprovalDB() constant returns (DSApprovalDB);
 
 }
 
@@ -51,8 +52,11 @@ contract DSTokenController is DSTokenControllerType
     {
         _frontend = frontend;
     }
-    function getDBs() constant returns (DSBalanceDB, DSApprovalDB) {
-        return (_balances, _approvals);
+    function getApprovalDB() constant returns (DSApprovalDB) {
+        return _approvals;
+    }
+    function getBalanceDB() constant returns (DSBalanceDB) {
+        return _balances;
     }
     function setBalanceDB( DSBalanceDB new_db
                          , address new_authority

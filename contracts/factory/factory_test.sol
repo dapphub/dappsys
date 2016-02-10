@@ -1,32 +1,49 @@
 import 'factory/factory.sol';
+import 'auth/authority.sol';
 import 'dapple/test.sol';
 
-contract FactoryTest is Test {
+contract TestFactoryUser {
+    DSAuthFactory auth;
     DSDataFactory data;
     DSTokenFactory token;
     DSMultisigFactory ms;
-    DSAuthFactory auth;
     DSFactory f;
-    function setUp() {
-        data = new DSDataFactory();
-        token = new DSTokenFactory();
-        ms = new DSMultisigFactory();
+
+    function TestFactoryUser() {
         auth = new DSAuthFactory();
-        var f = new DSFactory1(data, token, ms, auth);
-    }
-    function testCreateCostData() logs_gas() {
-        var data = new DSDataFactory();
-    }
-    function testCreateCostToken() logs_gas() {
-        var token = new DSTokenFactory();
-    }
-    function testCreateCostMultisig() logs_gas() {
-        var ms = new DSMultisigFactory();
-    }
-    function testCreateCostAuth() logs_gas() {
-        var ms = new DSAuthFactory();
-    }
-    function testCreateCostMain() logs_gas() {
-        var f = new DSFactory1(data, token, ms, auth);
+        data = new DSDataFactory();
+        token = new DSTokenFactory(auth, data);
+        ms = new DSMultisigFactory();
+        f = new DSFactory1(data, token, ms, auth);
     }
 }
+
+contract FactoryTest is Test, TestFactoryUser {
+    DSBasicAuthority tmp_auth;
+    function setUp() {
+        tmp_auth = f.buildDSBasicAuthority();
+    }
+    function testCreateCostData() logs_gas() {
+        data = new DSDataFactory();
+    }
+    function testCreateCostToken() logs_gas() {
+        token = new DSTokenFactory(auth, data);
+    }
+    function testCreateCostMultisig() logs_gas() {
+        ms = new DSMultisigFactory();
+    }
+    function testCreateCostAuth() logs_gas() {
+        auth = new DSAuthFactory();
+    }
+    function testCreateCostMain() logs_gas() {
+        f = new DSFactory1(data, token, ms, auth);
+    }
+    function testBuildTokenSystemCostWithAuth() logs_gas() {
+        tmp_auth.updateAuthority(address(f), false);
+        f.buildDSTokenBasicSystem(tmp_auth);
+    }
+    function testBuildTokenSystemCostNewAuth() logs_gas() {
+        f.buildDSTokenBasicSystem(DSBasicAuthority(0x0));
+    }
+}
+
