@@ -34,10 +34,10 @@ contract TokenTest is Test {
         Bob._target(address(t));
         DSToken(bob).approve(self, 25);
         assertEq( t.allowance(bob, self), 25, "wrong allowance" );
-     
+
         assertTrue( t.transferFrom(bob, self, 20), "couldn't transferFrom" );
         assertEq( t.balanceOf(bob), 30, "wrong balance after transferFrom" );
-        
+
         DSToken(bob).approve(self, 0);
         assertEq( t.allowance(bob, self), 0, "wrong allowance" );
 
