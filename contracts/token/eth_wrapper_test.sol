@@ -3,7 +3,7 @@ import 'token/eth_wrapper.sol';
 import 'token/token_test.sol';
 
 
-contract EthTokenTest is TokenTest {
+contract EthTokenTest is TokenTest, DSEthTokenEvents {
     uint constant initialBalance = 100;
 
     function setUp() {
@@ -12,11 +12,18 @@ contract EthTokenTest is TokenTest {
     }
 
     function testDeposit() {
+        expectEventsExact(t);
+        Deposit(this, 10);
+
         t.call.value(10)("deposit");
         assertEq(t.balanceOf(this), initialBalance + 10);
     }
 
     function testWithdraw() {
+        expectEventsExact(t);
+        Deposit(this, 10);
+        Withdrawal(this, 5);
+
         var startingBalance = this.balance;
         t.call.value(10)("deposit");
         assertTrue(DSEthToken(t).withdraw(5));

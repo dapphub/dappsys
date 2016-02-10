@@ -1,8 +1,11 @@
 import 'token/base.sol';
 
-contract DSEthToken is DSTokenBase(0) {
+contract DSEthTokenEvents {
     event Deposit( address indexed who, uint amount );
     event Withdrawal( address indexed who, uint amount );
+}
+
+contract DSEthToken is DSTokenBase(0), DSEthTokenEvents {
     function totalSupply() constant returns (uint supply) {
         return this.balance;
     }
