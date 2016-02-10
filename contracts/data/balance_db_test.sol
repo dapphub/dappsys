@@ -30,7 +30,25 @@ contract DSBalanceDB_Test is Test {
     function testMoveBalance() {
         db.addBalance(bob, 100);
         db.moveBalance(bob, me, 40);
-        var bal = db.getBalance(me);
-        assertEq(40, bal, "wrong balance");
+        assertEq(40, db.getBalance(me), "wrong recipient balance");
+        assertEq(60, db.getBalance(bob), "wrong sender balance");
+    }
+    function testFailMoveBalanceDueToInsufficientFunds() {
+        db.addBalance(bob, 10);
+        db.moveBalance(bob, me, 40);
+    }
+    function testSetBalanceSetsSupply() {
+        db.setBalance(bob, 100);
+        assertEq(db.getSupply(), 100);
+    }
+    function testSetBalanceSetsSupplyCumulatively() {
+        db.setBalance(bob, 100);
+        db.setBalance(me, 200);
+        assertEq(db.getSupply(), 300);
+    }
+    function testSetBalanceUpdatesSupply() {
+        db.setBalance(bob, 100);
+        db.setBalance(bob, 50);
+        assertEq(db.getSupply(), 50);
     }
 }

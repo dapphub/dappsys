@@ -5,13 +5,13 @@ contract DSApprovalDB is DSAuth {
     mapping(address => mapping( address=>uint)) _approvals;
     event Approval( address indexed owner, address indexed spender, uint value );
 
-    function set( address holder, address spender, uint amount )
+    function setApproval( address holder, address spender, uint amount )
              auth()
     {
         _approvals[holder][spender] = amount;
         Approval( holder, spender, amount );
     }
-    function get( address holder, address spender )
+    function getApproval( address holder, address spender )
              returns (uint amount )
     {
         return _approvals[holder][spender];

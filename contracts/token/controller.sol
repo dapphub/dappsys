@@ -16,9 +16,9 @@ contract DSTokenControllerType is ERC20Stateless
                                 , DSSafeAddSub
 {
     // ERC20Stateful proxies
-    function transfer( address caller, address to, uint value) returns (bool ok);
-    function transferFrom( address caller, address from, address to, uint value) returns (bool ok);
-    function approve( address caller, address spender, uint value) returns (bool ok);
+    function transfer( address _caller, address to, uint value) returns (bool ok);
+    function transferFrom( address _caller, address from, address to, uint value) returns (bool ok);
+    function approve( address _caller, address spender, uint value) returns (bool ok);
 
     // Administrative functions
     function getFrontend() constant returns (DSTokenFrontend);
@@ -86,7 +86,7 @@ contract DSTokenController is DSTokenControllerType
         return _balances.getBalance( who );
     }
     function allowance(address owner, address spender) constant returns (uint _allowance) {
-        return _approvals.get(owner, spender);
+        return _approvals.getApproval(owner, spender);
     }
 
 
@@ -95,21 +95,21 @@ contract DSTokenController is DSTokenControllerType
     // function needs to report any events back to the "frontend" contract.
 
     // Only trust calls from the frontend contract.
-    function transfer( address caller, address to, uint value)
+    function transfer(address _caller, address to, uint value)
              auth()
              returns (bool ok)
     {
-        if( _balances.getBalance(caller) < value ) {
+        if( _balances.getBalance(_caller) < value ) {
             throw;
         }
         if( !safeToAdd(_balances.getBalance(to), value) ) {
             throw;
         }
-        _balances.moveBalance(caller, to, value);
-        _frontend.eventTransfer( caller, to, value );
+        _balances.moveBalance(_caller, to, value);
+        _frontend.eventTransfer( _caller, to, value );
         return true;
     }
-    function transferFrom( address caller, address from, address to, uint value)
+    function transferFrom(address _caller, address from, address to, uint value)
              auth()
              returns (bool)
     {
@@ -120,7 +120,7 @@ contract DSTokenController is DSTokenControllerType
         }
 
         // if you don't have approval, throw
-        var allowance = _approvals.get( from, caller );
+        var allowance = _approvals.getApproval( from, _caller );
         if( allowance < value ) {
             throw;
         }
@@ -128,7 +128,7 @@ contract DSTokenController is DSTokenControllerType
         if( !safeToAdd(_balances.getBalance(to), value) ) {
             throw;
         }
-        _approvals.set( from, caller, allowance - value );
+        _approvals.setApproval( from, _caller, allowance - value );
         _balances.moveBalance( from, to, value);
         _frontend.eventTransfer( from, to, value );
         return true;
@@ -137,7 +137,7 @@ contract DSTokenController is DSTokenControllerType
              auth()
              returns (bool)
     {
-        _approvals.set( caller, spender, value );
-        _frontend.eventApproval( caller, spender, value );
+        _approvals.setApproval( caller, spender, value );
+        _frontend.eventApproval( caller, spender, value);
     }
 }
