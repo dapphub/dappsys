@@ -42,10 +42,14 @@ contract TokenControllerTest is ERC20Events, Test {
         assertEq(address(controller.getFrontend()), address(frontend));
     }
 
-    function testGetDbs() {
-        var (_balanceDB, _approvalDB) = controller.getDBs();
-        assertEq(address(_balanceDB), address(_balanceDB));
+    function testGetApprovalDb() {
+        var _approvalDB = controller.getApprovalDB();
         assertEq(address(_approvalDB), address(_approvalDB));
+    }
+
+    function testGetBalanceDb() {
+        var _balanceDB = controller.getBalanceDB();
+        assertEq(address(_balanceDB), address(_balanceDB));
     }
 
     function testAllowanceStartsAtZero() logs_gas {
