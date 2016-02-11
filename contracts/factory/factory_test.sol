@@ -23,6 +23,7 @@ contract FactoryTest is Test, TestFactoryUser {
     DSBasicAuthority tmp_auth;
     function setUp() {
         tmp_auth = factory.buildDSBasicAuthority();
+        tmp_auth.updateAuthority(address(factory), false);
     }
     function testCreateCostData() logs_gas() {
         dataFactory = new DSDataFactory();
@@ -40,12 +41,8 @@ contract FactoryTest is Test, TestFactoryUser {
         factory = new DSFactory1(dataFactory, tokenFactory,
                                  msFactory, authFactory);
     }
-    function testBuildTokenSystemCostWithAuth() logs_gas() {
-        tmp_auth.updateAuthority(address(factory), false);
+    function testBuildTokenSystemCost() logs_gas() {
         factory.buildDSTokenBasicSystem(tmp_auth);
-    }
-    function testBuildTokenSystemCostNewAuth() logs_gas() {
-        factory.buildDSTokenBasicSystem(DSBasicAuthority(0x0));
     }
 }
 

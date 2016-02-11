@@ -5,7 +5,7 @@ import 'token/token_test.sol';
 
 
 contract DSEthTokenTest is DSTokenTest, DSEthTokenEvents {
-    function createToken() returns (DSToken) {
+    function createToken() internal returns (DSToken) {
         return new DSEthToken();
     }
     function setUp() {

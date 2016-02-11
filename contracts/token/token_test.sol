@@ -54,7 +54,7 @@ contract DSTokenTest is Test {
         user2._target(address(token));
     }
 
-    function createToken() returns (DSToken) {
+    function createToken() internal returns (DSToken) {
         return new DSTokenBase(initialBalance);
     }
 
@@ -148,11 +148,10 @@ contract DSTokenTest is Test {
 contract DSTokenSystemTest is TestFactoryUser, DSTokenTest {
     DSBasicAuthority auth;
 
-    function createToken() returns (DSToken) {
+    function createToken() internal returns (DSToken) {
         auth = factory.buildDSBasicAuthority();
         auth.updateAuthority(address(factory), false);
-        (token, auth) = factory.buildDSTokenBasicSystem(auth);
-        return token;
+        return factory.buildDSTokenBasicSystem(auth);
     }
 
     function setUp() {

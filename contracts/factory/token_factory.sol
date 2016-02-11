@@ -29,19 +29,28 @@ contract DSTokenFactory {
         c.updateAuthority(msg.sender, false);
         return c;
     }
+/*
     function buildDSTokenBase( uint initial_balance ) returns (DSTokenBase) {
         var c = new DSTokenBase(initial_balance);
         c.transfer(msg.sender, initial_balance);
         //c.updateAuthority(msg.sender, false);
         return c;
     }
+*/
+    // @dev Precondition: authority._authority() == address(this) && authority._auth_mode() == false;
+    //      Postcondition:  authority._authority() == msg.sender && authority._auth_mode() == false;
     function buildDSTokenBasicSystem( DSBasicAuthority authority ) 
-             returns( DSTokenFrontend frontend, DSBasicAuthority )
+             returns( DSTokenFrontend frontend )
     {
+/*
+        if( authority._authority() != address(this) || authority._auth_mode() != false ) {
+            throw;
+        }
+*/
         var balance_db = _data.buildDSBalanceDB();
         var approval_db = _data.buildDSApprovalDB();
-        var controller = this.buildDSTokenController( balance_db, approval_db );
-        frontend = this.buildDSTokenFrontend( controller );
+        var controller = new DSTokenController( balance_db, approval_db );
+        frontend = new DSTokenFrontend( controller );
 
         controller.setFrontend( frontend );
 
@@ -54,7 +63,7 @@ contract DSTokenFactory {
         authority.setCanCall( controller, balance_db, bytes4(sha3("moveBalance(address,address,uint256)")), true );
         authority.setCanCall( controller, approval_db, bytes4(sha3("set(address,address,uint256)")), true );
 
-        // The controller calls back to the forntend for 3 events.
+        // The controller calls back to the forntend for the 2 events.
         authority.setCanCall( controller, frontend, bytes4(sha3("eventTransfer(address,address,uint256)")), true );
         authority.setCanCall( controller, frontend, bytes4(sha3("eventApproval(address,address,uint256)")), true );
 
@@ -65,6 +74,6 @@ contract DSTokenFactory {
 
         authority.updateAuthority(msg.sender, false);
 
-        return (frontend, authority);
+        return frontend;
     }
 }
