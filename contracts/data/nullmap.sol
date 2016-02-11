@@ -4,16 +4,18 @@
 
 import 'auth/auth.sol';
 
-contract DSNullMap is DSAuth {
+contract DSNullMapEvents {
+    event SetNullable( bytes32 indexed key, bytes32 indexed value, bool indexed is_set );
+}
+
+contract DSNullMap is DSAuth, DSNullMapEvents {
     struct NullableValue {
         bytes32 _value;
         bool    _set;
     }
     mapping( bytes32 => NullableValue ) _storage;
 
-    event SetNullable( bytes32 indexed key, bytes32 indexed value, bool indexed is_set );
-
-    function set(bytes32 key, bytes32 value ) 
+    function set(bytes32 key, bytes32 value )
              auth()
     {
         _storage[key] = NullableValue(value, true);
@@ -29,7 +31,7 @@ contract DSNullMap is DSAuth {
     // Throws.
     function get( bytes32 key )
              constant
-             returns (bytes32 value) 
+             returns (bytes32 value)
     {
         var nvalue = _storage[key];
         if( nvalue._set ) {
