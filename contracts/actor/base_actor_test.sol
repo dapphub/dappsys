@@ -49,7 +49,6 @@ contract DSBaseActorTest is Test {
             calldata.push(byte(i));
         }
         a.execute( address(cr), calldata, 0, 0 );
-        var length = cr.compareLastCalldata( calldata );
         assertTrue( cr.compareLastCalldata( calldata ) );
     }
 }
