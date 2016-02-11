@@ -1,32 +1,33 @@
 import 'dapple/test.sol';
 import 'token/eth_wrapper.sol';
+import 'token/token.sol';
 import 'token/token_test.sol';
 
 
-contract EthTokenTest is TokenTest, DSEthTokenEvents {
-    uint constant initialBalance = 100;
-
+contract DSEthTokenTest is DSTokenTest, DSEthTokenEvents {
+    function createToken() returns (DSToken) {
+        return new DSEthToken();
+    }
     function setUp() {
-        t = new DSEthToken();
-        t.call.value(initialBalance)(); // TokenTest precondition
+        token.call.value(initialBalance)(); // TokenTest precondition
     }
 
     function testDeposit() {
-        expectEventsExact(t);
+        expectEventsExact(token);
         Deposit(this, 10);
 
-        t.call.value(10)("deposit");
-        assertEq(t.balanceOf(this), initialBalance + 10);
+        token.call.value(10)("deposit");
+        assertEq(token.balanceOf(this), initialBalance + 10);
     }
 
     function testWithdraw() {
-        expectEventsExact(t);
+        expectEventsExact(token);
         Deposit(this, 10);
         Withdrawal(this, 5);
 
         var startingBalance = this.balance;
-        t.call.value(10)("deposit");
-        assertTrue(DSEthToken(t).withdraw(5));
+        token.call.value(10)("deposit");
+        assertTrue(DSEthToken(token).withdraw(5));
         assertEq(this.balance, startingBalance - 5);
     }
 }
