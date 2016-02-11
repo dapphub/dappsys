@@ -1,8 +1,12 @@
 import 'auth/authority.sol';
 
+contract DSAuthorizedEvents {
+    event DSAuthUpdate( address auth, bool mode );
+}
+
 // `DSAuthorized` is a mixin contract which enables standard authorization patterns.
 // It has a shorter alias `auth/auth.sol: DSAuth` because it is so common.
-contract DSAuthorized {
+contract DSAuthorized is DSAuthorizedEvents {
     // There are two "modes":
     // * "owner mode", where `auth()` simply checks if the sender is `_authority`.
     //   This is the default mode, when `_auth_mode` is false.
@@ -13,8 +17,6 @@ contract DSAuthorized {
     // changing the security properties very much.)
     bool    public _auth_mode;
     address public _authority;
-
-    event DSAuthUpdate( address auth, bool mode );
 
     function DSAuthorized() {
         _authority = msg.sender;
