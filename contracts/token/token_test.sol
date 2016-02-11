@@ -68,7 +68,7 @@ contract TokenSystemTest is TokenTest, TestFactoryUser {
     function setUp() {
         auth = f.buildDSBasicAuthority();
         auth.updateAuthority(address(f), false);
-        (t, auth) = f.buildDSTokenBasicSystem(auth);
+        t = f.buildDSTokenBasicSystem(auth);
         // satisfy the precondition
         var baldb = DSTokenFrontend(t).getController().getBalanceDB();
         var sig = bytes4(sha3("setBalance(address,uint256)"));

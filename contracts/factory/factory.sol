@@ -27,7 +27,7 @@ contract DSFactory {
              returns (DSTokenController);
     function buildDSTokenFrontend( DSTokenController cont ) returns (DSTokenFrontend);
     function buildDSTokenBasicSystem( DSBasicAuthority authority ) 
-             returns( DSTokenFrontend token_frontend, DSBasicAuthority new_authority );
+             returns( DSTokenFrontend token_frontend );
     // gov
     function buildDSEasyMultisig( uint n, uint m, uint expiration ) returns (DSEasyMultisig);
 }
@@ -69,18 +69,21 @@ contract DSFactory1 is DSFactory {
         c = _token.buildDSTokenController( bal_db, appr_db );
         c.updateAuthority(msg.sender, false);
     }
+/*
     function buildDSTokenBase( uint initial_balance ) returns (DSTokenBase c) {
         c = _token.buildDSTokenBase( initial_balance );
         c.transfer(msg.sender, initial_balance );
         // no authority
     }
+*/
+    // TODO document pre/post conditions
     function buildDSTokenBasicSystem( DSBasicAuthority authority )
-             returns (DSTokenFrontend frontend, DSBasicAuthority)
+             returns (DSTokenFrontend frontend )
     {
         authority.updateAuthority(_token, false);
-        (frontend, authority) = _token.buildDSTokenBasicSystem( authority );
+        frontend = _token.buildDSTokenBasicSystem( authority );
         authority.updateAuthority( msg.sender, false );
-        return (frontend, authority);
+        return frontend;
     }
     function buildDSTokenFrontend( DSTokenController cont ) returns (DSTokenFrontend c)
     {
