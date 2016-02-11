@@ -2,6 +2,13 @@ import 'actor/base.sol';
 import 'auth/auth.sol';
 import 'dapple/debug.sol';
 
+contract DSEasyMultisigEvents {
+    event MemberAdded(address who);
+    event Proposed(uint action_id);
+    event Confirmed(uint action_id, address who);
+    event Triggered(uint action_id, bool result);
+}
+
 /* A multisig actor optimized for ease of use.
  * The user never has to pack their own calldata. Instead, use `easyPropose`.
  * This eliminates the need for UI support or helper contracts.
@@ -22,6 +29,7 @@ import 'dapple/debug.sol';
  * where calldata is correctly formatted for `TargetType(target).doAction(arg1, arg2)`
  */
 contract DSEasyMultisig is DSBaseActor
+                         , DSEasyMultisigEvents
                          , DSAuth
 {
     // How many confirmations an action needs to execute.
@@ -55,12 +63,6 @@ contract DSEasyMultisig is DSBaseActor
     mapping( address => bytes ) easy_calldata;
     // Only these addresses can add confirmations
     mapping( address => bool ) is_member;
-
-    event MemberAdded( address who );
-
-    event Proposed( uint action_id );
-    event Confirmed( uint action_id, address who );
-    event Triggered( uint action_id, bool result );
 
     function DSEasyMultisig( uint required, uint member_count, uint expiration ) {
         _required = required;
