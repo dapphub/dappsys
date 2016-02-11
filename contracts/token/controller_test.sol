@@ -42,6 +42,12 @@ contract TokenControllerTest is ERC20Events, Test {
         assertEq(address(controller.getFrontend()), address(frontend));
     }
 
+    function testSetFrontend() {
+        var newFrontend = new DSTokenFrontend(controller);
+        controller.setFrontend(newFrontend);
+        assertEq(address(controller.getFrontend()), address(newFrontend));
+    }
+
     function testGetApprovalDb() {
         var _approvalDB = controller.getApprovalDB();
         assertEq(address(_approvalDB), address(_approvalDB));
