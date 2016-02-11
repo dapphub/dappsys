@@ -42,8 +42,9 @@ contract DSAuthorized is DSAuthorizedEvents {
     // An internal helper function for if you want to use the `auth()` logic
     // someplace other than the modifier (like in a fallback function).
     function isAuthorized() internal returns (bool is_authorized) {
-        // If we are in "authority" mode, use `canCall`
-        if( _auth_mode == true ) {
+        if (msg.sender == address(0x0)) { // precaution against the unlikely.
+            return false;
+        } else if( _auth_mode == true ) { // use `canCall` in "authority" mode
             var A = DSAuthority(_authority);
             return A.canCall( msg.sender, address(this), msg.sig );
         } else { // else we are in "owner" mode, see if the owner is the sender
