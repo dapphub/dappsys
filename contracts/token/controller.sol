@@ -1,5 +1,6 @@
 // An implementation of ERC20 with updateable databases contracts and a frontend
 // interface.
+import 'auth.sol';
 import 'data/approval_db.sol';
 import 'data/balance_db.sol';
 import 'token/erc20.sol';
@@ -14,6 +15,7 @@ import 'util/safety.sol';
 // This controller calls back into the frontend to fire events.
 contract DSTokenControllerType is ERC20Stateless
                                 , DSSafeAddSub
+                                , DSAuthUser
 {
     // ERC20Stateful proxies
     function transfer( address _caller, address to, uint value) returns (bool ok);
@@ -23,9 +25,13 @@ contract DSTokenControllerType is ERC20Stateless
     // Administrative functions
     function getFrontend() constant returns (DSTokenFrontend);
     function setFrontend( DSTokenFrontend frontend );
-    function setBalanceDB( DSBalanceDB new_db, address new_authority, bool new_auth_mode );
+    function setBalanceDB( DSBalanceDB new_db,
+                           address new_authority_for_old_db,
+                           DSAuthModes mode );
     function getBalanceDB() constant returns (DSBalanceDB);
-    function setApprovalDB( DSApprovalDB new_db, address new_authority, bool new_auth_mode );
+    function setApprovalDB( DSApprovalDB new_db,
+                            address new_authority_for_old_db,
+                            DSAuthModes new_auth_mode_for_old_db);
     function getApprovalDB() constant returns (DSApprovalDB);
 
 }
@@ -60,7 +66,7 @@ contract DSTokenController is DSTokenControllerType
     }
     function setBalanceDB( DSBalanceDB new_db
                          , address new_authority_for_old_db
-                         , bool new_auth_mode_for_old_db )
+                         , DSAuthModes new_auth_mode_for_old_db )
              auth()
     {
         _balances.updateAuthority(
@@ -71,7 +77,7 @@ contract DSTokenController is DSTokenControllerType
 
     function setApprovalDB( DSApprovalDB new_db
                           , address new_authority_for_old_db
-                          , bool new_auth_mode_for_old_db )
+                          , DSAuthModes new_auth_mode_for_old_db )
              auth()
     {
         _approvals.updateAuthority(

@@ -1,3 +1,4 @@
+import 'auth.sol';
 import 'dapple/test.sol';
 import 'dapple/debug.sol';
 import 'token/base.sol';
@@ -150,7 +151,7 @@ contract DSTokenSystemTest is TestFactoryUser, DSTokenTest {
 
     function createToken() internal returns (DSToken) {
         auth = factory.buildDSBasicAuthority();
-        auth.updateAuthority(address(factory), false);
+        auth.updateAuthority(address(factory), DSAuthModes.Owner);
         return factory.buildDSTokenBasicSystem(auth);
     }
 
