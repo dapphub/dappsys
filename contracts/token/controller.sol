@@ -59,20 +59,24 @@ contract DSTokenController is DSTokenControllerType
         return _balances;
     }
     function setBalanceDB( DSBalanceDB new_db
-                         , address new_authority
-                         , bool new_auth_mode )
+                         , address new_authority_for_old_db
+                         , bool new_auth_mode_for_old_db )
              auth()
     {
-        _balances.updateAuthority( new_authority, new_auth_mode );
+        _balances.updateAuthority(
+            new_authority_for_old_db,
+            new_auth_mode_for_old_db);
         _balances = new_db;
     }
 
     function setApprovalDB( DSApprovalDB new_db
-                          , address new_authority
-                          , bool new_auth_mode )
+                          , address new_authority_for_old_db
+                          , bool new_auth_mode_for_old_db )
              auth()
     {
-        _approvals.updateAuthority( new_authority, new_auth_mode );
+        _approvals.updateAuthority(
+            new_authority_for_old_db,
+            new_auth_mode_for_old_db);
         _approvals = new_db;
     }
 
