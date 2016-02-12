@@ -11,6 +11,7 @@ contract helper is Debug {
 }
 
 contract DSEasyMultisigTest1 is Test, DSEasyMultisigEvents
+{
     DSEasyMultisig ms;
     helper h;
     function setUp() {

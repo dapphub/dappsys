@@ -1,8 +1,10 @@
-import 'auth.sol';
+import 'auth/enum.sol';
+import 'auth/events.sol';
+import 'auth/authority.sol';
 
 // `DSAuthorized` is a mixin contract which enables standard authorization patterns.
 // It has a shorter alias `auth/auth.sol: DSAuth` because it is so common.
-contract DSAuthorized is DSAuthUser
+contract DSAuthorized is DSAuthModesEnum, DSAuthorizedEvents
 {
     // There are two "modes":
     // * "owner mode", where `auth()` simply checks if the sender is `_authority`.

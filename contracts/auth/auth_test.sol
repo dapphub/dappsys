@@ -1,6 +1,6 @@
 import 'dapple/test.sol';
 import 'auth/authority.sol';
-import 'auth/auth.sol';
+import 'auth.sol';
 
 contract Vault is DSAuth {
     bool public breached;

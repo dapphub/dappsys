@@ -1,5 +1,5 @@
 import 'actor/base.sol';
-import 'auth/auth.sol';
+import 'auth.sol';
 
 contract DSEasyMultisigEvents {
     event MemberAdded(address who);

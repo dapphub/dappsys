@@ -1,5 +1,5 @@
 import 'auth/authority.sol';
-import 'auth/auth.sol';
+import 'auth.sol';
 
 contract DSAuthorityEvents {
     event DSSetCanCall( address caller_address

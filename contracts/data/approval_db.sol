@@ -1,4 +1,4 @@
-import 'auth/auth.sol';
+import 'auth.sol';
 
 contract DSApprovalDBEvents {
     event Approval( address indexed owner, address indexed spender, uint value );

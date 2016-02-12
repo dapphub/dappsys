@@ -1,13 +1,11 @@
-import 'auth/authorized.sol';
 import 'auth/authority.sol';
 import 'auth/enum.sol';
+import 'auth/events.sol';
+import 'auth/authorized.sol';
 
-contract DSAuthUser is DSAuth, DSAuthModesEnum {}
+contract DSAuthUser is DSAuthorizedEvents {} //, DSAuthModesEnum {}
 
-// `DSAuthority` is the interface which `DSAuthorized` (`DSAuth`) contracts expect
-// their authority to be when they are in the remote auth mode.
-contract DSAuthority is DSAuthorityInterface {}
-
+ 
 contract DSAuth is DSAuthorized {}
 
-
+// export DSAuthority;
