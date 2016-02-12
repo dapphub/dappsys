@@ -1,6 +1,5 @@
 import 'actor/base.sol';
 import 'auth/auth.sol';
-import 'dapple/debug.sol';
 
 contract DSEasyMultisigEvents {
     event MemberAdded(address who);
@@ -13,6 +12,8 @@ contract DSEasyMultisigEvents {
  * The user never has to pack their own calldata. Instead, use `easyPropose`.
  * This eliminates the need for UI support or helper contracts.
  *
+ * To set up the multisig, specify the arguments, then add members
+ * 
  * First, call the multisig contract itself as if it were your target contract,
  * with the correct calldata. You can make Solidity and web3.js to do this for
  * you very easily by casting the multisig address as the target type.
@@ -34,7 +35,7 @@ contract DSEasyMultisig is DSBaseActor
 {
     // How many confirmations an action needs to execute.
     uint _required;
-    // How many members this multisig has.
+    // How many members this multisig has. Members must be distinct addresses.
     uint _member_count;
     // Auto-locks once this reaches zero - easy setup phase.
     uint _members_remaining;
@@ -55,6 +56,8 @@ contract DSEasyMultisig is DSBaseActor
         bool triggered; // Did we try to trigger this action
         bool result; // What was the return value of `.send` for the action, if we triggered it
     }
+    // TODO how does this public getter work if `action` contains a `bytes`?
+
     mapping( uint => action ) public actions;
     // action_id -> member -> confirmed
     mapping( uint => mapping( address => bool ) ) confirmations;
@@ -103,7 +106,11 @@ contract DSEasyMultisig is DSBaseActor
         var a = actions[action_id];
         return (a.confirmations, a.expiration, a.triggered, a.result);
     }
+
+
+
     // `propose` an action using the calldata from this sender's last call.
+    // @notice 0 gas means "all the gas".
     function easyPropose( address target, uint value, uint gas ) returns (uint action_id) {
         return propose( target, easy_calldata[msg.sender], value, gas );
     }
@@ -129,7 +136,7 @@ contract DSEasyMultisig is DSBaseActor
         _last_action_id++;
         actions[_last_action_id] = a;
         Proposed(_last_action_id);
-        confirm(_last_action_id);
+        //confirm(_last_action_id);
         return _last_action_id;
     }
 
@@ -138,49 +145,47 @@ contract DSEasyMultisig is DSBaseActor
     // Attempts to trigger the action
     function confirm( uint action_id ) returns (bool confirmed) {
         if( !is_member[msg.sender] ) {
-            return false;
+            throw;
         }
         if( confirmations[action_id][msg.sender] ) {
-            return false;
+            throw;
         }
         if( action_id > _last_action_id ) {
-            return false;
+            throw;
         }
         var a = actions[action_id];
         if( block.timestamp > a.expiration ) {
-            return false;
+            throw;
         }
         if( a.triggered ) {
-            return false;
+            throw;
         }
         confirmations[action_id][msg.sender] = true;
         var confs = a.confirmations;
         a.confirmations = a.confirmations + 1;
         actions[action_id] = a;
         Confirmed(action_id, msg.sender);
-        return true;
     }
 
     // Attempts to trigger the action.
     // Fails if there are not enough confirmations or if the action has expired.
-    function trigger( uint action_id ) returns (bool triggered) {
+    function trigger( uint action_id ) {
         var a = actions[action_id];
         if( a.confirmations < _required ) {
-            return false;
+            throw;
         }
         if( block.timestamp > a.expiration ) {
-            return false;
+            throw;
         }
         if( a.triggered ) {
-            return false;
+            throw;
         }
         if( this.balance < a.value ) {
-            return false;
+            throw;
         }
         a.triggered = true;
         a.result = exec( a.target, a.calldata, a.value, a.gas );
         actions[action_id] = a;
         Triggered(action_id, a.result);
-        return true;
     }
 }
