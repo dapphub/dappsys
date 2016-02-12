@@ -17,8 +17,8 @@ contract DSAuthorized is DSAuthModesEnum, DSAuthorizedEvents
 
     function DSAuthorized() {
         _authority = DSAuthority(msg.sender);
-        _auth_mode = DSAuthModes.Owned;
-        DSAuthUpdate( msg.sender, DSAuthModes.Owned );
+        _auth_mode = DSAuthModes.Owner;
+        DSAuthUpdate( msg.sender, DSAuthModes.Owner );
     }
 
     // Attach the `auth()` modifier to functions to protect them.
@@ -39,10 +39,10 @@ contract DSAuthorized is DSAuthModesEnum, DSAuthorizedEvents
     // An internal helper function for if you want to use the `auth()` logic
     // someplace other than the modifier (like in a fallback function).
     function isAuthorized() internal returns (bool is_authorized) {
-        if( _auth_mode == DSAuthModes.Owned ) {
+        if( _auth_mode == DSAuthModes.Owner ) {
             return msg.sender == address(_authority);
         }
-        if( _auth_mode == DSAuthModes.Authorized ) { // use `canCall` in "authority" mode
+        if( _auth_mode == DSAuthModes.Authority ) { // use `canCall` in "authority" mode
             return _authority.canCall( msg.sender, address(this), msg.sig );
         }
         throw;
@@ -53,7 +53,7 @@ contract DSAuthorized is DSAuthModesEnum, DSAuthorizedEvents
     function updateAuthority( address new_authority, DSAuthModes mode )
              auth()
     {
-        _authority = new_authority;
+        _authority = DSAuthority(new_authority);
         _auth_mode = mode;
         DSAuthUpdate( new_authority, mode );
     }

@@ -40,7 +40,7 @@ contract DSTokenTester is Tester, Debug {
 
 // Actual tests
 
-contract DSTokenTest is Test {
+contract DSTokenTest is Test, DSAuthUser {
     uint constant initialBalance = 1000;
 
     DSToken token;
@@ -166,11 +166,11 @@ contract DSTokenSystemTest is TestFactoryUser, DSTokenTest {
     function testBalanceAuth() {
         var baldb = DSTokenFrontend(token).getController().getBalanceDB();
         assertTrue(baldb._authority() == address(auth));
-        assertTrue(baldb._auth_mode());
+        assertTrue( baldb._auth_mode() == DSAuthModes.Authority );
     }
     function testOwnAuth() {
         assertTrue( auth._authority() == address(this) );
-        assertFalse( auth._auth_mode() );
+        assertTrue( auth._auth_mode() == DSAuthModes.Owner );
     }
     function testApproveSetsAllowance() logs_gas() {
         log_named_address("auth", auth);

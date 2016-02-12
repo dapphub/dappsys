@@ -7,7 +7,7 @@ import 'token/controller.sol';
 import 'token/base.sol';
 import 'token/frontend.sol';
 
-contract DSTokenFactory {
+contract DSTokenFactory is DSAuthUser {
     DSDataFactory _data;
     DSAuthFactory _auth;
     function DSTokenFactory( DSAuthFactory auth, DSDataFactory data ) {

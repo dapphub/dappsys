@@ -33,9 +33,9 @@ contract TokenControllerTest is ERC20Events, DSAuthUser, Test {
         user2 = new Tester();
 
         balanceDB.setBalance(controller, issuedAmount);
-        balanceDB.updateAuthority(controller, DSAuthMode.Owner);
-        approvalDB.updateAuthority(controller, DSAuthMode.Owner);
-        frontend.updateAuthority(controller, DSAuthMode.Owner);
+        balanceDB.updateAuthority(controller, DSAuthModes.Owner);
+        approvalDB.updateAuthority(controller, DSAuthModes.Owner);
+        frontend.updateAuthority(controller, DSAuthModes.Owner);
         controller.setFrontend(frontend);
     }
 

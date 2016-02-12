@@ -38,7 +38,7 @@ contract DSAuthorizedTest is Test, DSAuthUser {
     function testConstructorEvent() {
         var newAuth = new DSAuthorized();
         expectEventsExact(newAuth);
-        DSAuthUpdate(this, false);
+        DSAuthUpdate(this, DSAuthModes.Owner );
     }
 
     function testOwnedAuth() {
@@ -61,7 +61,7 @@ contract DSAuthorizedTest is Test, DSAuthUser {
         var accepter = new AcceptingAuthority();
 
         expectEventsExact(auth);
-        DSAuthUpdate(accepter, true);
+        DSAuthUpdate(accepter, DSAuthModes.Authority);
 
         auth.updateAuthority(accepter, DSAuthModes.Authority);
     }

@@ -24,7 +24,7 @@ contract FactoryTest is Test, TestFactoryUser {
     DSBasicAuthority tmp_auth;
     function setUp() {
         tmp_auth = factory.buildDSBasicAuthority();
-        tmp_auth.updateAuthority(address(factory), DSAuthModes.Owned );
+        tmp_auth.updateAuthority(address(factory), DSAuthModes.Owner );
     }
     function testCreateCostData() logs_gas() {
         dataFactory = new DSDataFactory();
