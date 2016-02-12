@@ -1,7 +1,7 @@
 import 'auth/authority.sol';
 import 'auth.sol';
 
-contract DSAuthorityEvents {
+contract DSBasicAuthorityEvents {
     event DSSetCanCall( address caller_address
                       , address code_address
                       , bytes4 sig
@@ -11,7 +11,7 @@ contract DSAuthorityEvents {
 // A `DSAuthority` which contains a whitelist map from can_call arguments to return value.
 // Note it is itself a `DSAuth` - ie it is not self-authorized by default.
 contract DSBasicAuthority is DSAuthority
-                           , DSAuthorityEvents
+                           , DSBasicAuthorityEvents
                            , DSAuth
 {
     mapping(address=>mapping(address=>mapping(bytes4=>bool))) _can_call;

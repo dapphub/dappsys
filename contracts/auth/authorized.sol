@@ -9,7 +9,7 @@ contract DSAuthorized is DSAuthModesEnum, DSAuthorizedEvents
     // There are two "modes":
     // * "owner mode", where `auth()` simply checks if the sender is `_authority`.
     //   This is the default mode, when `_auth_mode` is false.
-    // * "authorized mode", where `auth()` makes a call to
+    // * "authority mode", where `auth()` makes a call to
     // `DSAuthority(_authority).canCall(sender, this, sig)` to ask if the
     // call should be allowed.
     DSAuthModes  public _auth_mode;

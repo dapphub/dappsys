@@ -1,3 +1,4 @@
+import 'auth.sol';
 import 'auth/basic_authority.sol';
 import 'data/balance_db.sol';
 import 'factory/data_factory.sol';
@@ -18,7 +19,7 @@ contract DSTokenFactory {
              returns (DSTokenController)
     {
         var c = new DSTokenController( bal_db, appr_db );
-        c.updateAuthority(msg.sender, false);
+        c.updateAuthority(msg.sender, DSAuthModes.Owner);
         return c;
     }
     function buildDSTokenFrontend( DSTokenController cont )
@@ -26,14 +27,14 @@ contract DSTokenFactory {
              returns (DSTokenFrontend)
     {
         var c = new DSTokenFrontend( cont );
-        c.updateAuthority(msg.sender, false);
+        c.updateAuthority(msg.sender, DSAuthModes.Owner);
         return c;
     }
 /*
     function buildDSTokenBase( uint initial_balance ) returns (DSTokenBase) {
         var c = new DSTokenBase(initial_balance);
         c.transfer(msg.sender, initial_balance);
-        //c.updateAuthority(msg.sender, false);
+        //c.updateAuthority(msg.sender, DSAuthModes.Owned);
         return c;
     }
 */
@@ -54,10 +55,10 @@ contract DSTokenFactory {
 
         controller.setFrontend( frontend );
 
-        balance_db.updateAuthority( authority, true );
-        approval_db.updateAuthority( authority, true );
-        controller.updateAuthority( authority, true );
-        frontend.updateAuthority( authority, true );
+        balance_db.updateAuthority( authority, DSAuthModes.Authority );
+        approval_db.updateAuthority( authority, DSAuthModes.Authority );
+        controller.updateAuthority( authority, DSAuthModes.Authority );
+        frontend.updateAuthority( authority, DSAuthModes.Authority );
 
         // The only data ops the controller does is `move` balances and `set` approvals.
         authority.setCanCall( controller, balance_db, bytes4(sha3("moveBalance(address,address,uint256)")), true );
@@ -72,7 +73,7 @@ contract DSTokenFactory {
         authority.setCanCall( frontend, controller, bytes4(sha3("transferFrom(address,address,address,uint256)")), true );
         authority.setCanCall( frontend, controller, bytes4(sha3("approve(address,address,uint256)")), true );
 
-        authority.updateAuthority(msg.sender, false);
+        authority.updateAuthority(msg.sender, DSAuthModes.Owner);
 
         return frontend;
     }

@@ -1,4 +1,5 @@
 import 'dapple/test.sol';
+import 'auth.sol';
 import 'auth/authorized.sol';
 import 'auth/authority.sol';
 
@@ -22,7 +23,7 @@ contract DSAuthorizedTester is Tester {
     }
 }
 
-contract DSAuthorizedTest is Test, DSAuthorizedEvents {
+contract DSAuthorizedTest is Test, DSAuthUser {
     DSAuthorizedUser auth;
     DSAuthorizedTester tester;
 
@@ -62,33 +63,33 @@ contract DSAuthorizedTest is Test, DSAuthorizedEvents {
         expectEventsExact(auth);
         DSAuthUpdate(accepter, true);
 
-        auth.updateAuthority(accepter, true);
+        auth.updateAuthority(accepter, DSAuthModes.Authority);
     }
 
     function testAuthorityAuth() {
         var accepter = new AcceptingAuthority();
-        auth.updateAuthority(accepter, true);
+        auth.updateAuthority(accepter, DSAuthModes.Authority);
 
         assertTrue(auth.triggerAuth());
     }
 
     function testFailAuthorityAuth() {
         var rejecter = new RejectingAuthority();
-        auth.updateAuthority(rejecter, true);
+        auth.updateAuthority(rejecter, DSAuthModes.Authority);
 
         tester.doTriggerAuth();
     }
 
     function testAuthorityTryAuth() {
         var accepter = new AcceptingAuthority();
-        auth.updateAuthority(accepter, true);
+        auth.updateAuthority(accepter, DSAuthModes.Authority);
 
         assertTrue(auth.triggerTryAuth());
     }
 
     function testAuthorityTryAuthUnauthorized() {
         var rejecter = new RejectingAuthority();
-        auth.updateAuthority(rejecter, true);
+        auth.updateAuthority(rejecter, DSAuthModes.Authority);
 
         assertFalse(tester.doTriggerTryAuth());
     }

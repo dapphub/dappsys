@@ -1,8 +1,9 @@
+import 'auth.sol';
 import 'factory/factory.sol';
 import 'auth/authority.sol';
 import 'dapple/test.sol';
 
-contract TestFactoryUser {
+contract TestFactoryUser is DSAuthUser {
     DSAuthFactory authFactory;
     DSDataFactory dataFactory;
     DSTokenFactory tokenFactory;
@@ -23,7 +24,7 @@ contract FactoryTest is Test, TestFactoryUser {
     DSBasicAuthority tmp_auth;
     function setUp() {
         tmp_auth = factory.buildDSBasicAuthority();
-        tmp_auth.updateAuthority(address(factory), false);
+        tmp_auth.updateAuthority(address(factory), DSAuthModes.Owned );
     }
     function testCreateCostData() logs_gas() {
         dataFactory = new DSDataFactory();

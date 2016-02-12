@@ -1,3 +1,4 @@
+import 'auth.sol';
 import 'auth/basic_authority.sol';
 import 'data/balance_db.sol';
 import 'data/approval_db.sol';
@@ -31,7 +32,7 @@ contract DSFactory {
     // gov
     function buildDSEasyMultisig( uint n, uint m, uint expiration ) returns (DSEasyMultisig);
 }
-contract DSFactory1 is DSFactory {
+contract DSFactory1 is DSFactory, DSAuthUser {
     DSDataFactory _data;
     DSTokenFactory _token;
     DSMultisigFactory _ms;
@@ -49,25 +50,25 @@ contract DSFactory1 is DSFactory {
 
     function buildDSBasicAuthority() returns (DSBasicAuthority c) {
         c = _auth.buildDSBasicAuthority();
-        c.updateAuthority(msg.sender, false);
+        c.updateAuthority(msg.sender, DSAuthModes.Owner);
     }
     function buildDSBalanceDB() returns (DSBalanceDB c) {
         c = _data.buildDSBalanceDB();
-        c.updateAuthority(msg.sender, false);
+        c.updateAuthority(msg.sender, DSAuthModes.Owner);
     }
     function buildDSMap() returns (DSMap c) {
         c = _data.buildDSMap();
-        c.updateAuthority(msg.sender, false);
+        c.updateAuthority(msg.sender, DSAuthModes.Owner);
     }
     function buildDSApprovalDB() returns (DSApprovalDB c) {
         c = _data.buildDSApprovalDB();
-        c.updateAuthority(msg.sender, false);
+        c.updateAuthority(msg.sender, DSAuthModes.Owner);
     }
     function buildDSTokenController( DSBalanceDB bal_db, DSApprovalDB appr_db )
              returns (DSTokenController c)
     {
         c = _token.buildDSTokenController( bal_db, appr_db );
-        c.updateAuthority(msg.sender, false);
+        c.updateAuthority(msg.sender, DSAuthModes.Owner);
     }
 /*
     function buildDSTokenBase( uint initial_balance ) returns (DSTokenBase c) {
@@ -80,21 +81,21 @@ contract DSFactory1 is DSFactory {
     function buildDSTokenBasicSystem( DSBasicAuthority authority )
              returns (DSTokenFrontend frontend )
     {
-        authority.updateAuthority(_token, false);
+        authority.updateAuthority(_token, DSAuthModes.Owner);
         frontend = _token.buildDSTokenBasicSystem( authority );
-        authority.updateAuthority( msg.sender, false );
+        authority.updateAuthority( msg.sender, DSAuthModes.Owner );
         return frontend;
     }
     function buildDSTokenFrontend( DSTokenController cont ) returns (DSTokenFrontend c)
     {
         c = _token.buildDSTokenFrontend( cont );
-        c.updateAuthority(msg.sender, false);
+        c.updateAuthority(msg.sender, DSAuthModes.Owner);
         return c;
     }
     function buildDSEasyMultisig( uint n, uint m, uint expiration ) returns (DSEasyMultisig)
     {
         var c = _ms.buildDSEasyMultisig( n, m, expiration );
-        c.updateAuthority(msg.sender, false);
+        c.updateAuthority(msg.sender, DSAuthModes.Owner);
         return c;
     }
     function() returns (bytes32) {
