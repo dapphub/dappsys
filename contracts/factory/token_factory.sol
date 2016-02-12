@@ -39,7 +39,7 @@ contract DSTokenFactory {
 */
     // @dev Precondition: authority._authority() == address(this) && authority._auth_mode() == false;
     //      Postcondition:  authority._authority() == msg.sender && authority._auth_mode() == false;
-    function buildDSTokenBasicSystem( DSBasicAuthority authority ) 
+    function buildDSTokenBasicSystem( DSBasicAuthority authority )
              returns( DSTokenFrontend frontend )
     {
 /*
@@ -61,11 +61,11 @@ contract DSTokenFactory {
 
         // The only data ops the controller does is `move` balances and `set` approvals.
         authority.setCanCall( controller, balance_db, bytes4(sha3("moveBalance(address,address,uint256)")), true );
-        authority.setCanCall( controller, approval_db, bytes4(sha3("set(address,address,uint256)")), true );
+        authority.setCanCall( controller, approval_db, bytes4(sha3("setApproval(address,address,uint256)")), true );
 
         // The controller calls back to the forntend for the 2 events.
-        authority.setCanCall( controller, frontend, bytes4(sha3("eventTransfer(address,address,uint256)")), true );
-        authority.setCanCall( controller, frontend, bytes4(sha3("eventApproval(address,address,uint256)")), true );
+        authority.setCanCall( controller, frontend, bytes4(sha3("emitTransfer(address,address,uint256)")), true );
+        authority.setCanCall( controller, frontend, bytes4(sha3("emitApproval(address,address,uint256)")), true );
 
         // The frontend can call the proxy functions.
         authority.setCanCall( frontend, controller, bytes4(sha3("transfer(address,address,uint256)")), true );
