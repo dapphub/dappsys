@@ -41,14 +41,44 @@ contract DSBaseActorTest is Test {
     DSSimpleActor a;
     CallReceiver cr;
     function setUp() {
+        assertTrue(this.balance > 0, "insufficient funds");
+
         a = new DSSimpleActor();
+        a.send(10 wei);
         cr = new CallReceiver();
     }
     function testProxyCall() {
         for( var i = 0; i < 35; i++ ) {
             calldata.push(byte(i));
         }
-        a.execute( address(cr), calldata, 0, 0 );
+        assertTrue(a.execute( address(cr), calldata, 0, 0 ));
         assertTrue( cr.compareLastCalldata( calldata ) );
+    }
+    function testProxyCallWithInsufficientGas() {
+        for( var i = 0; i < 35; i++ ) {
+            calldata.push(byte(i));
+        }
+        assertFalse(a.execute( address(cr), calldata, 0, 1 ));
+        assertFalse( cr.compareLastCalldata( calldata ) );
+    }
+    function testProxyCallWithSufficientGas() {
+        for( var i = 0; i < 35; i++ ) {
+            calldata.push(byte(i));
+        }
+        assertTrue(a.execute( address(cr), calldata, 0, msg.gas - 1000000 ));
+        assertTrue( cr.compareLastCalldata( calldata ) );
+    }
+    function testProxyCallWithValue() {
+        assertEq(cr.balance, 0, "callreceiver already has ether");
+
+        for( var i = 0; i < 35; i++ ) {
+            calldata.push(byte(i));
+        }
+        assertEq(a.balance, 10 wei, "ether not sent to actor");
+        assertTrue(a.execute(address(cr), calldata, 10 wei, 0),
+                   "execute failed");
+        assertTrue( cr.compareLastCalldata( calldata ),
+                   "call data does not match" );
+        assertEq(cr.balance, 10 wei);
     }
 }
