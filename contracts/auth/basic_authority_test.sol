@@ -14,6 +14,7 @@ contract BasicAuthorityTest is Test, DSAuthorityEvents {
         v.updateAuthority(a, true);
     }
     function testExportAuthorized() {
+        assertFalse( v.breached(), "vault started breached" );
         expectEventsExact(a);
         DSSetCanCall(this, v, bytes4(sha3("updateAuthority(address,bool)")),
                      true);
@@ -26,9 +27,11 @@ contract BasicAuthorityTest is Test, DSAuthorityEvents {
         assertTrue( v.breached(), "couldn't after export attempt" );
     }
     function testFailBreach() {
+        assertFalse( v.breached(), "vault started breached" );
         v.breach(); // throws
     }
     function testNormalWhitelistAdd() {
+        assertFalse( v.breached(), "vault started breached" );
         expectEventsExact(a);
         DSSetCanCall(this, v, bytes4(sha3("breach()")), true);
 
@@ -36,8 +39,10 @@ contract BasicAuthorityTest is Test, DSAuthorityEvents {
         v.breach();
         assertTrue( v.breached() );
         v.reset();
+        assertFalse( v.breached(), "vault not reset" );
     }
     function testFailNormalWhitelistReset() {
+        assertFalse( v.breached(), "vault started breached" );
         expectEventsExact(a);
         DSSetCanCall(this, v, bytes4(sha3("breach()")), false);
 
