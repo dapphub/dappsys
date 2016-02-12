@@ -10,21 +10,21 @@ contract helper is Debug {
     }
 }
 
-contract DSEasyMultisigTest is Test
+contract DSEasyMultisigTest is Test, DSEasyMultisigEvents
 {
     Tester T1; address t1;
     Tester T2; address t2;
     DSEasyMultisig ms;
     bytes calldata;
     function setUp() {
-        ms = new DSEasyMultisig(2, 3, 3 days);
+        ms = new DSEasyMultisig(2, 3, 3 days); // 2-of-3 and 3 days for voting.
         T1 = new Tester(); t1 = address(T1);
         T2 = new Tester(); t2 = address(T2);
         T1._target( ms );
         T2._target( ms );
         ms.addMember( t1 );
         ms.addMember( t2 );
-        ms.addMember( address(this) ); // making ourselves a member to make EasyPropose easier.
+        ms.addMember( this ); // makes EasyPropose easier.
     }
     function testSetup() {
         assertTrue( ms.isMember(address(this)) );
@@ -37,10 +37,22 @@ contract DSEasyMultisigTest is Test
         assertTrue(e == 3 days, "wrong expiration");
         assertTrue(n == 0, "wrong last action");
     }
+    function testMemberAddedEvent() {
+        var newMs = new DSEasyMultisig(2, 3, 3 days);
+        expectEventsExact(newMs);
+        MemberAdded(this);
+        newMs.addMember(this);
+    }
     function testFailTooManyMembers() {
         ms.addMember( address(0x1) );
     }
     function testEasyPropose() {
+        expectEventsExact(ms);
+        Proposed(1);
+        Confirmed(1, this);
+        Confirmed(1, t1);
+        Triggered(1, true);
+
         var h = new helper();
         helper(ms).doSomething(1);
         ms.easyPropose( address(h), 0, 0 );

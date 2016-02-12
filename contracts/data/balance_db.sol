@@ -3,12 +3,16 @@
 import 'auth/auth.sol';
 import 'util/safety.sol';
 
-contract DSBalanceDB is DSAuth 
+contract DSBalanceDBEvents {
+    event BalanceUpdate( address who, uint new_amount );
+}
+
+contract DSBalanceDB is DSAuth
                       , DSSafeAddSub
+                      , DSBalanceDBEvents
 {
     uint _supply;
     mapping( address => uint )  _balances;
-    event BalanceUpdate( address who, uint new_amount );
 
     function getSupply()
              constant

@@ -1,9 +1,12 @@
 import 'auth/auth.sol';
 
-// Spending approval for standard token pattern (see `token/EIP20.sol`)
-contract DSApprovalDB is DSAuth {
-    mapping(address => mapping( address=>uint)) _approvals;
+contract DSApprovalDBEvents {
     event Approval( address indexed owner, address indexed spender, uint value );
+}
+
+// Spending approval for standard token pattern (see `token/EIP20.sol`)
+contract DSApprovalDB is DSAuth, DSApprovalDBEvents {
+    mapping(address => mapping( address=>uint)) _approvals;
 
     function setApproval( address holder, address spender, uint amount )
              auth()

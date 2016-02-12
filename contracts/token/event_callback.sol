@@ -1,4 +1,4 @@
 contract DSTokenEventCallback {
-    function eventTransfer( address from, address to, uint amount );
-    function eventApproval( address holder, address spender, uint amount );
+    function emitTransfer( address from, address to, uint amount );
+    function emitApproval( address holder, address spender, uint amount );
 }

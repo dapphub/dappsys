@@ -3,18 +3,19 @@
 
 import 'auth/auth.sol';
 
-contract DSMap is DSAuth {
-	mapping( bytes32 => bytes32 ) _storage;
-
+contract DSMapEvents {
     event Set( bytes32 indexed key, bytes32 indexed value );
+}
 
-	function get( bytes32 key ) constant returns (bytes32 value) 
-    {
-		 return _storage[key];
-	}
-	function set( bytes32 key, bytes32 value )
-             auth()
-    {
-		_storage[key] = value;
-	}
+contract DSMap is DSAuth, DSMapEvents {
+    mapping( bytes32 => bytes32 ) _storage;
+
+    function get( bytes32 key ) constant returns (bytes32 value) {
+        return _storage[key];
+    }
+
+    function set( bytes32 key, bytes32 value ) auth() {
+        Set(key, value);
+        _storage[key] = value;
+    }
 }

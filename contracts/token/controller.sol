@@ -59,20 +59,24 @@ contract DSTokenController is DSTokenControllerType
         return _balances;
     }
     function setBalanceDB( DSBalanceDB new_db
-                         , address new_authority
-                         , bool new_auth_mode )
+                         , address new_authority_for_old_db
+                         , bool new_auth_mode_for_old_db )
              auth()
     {
-        _balances.updateAuthority( new_authority, new_auth_mode );
+        _balances.updateAuthority(
+            new_authority_for_old_db,
+            new_auth_mode_for_old_db);
         _balances = new_db;
     }
 
     function setApprovalDB( DSApprovalDB new_db
-                          , address new_authority
-                          , bool new_auth_mode )
+                          , address new_authority_for_old_db
+                          , bool new_auth_mode_for_old_db )
              auth()
     {
-        _approvals.updateAuthority( new_authority, new_auth_mode );
+        _approvals.updateAuthority(
+            new_authority_for_old_db,
+            new_auth_mode_for_old_db);
         _approvals = new_db;
     }
 
@@ -106,7 +110,7 @@ contract DSTokenController is DSTokenControllerType
             throw;
         }
         _balances.moveBalance(_caller, to, value);
-        _frontend.eventTransfer( _caller, to, value );
+        _frontend.emitTransfer( _caller, to, value );
         return true;
     }
     function transferFrom(address _caller, address from, address to, uint value)
@@ -130,14 +134,14 @@ contract DSTokenController is DSTokenControllerType
         }
         _approvals.setApproval( from, _caller, allowance - value );
         _balances.moveBalance( from, to, value);
-        _frontend.eventTransfer( from, to, value );
+        _frontend.emitTransfer( from, to, value );
         return true;
     }
-    function approve( address caller, address spender, uint value)
+    function approve( address _caller, address spender, uint value)
              auth()
              returns (bool)
     {
-        _approvals.setApproval( caller, spender, value );
-        _frontend.eventApproval( caller, spender, value);
+        _approvals.setApproval( _caller, spender, value );
+        _frontend.emitApproval( _caller, spender, value);
     }
 }

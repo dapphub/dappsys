@@ -42,10 +42,34 @@ contract TokenControllerTest is ERC20Events, Test {
         assertEq(address(controller.getFrontend()), address(frontend));
     }
 
-    function testGetDbs() {
-        var (_balanceDB, _approvalDB) = controller.getDBs();
-        assertEq(address(_balanceDB), address(_balanceDB));
+    function testSetFrontend() {
+        var newFrontend = new DSTokenFrontend(controller);
+        controller.setFrontend(newFrontend);
+        assertEq(address(controller.getFrontend()), address(newFrontend));
+    }
+
+    function testGetApprovalDb() {
+        var _approvalDB = controller.getApprovalDB();
         assertEq(address(_approvalDB), address(_approvalDB));
+    }
+
+    function testSetApprovalDb() {
+        var newApprovalDB = new DSApprovalDB();
+        controller.setApprovalDB(newApprovalDB, 0xf00b42, false);
+        assertEq(approvalDB._authority(), 0xf00b42, "authority not set");
+        assertEq(controller.getApprovalDB(), newApprovalDB, "db not set");
+    }
+
+    function testGetBalanceDb() {
+        var _balanceDB = controller.getBalanceDB();
+        assertEq(address(_balanceDB), address(_balanceDB));
+    }
+
+    function testSetBalanceDb() {
+        var newBalanceDB = new DSBalanceDB();
+        controller.setBalanceDB(newBalanceDB, 0xf00b42, false);
+        assertEq(balanceDB._authority(), 0xf00b42, "authority not set");
+        assertEq(controller.getBalanceDB(), newBalanceDB, "db not set");
     }
 
     function testAllowanceStartsAtZero() logs_gas {
