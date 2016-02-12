@@ -1,3 +1,4 @@
+import 'dapple/debug.sol';
 import 'auth.sol';
 import 'actor/base.sol';
 
@@ -24,15 +25,16 @@ contract DSEasyMultisigEvents {
  *
  * In Soldity:
  * 1) `TargetType(address(multisig)).doAction(arg1, arg2);`
- * 2) `multisig.easyPropose(address(target), value, gas);`
+ * 2) `multisig.easyPropose(address(target), value);`
  *
- * This is equivalent to `propose(address(my_target), <calldata>, value, gas);`,
+ * This is equivalent to `propose(address(my_target), <calldata>, value);`,
  * where calldata is correctly formatted for `TargetType(target).doAction(arg1, arg2)`
  */
 contract DSEasyMultisig is DSBaseActor
                          , DSEasyMultisigEvents
                          , DSAuthUser
                          , DSAuth
+                         , Debug
 {
     // How many confirmations an action needs to execute.
     uint _required;
@@ -50,7 +52,6 @@ contract DSEasyMultisig is DSBaseActor
         address target;
         bytes calldata;
         uint value;
-        uint gas; // 0 means "all"!
 
         uint confirmations; // If this number reaches `required`, you can trigger
         uint expiration; // Last timestamp this action can execute
@@ -112,9 +113,8 @@ contract DSEasyMultisig is DSBaseActor
 
 
     // `propose` an action using the calldata from this sender's last call.
-    // @notice 0 gas means "all the gas".
-    function easyPropose( address target, uint value, uint gas ) returns (uint action_id) {
-        return propose( target, easy_calldata[msg.sender], value, gas );
+    function easyPropose( address target, uint value ) returns (uint action_id) {
+        return propose( target, easy_calldata[msg.sender], value );
     }
     function() {
         easy_calldata[msg.sender] = msg.data;
@@ -124,21 +124,18 @@ contract DSEasyMultisig is DSBaseActor
     // Anyone can propose an action.
     // Attempts to also confirm (and then trigger) the action.
     // Only members can confirm actions.
-    // Warning! Don't forget 0 gas means "all the gas"!
-    function propose( address target, bytes calldata, uint value, uint gas )
+    function propose( address target, bytes calldata, uint value )
              returns (uint action_id)
     {
         action memory a;
         a.target = target;
         a.calldata = calldata;
         a.value = value;
-        a.gas = gas;
         a.expiration = block.timestamp + _expiration;
         // Increment first because, 0 is not a valid ID.
         _last_action_id++;
         actions[_last_action_id] = a;
         Proposed(_last_action_id);
-        //confirm(_last_action_id);
         return _last_action_id;
     }
 
@@ -186,7 +183,8 @@ contract DSEasyMultisig is DSBaseActor
             throw;
         }
         a.triggered = true;
-        a.result = exec( a.target, a.calldata, a.value, a.gas );
+
+        a.result = exec( a.target, a.calldata, a.value );
         actions[action_id] = a;
         Triggered(action_id, a.result);
     }

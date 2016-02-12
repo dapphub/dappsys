@@ -21,19 +21,12 @@ contract DSEasyMultisigTest1 is Test, DSEasyMultisigEvents
         helper(ms).doSomething(1);
     }
     function testFailTooFewConfirms() {
-        var action = ms.easyPropose(address(h), 0, 0);
+        var action = ms.easyPropose(address(h), 0);
         ms.trigger(action);
-    }
-    function testFailNotEnoughGas() {
-        var action = ms.easyPropose(address(h), 0, 1);
-        ms.confirm(action);
-        ms.trigger(action);
-        var (a, b, result, c) = ms.getActionStatus(action);
-        log_named_bool("action_result:", result);
     }
     function testFailNotEnoughValue() {
         address(0x0).send(this.balance);
-        var action = ms.easyPropose(address(h), 1, 0);
+        var action = ms.easyPropose(address(h), 1);
         ms.confirm(action);
         ms.trigger(action);
     }
@@ -84,7 +77,7 @@ contract DSEasyMultisigTest is Test, DSEasyMultisigEvents
 
         var h = new helper();
         helper(ms).doSomething(1);
-        ms.easyPropose( address(h), 0, 0 );
+        ms.easyPropose( address(h), 0 );
         assertEq( h._arg(), 0, "call shouldn't have succeeded" );
         var (r, m, e, id) = ms.getInfo();
         assertEq( id, 1, "wrong last action id");

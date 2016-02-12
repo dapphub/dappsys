@@ -4,10 +4,15 @@ import 'dapple/debug.sol';
 
 // Simple example and passthrough for testing
 contract DSSimpleActor is DSBaseActor {
-    function execute( address target, bytes calldata, uint value, uint gas )
+    function execute( address target, bytes calldata, uint value )
              returns (bool call_ret )
     {
-        return exec( target, calldata, value, gas );
+        return exec( target, calldata, value );
+    }
+    function tryExecute( address target, bytes calldata, uint value )
+             returns (bool call_ret )
+    {
+        return tryExec( target, calldata, value );
     }
 }
 
@@ -51,21 +56,14 @@ contract DSBaseActorTest is Test {
         for( var i = 0; i < 35; i++ ) {
             calldata.push(byte(i));
         }
-        assertTrue(a.execute( address(cr), calldata, 0, 0 ));
+        assertTrue(a.execute( address(cr), calldata, 0 ));
         assertTrue( cr.compareLastCalldata( calldata ) );
     }
-    function testProxyCallWithInsufficientGas() {
+    function testTryProxyCall() {
         for( var i = 0; i < 35; i++ ) {
             calldata.push(byte(i));
         }
-        assertFalse(a.execute( address(cr), calldata, 0, 1 ));
-        assertFalse( cr.compareLastCalldata( calldata ) );
-    }
-    function testProxyCallWithSufficientGas() {
-        for( var i = 0; i < 35; i++ ) {
-            calldata.push(byte(i));
-        }
-        assertTrue(a.execute( address(cr), calldata, 0, msg.gas - 1000000 ));
+        assertTrue(a.tryExecute( address(cr), calldata, 0 ));
         assertTrue( cr.compareLastCalldata( calldata ) );
     }
     function testProxyCallWithValue() {
@@ -75,8 +73,20 @@ contract DSBaseActorTest is Test {
             calldata.push(byte(i));
         }
         assertEq(a.balance, 10 wei, "ether not sent to actor");
-        assertTrue(a.execute(address(cr), calldata, 10 wei, 0),
-                   "execute failed");
+        assertTrue(a.execute(address(cr), calldata, 10 wei));
+        assertTrue( cr.compareLastCalldata( calldata ),
+                   "call data does not match" );
+        assertEq(cr.balance, 10 wei);
+    }
+    function testTryProxyCallWithValue() {
+        assertEq(cr.balance, 0, "callreceiver already has ether");
+
+        for( var i = 0; i < 35; i++ ) {
+            calldata.push(byte(i));
+        }
+        assertEq(a.balance, 10 wei, "ether not sent to actor");
+        assertTrue(a.tryExecute(address(cr), calldata, 10 wei),
+                   "tryExecute failed");
         assertTrue( cr.compareLastCalldata( calldata ),
                    "call data does not match" );
         assertEq(cr.balance, 10 wei);
