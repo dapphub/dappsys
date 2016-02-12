@@ -1,3 +1,4 @@
+import 'auth.sol';
 import 'dapple/test.sol';
 import 'token/controller.sol';
 import 'data/approval_db.sol';
@@ -9,7 +10,7 @@ import 'token/token.sol';
 
 import 'util/safety.sol';
 
-contract TokenControllerTest is ERC20Events, Test {
+contract TokenControllerTest is ERC20Events, DSAuthUser, Test {
     uint constant issuedAmount = 1000;
 
     DSBalanceDB balanceDB;
@@ -32,9 +33,9 @@ contract TokenControllerTest is ERC20Events, Test {
         user2 = new Tester();
 
         balanceDB.setBalance(controller, issuedAmount);
-        balanceDB.updateAuthority(controller, false);
-        approvalDB.updateAuthority(controller, false);
-        frontend.updateAuthority(controller, false);
+        balanceDB.updateAuthority(controller, DSAuthMode.Owner);
+        approvalDB.updateAuthority(controller, DSAuthMode.Owner);
+        frontend.updateAuthority(controller, DSAuthMode.Owner);
         controller.setFrontend(frontend);
     }
 
@@ -55,7 +56,7 @@ contract TokenControllerTest is ERC20Events, Test {
 
     function testSetApprovalDb() {
         var newApprovalDB = new DSApprovalDB();
-        controller.setApprovalDB(newApprovalDB, 0xf00b42, false);
+        controller.setApprovalDB(newApprovalDB, 0xf00b42, DSAuthModes.Owner);
         assertEq(approvalDB._authority(), 0xf00b42, "authority not set");
         assertEq(controller.getApprovalDB(), newApprovalDB, "db not set");
     }
@@ -67,7 +68,7 @@ contract TokenControllerTest is ERC20Events, Test {
 
     function testSetBalanceDb() {
         var newBalanceDB = new DSBalanceDB();
-        controller.setBalanceDB(newBalanceDB, 0xf00b42, false);
+        controller.setBalanceDB(newBalanceDB, 0xf00b42, DSAuthModes.Owner);
         assertEq(balanceDB._authority(), 0xf00b42, "authority not set");
         assertEq(controller.getBalanceDB(), newBalanceDB, "db not set");
     }

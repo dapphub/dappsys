@@ -1,5 +1,5 @@
-import 'actor/base.sol';
 import 'auth.sol';
+import 'actor/base.sol';
 
 contract DSEasyMultisigEvents {
     event MemberAdded(address who);
@@ -13,7 +13,7 @@ contract DSEasyMultisigEvents {
  * This eliminates the need for UI support or helper contracts.
  *
  * To set up the multisig, specify the arguments, then add members
- * 
+ *
  * First, call the multisig contract itself as if it were your target contract,
  * with the correct calldata. You can make Solidity and web3.js to do this for
  * you very easily by casting the multisig address as the target type.
@@ -31,6 +31,7 @@ contract DSEasyMultisigEvents {
  */
 contract DSEasyMultisig is DSBaseActor
                          , DSEasyMultisigEvents
+                         , DSAuthUser
                          , DSAuth
 {
     // How many confirmations an action needs to execute.
@@ -73,8 +74,9 @@ contract DSEasyMultisig is DSBaseActor
         _members_remaining = member_count;
         _expiration = expiration;
     }
-    // The authority can add members until they reach `member_count`, after which the
-    // contract is finalized (`updateAuthority(0, false)`) meaning addMember will always throw.
+    // The authority can add members until they reach `member_count`, and then
+    // the contract is finalized (`updateAuthority(0, DSAuthModes.Owner)`),
+    // meaning addMember will always throw.
     function addMember( address who ) auth()
     {
         if( is_member[who] ) {
@@ -84,7 +86,7 @@ contract DSEasyMultisig is DSBaseActor
         MemberAdded(who);
         _members_remaining--;
         if( _members_remaining == 0 ) {
-            updateAuthority(address(0x0), false);
+            updateAuthority(address(0x0), DSAuthModes.Owner);
         }
     }
     function isMember( address who ) constant returns (bool) {

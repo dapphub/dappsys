@@ -1,3 +1,4 @@
+import 'auth.sol';
 import 'dapple/test.sol';
 import 'token/controller.sol';
 import 'token/frontend.sol';
@@ -16,7 +17,7 @@ contract TokenFrontendTester is Tester {
     }
 }
 
-contract TokenFrontendTest is Test {
+contract TokenFrontendTest is Test, DSAuthUser {
     uint constant issuedAmount = 1000;
 
     DSBalanceDB balanceDB;
@@ -32,7 +33,7 @@ contract TokenFrontendTest is Test {
         frontend = new DSTokenFrontend(controller);
 
         var eventFrontend = new DSTokenFrontend(controller);
-        eventFrontend.updateAuthority(controller, false);
+        eventFrontend.updateAuthority(controller, DSAuthModes.Owner);
         controller.setFrontend(eventFrontend);
     }
 
@@ -41,9 +42,9 @@ contract TokenFrontendTest is Test {
         user._target(frontend);
 
         balanceDB.setBalance(this, issuedAmount);
-        balanceDB.updateAuthority(controller, false);
-        approvalDB.updateAuthority(controller, false);
-        controller.updateAuthority(frontend, false);
+        balanceDB.updateAuthority(controller, DSAuthModes.Owner);
+        approvalDB.updateAuthority(controller,DSAuthModes.Owner);
+        controller.updateAuthority(frontend, DSAuthModes.Owner);
     }
 
     function testGetController() {
