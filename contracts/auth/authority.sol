@@ -1,3 +1,6 @@
+import 'util/true.sol';
+import 'util/false.sol';
+
 // `DSAuthority` is the interface which `DSAuthorized` (`DSAuth`) contracts expect
 // their authority to be when they are in the remote auth mode.
 contract DSAuthority {
@@ -11,7 +14,6 @@ contract DSAuthority {
              returns (bool);
 }
 
-import 'util/true.sol';
-import 'util/false.sol';
+
 contract AcceptingAuthority is DSTrueFallback {}
 contract RejectingAuthority is DSFalseFallback {}

@@ -1,6 +1,6 @@
 // Balance database contract for Tokens and token-like contracts.
 
-import 'auth/auth.sol';
+import 'auth.sol';
 import 'util/safety.sol';
 
 contract DSBalanceDBEvents {

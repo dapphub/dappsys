@@ -2,7 +2,7 @@
 // This is preferable for contracts that store addresses because it
 // stops consumers from accidentally calling address(0x0).
 
-import 'auth/auth.sol';
+import 'auth.sol';
 
 contract DSNullMapEvents {
     event SetNullable( bytes32 indexed key, bytes32 indexed value, bool indexed is_set );

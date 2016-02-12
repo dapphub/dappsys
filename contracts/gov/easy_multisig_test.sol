@@ -10,6 +10,35 @@ contract helper is Debug {
     }
 }
 
+contract DSEasyMultisigTest1 is Test, DSEasyMultisigEvents
+{
+    DSEasyMultisig ms;
+    helper h;
+    function setUp() {
+        ms = new DSEasyMultisig(1, 1, 1 hours);
+        ms.addMember(address(this));
+        h = new helper();
+        helper(ms).doSomething(1);
+    }
+    function testFailTooFewConfirms() {
+        var action = ms.easyPropose(address(h), 0, 0);
+        ms.trigger(action);
+    }
+    function testFailNotEnoughGas() {
+        var action = ms.easyPropose(address(h), 0, 1);
+        ms.confirm(action);
+        ms.trigger(action);
+        var (a, b, result, c) = ms.getActionStatus(action);
+        log_named_bool("action_result:", result);
+    }
+    function testFailNotEnoughValue() {
+        address(0x0).send(this.balance);
+        var action = ms.easyPropose(address(h), 1, 0);
+        ms.confirm(action);
+        ms.trigger(action);
+    }
+}
+
 contract DSEasyMultisigTest is Test, DSEasyMultisigEvents
 {
     Tester T1; address t1;
@@ -61,7 +90,8 @@ contract DSEasyMultisigTest is Test, DSEasyMultisigEvents
         assertEq( id, 1, "wrong last action id");
         uint c; bool t; bool res;
         (c, e, t, res) = ms.getActionStatus(1);
-        assertTrue( c == 1, "wrong number of confirmations" );
+        assertTrue( c == 0, "wrong number of confirmations" );
+        ms.confirm(1);
         DSEasyMultisig(t1).confirm(1);
         (c, e, t, res) = ms.getActionStatus(1);
         assertTrue( c == 2, "wrong number of confirmations" );
