@@ -79,7 +79,7 @@ contract DSFactory1 is DSFactory, DSAuthUser {
     function installDSTokenBasicSystem( DSBasicAuthority authority )
              returns (DSTokenFrontend frontend )
     {
-        authority.updateAuthority(_token, DSAuthModes.Owner);
+        authority.updateAuthority(_token_install, DSAuthModes.Owner);
         frontend = _token_install.installDSTokenBasicSystem( authority );
         authority.updateAuthority( msg.sender, DSAuthModes.Owner );
         return frontend;
