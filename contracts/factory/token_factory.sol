@@ -8,12 +8,6 @@ import 'token/base.sol';
 import 'token/frontend.sol';
 
 contract DSTokenFactory is DSAuthUser {
-    DSDataFactory _data;
-    DSAuthFactory _auth;
-    function DSTokenFactory( DSAuthFactory auth, DSDataFactory data ) {
-        _data = data;
-        _auth = auth;
-    }
     function buildDSTokenController( DSTokenFrontend frontend, DSBalanceDB bal_db, DSApprovalDB appr_db )
              external
              returns (DSTokenController)
@@ -30,15 +24,22 @@ contract DSTokenFactory is DSAuthUser {
         c.updateAuthority(msg.sender, DSAuthModes.Owner);
         return c;
     }
-/*
     function buildDSTokenBase( uint initial_balance ) returns (DSTokenBase) {
         var c = new DSTokenBase(initial_balance);
         c.transfer(msg.sender, initial_balance);
-        //c.updateAuthority(msg.sender, DSAuthModes.Owned);
         return c;
     }
-*/
+}
 
+contract DSTokenInstaller is DSAuthUser {
+    DSTokenFactory _token;
+    DSDataFactory _data;
+    DSAuthFactory _auth;
+    function DSTokenInstaller( DSAuthFactory auth, DSDataFactory data, DSTokenFactory token ) {
+        _auth = auth;
+        _data = data;
+        _token = token;
+    }
     // @dev Precondition: authority._authority() == address(this) && authority._auth_mode() == false;
     //      Postcondition:  authority._authority() == msg.sender && authority._auth_mode() == false;
     function installDSTokenBasicSystem( DSBasicAuthority authority )
@@ -46,8 +47,8 @@ contract DSTokenFactory is DSAuthUser {
     {
         var balance_db = _data.buildDSBalanceDB();
         var approval_db = _data.buildDSApprovalDB();
-        frontend = new DSTokenFrontend();
-        var controller = new DSTokenController( frontend, balance_db, approval_db );
+        frontend = _token.buildDSTokenFrontend();
+        var controller = _token.buildDSTokenController( frontend, balance_db, approval_db );
 
         frontend.setController( controller );
 

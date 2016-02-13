@@ -7,16 +7,19 @@ contract TestFactoryUser is DSAuthUser {
     DSAuthFactory authFactory;
     DSDataFactory dataFactory;
     DSTokenFactory tokenFactory;
+    DSTokenInstaller tokenInstaller;
     DSMultisigFactory msFactory;
     DSFactory factory;
 
     function TestFactoryUser() {
         authFactory = new DSAuthFactory();
         dataFactory = new DSDataFactory();
-        tokenFactory = new DSTokenFactory(authFactory, dataFactory);
+        tokenFactory = new DSTokenFactory();
+        tokenInstaller = new DSTokenInstaller(authFactory, dataFactory, tokenFactory);
         msFactory = new DSMultisigFactory();
-        factory = new DSFactory1(dataFactory, tokenFactory,
-                                 msFactory, authFactory);
+        
+        factory = new DSFactory1(authFactory, dataFactory,
+                                 msFactory, tokenFactory, tokenInstaller);
     }
 }
 
@@ -30,7 +33,7 @@ contract FactoryTest is Test, TestFactoryUser {
         dataFactory = new DSDataFactory();
     }
     function testCreateCostToken() logs_gas() {
-        tokenFactory = new DSTokenFactory(authFactory, dataFactory);
+        tokenFactory = new DSTokenFactory();
     }
     function testCreateCostMultisig() logs_gas() {
         msFactory = new DSMultisigFactory();
@@ -39,8 +42,8 @@ contract FactoryTest is Test, TestFactoryUser {
         authFactory = new DSAuthFactory();
     }
     function testCreateCostMain() logs_gas() {
-        factory = new DSFactory1(dataFactory, tokenFactory,
-                                 msFactory, authFactory);
+        factory = new DSFactory1(authFactory, dataFactory,
+                                 msFactory, tokenFactory, tokenInstaller);
     }
     function testBuildTokenSystemCost() logs_gas() {
         factory.installDSTokenBasicSystem(tmp_auth);

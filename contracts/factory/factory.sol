@@ -37,15 +37,19 @@ contract DSFactory1 is DSFactory, DSAuthUser {
     DSTokenFactory _token;
     DSMultisigFactory _ms;
     DSAuthFactory _auth;
-    function DSFactory1( DSDataFactory data
-                       , DSTokenFactory token
+    DSTokenInstaller _token_install;
+
+    function DSFactory1( DSAuthFactory auth
+                       , DSDataFactory data
                        , DSMultisigFactory ms
-                       , DSAuthFactory auth )
+                       , DSTokenFactory token
+                       , DSTokenInstaller token_install )
     {
+        _auth = auth;
         _data = data;
         _token = token;
         _ms = ms;
-        _auth = auth;
+        _token_install = token_install;
     }
 
     function buildDSBasicAuthority() returns (DSBasicAuthority c) {
@@ -76,7 +80,7 @@ contract DSFactory1 is DSFactory, DSAuthUser {
              returns (DSTokenFrontend frontend )
     {
         authority.updateAuthority(_token, DSAuthModes.Owner);
-        frontend = _token.installDSTokenBasicSystem( authority );
+        frontend = _token_install.installDSTokenBasicSystem( authority );
         authority.updateAuthority( msg.sender, DSAuthModes.Owner );
         return frontend;
     }
