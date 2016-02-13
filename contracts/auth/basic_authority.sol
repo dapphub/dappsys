@@ -31,10 +31,20 @@ contract DSBasicAuthority is DSAuthority
                        , bytes4 sig
                        , bool can )
              auth()
-             returns (bool success)
     {
         _can_call[caller_address][code_address][sig] = can;
         DSSetCanCall( caller_address, code_address, sig, can );
-        return true;
     }
+
+    function setCanCall( address caller_address
+                       , address code_address
+                       , string signature
+                       , bool can )
+             auth()
+    {
+        var sig = bytes4(sha3(signature));
+        _can_call[caller_address][code_address][sig] = can;
+        DSSetCanCall( caller_address, code_address, sig, can );
+    }
+
 }

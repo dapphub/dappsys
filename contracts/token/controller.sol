@@ -59,20 +59,16 @@ contract DSTokenController is DSTokenControllerType
     function setFrontend( DSTokenFrontend frontend )
              auth()
     {
-        _frontend.updateAuthority( msg.sender, DSAuthModes.Owner );    
         _frontend = frontend;
     }
     function setBalanceDB( DSBalanceDB new_db )
              auth()
     {
-        _balances.updateAuthority( msg.sender, DSAuthModes.Owner );
         _balances = new_db;
     }
-
     function setApprovalDB( DSApprovalDB new_db )
              auth()
     {
-        _approvals.updateAuthority( msg.sender, DSAuthModes.Owner );
         _approvals = new_db;
     }
 

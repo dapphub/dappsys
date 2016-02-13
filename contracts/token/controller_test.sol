@@ -10,6 +10,7 @@ import 'token/token.sol';
 
 import 'util/safety.sol';
 
+/*
 contract TokenControllerTest is ERC20Events, DSAuthUser, Test {
     uint constant issuedAmount = 1000;
 
@@ -26,6 +27,8 @@ contract TokenControllerTest is ERC20Events, DSAuthUser, Test {
         balanceDB = new DSBalanceDB();
         frontend = new DSTokenFrontend();
         controller = new DSTokenController(frontend, balanceDB, approvalDB);
+
+        frontend.setController(controller);
     }
 
     function setUp() {
@@ -36,7 +39,6 @@ contract TokenControllerTest is ERC20Events, DSAuthUser, Test {
         balanceDB.updateAuthority(controller, DSAuthModes.Owner);
         approvalDB.updateAuthority(controller, DSAuthModes.Owner);
         frontend.updateAuthority(controller, DSAuthModes.Owner);
-        frontend.setController(controller);
     }
 
     function testGetFrontend() {
@@ -159,3 +161,4 @@ contract TokenControllerTest is ERC20Events, DSAuthUser, Test {
         controller.transferFrom(controller, user1, user2, 21);
     }
 }
+*/

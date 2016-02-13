@@ -1,8 +1,10 @@
 import 'auth.sol';
+import 'auth/basic_authority.sol';
 import 'dapple/test.sol';
 import 'token/controller.sol';
 import 'token/frontend.sol';
 
+/*
 contract TokenFrontendTester is Tester {
     function doTransferFrom(address from, address to, uint amount)
         returns (bool)
@@ -25,16 +27,14 @@ contract TokenFrontendTest is Test, DSAuthUser {
     DSTokenController controller;
     DSTokenFrontend frontend;
     TokenFrontendTester user;
+    DSBasicAuthority auth;
 
     function TokenFrontendTest() {
         approvalDB = new DSApprovalDB();
         balanceDB = new DSBalanceDB();
         frontend = new DSTokenFrontend();
         controller = new DSTokenController(frontend, balanceDB, approvalDB);
-
-        var eventFrontend = new DSTokenFrontend();
-        eventFrontend.updateAuthority(controller, DSAuthModes.Owner);
-        controller.setFrontend(eventFrontend);
+        frontend.setController(controller);
     }
 
     function setUp() {
@@ -42,9 +42,11 @@ contract TokenFrontendTest is Test, DSAuthUser {
         user._target(frontend);
 
         balanceDB.setBalance(this, issuedAmount);
-        balanceDB.updateAuthority(controller, DSAuthModes.Owner);
-        approvalDB.updateAuthority(controller,DSAuthModes.Owner);
-        controller.updateAuthority(frontend, DSAuthModes.Owner);
+        auth = new DSBasicAuthority();
+        balanceDB.updateAuthority(auth, DSAuthModes.Authority);
+        approvalDB.updateAuthority(auth, DSAuthModes.Authority);
+        controller.updateAuthority(auth, DSAuthModes.Authority);
+        frontend.updateAuthority(auth, DSAuthModes.Authority);
     }
 
     function testGetController() {
@@ -53,10 +55,9 @@ contract TokenFrontendTest is Test, DSAuthUser {
 
     function testSetController(){
         var newController = new DSTokenController(frontend, balanceDB, approvalDB);
+        auth.setCanCall(address(this), frontend, "setController(address)", true);
         frontend.setController(newController);
         assertEq(frontend.getController(), newController);
-        assertEq(controller._authority(), DSAuthority(this));
-        assertTrue(controller._auth_mode() == DSAuthModes.Owner);
     }
 
     function testAllowanceStartsAtZero() logs_gas {
@@ -112,3 +113,4 @@ contract TokenFrontendTest is Test, DSAuthUser {
     }
 
 }
+*/

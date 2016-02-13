@@ -16,7 +16,6 @@ contract DSTokenFrontend is DSToken
     function setController( DSTokenController controller )
              auth()
     {
-        _controller.updateAuthority( msg.sender, DSAuthModes.Owner );
         _controller = controller;
     }
     function getController() constant returns (DSTokenController controller) {
