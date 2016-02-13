@@ -24,8 +24,8 @@ contract TokenControllerTest is ERC20Events, DSAuthUser, Test {
     function TokenControllerTest() {
         approvalDB = new DSApprovalDB();
         balanceDB = new DSBalanceDB();
-        controller = new DSTokenController(balanceDB, approvalDB);
-        frontend = new DSTokenFrontend(controller);
+        frontend = new DSTokenFrontend();
+        controller = new DSTokenController(frontend, balanceDB, approvalDB);
     }
 
     function setUp() {
@@ -36,7 +36,7 @@ contract TokenControllerTest is ERC20Events, DSAuthUser, Test {
         balanceDB.updateAuthority(controller, DSAuthModes.Owner);
         approvalDB.updateAuthority(controller, DSAuthModes.Owner);
         frontend.updateAuthority(controller, DSAuthModes.Owner);
-        controller.setFrontend(frontend);
+        frontend.setController(controller);
     }
 
     function testGetFrontend() {
@@ -44,7 +44,7 @@ contract TokenControllerTest is ERC20Events, DSAuthUser, Test {
     }
 
     function testSetFrontend() {
-        var newFrontend = new DSTokenFrontend(controller);
+        var newFrontend = new DSTokenFrontend();
         controller.setFrontend(newFrontend);
         assertEq(address(controller.getFrontend()), address(newFrontend));
     }
@@ -56,8 +56,8 @@ contract TokenControllerTest is ERC20Events, DSAuthUser, Test {
 
     function testSetApprovalDb() {
         var newApprovalDB = new DSApprovalDB();
-        controller.setApprovalDB(newApprovalDB, 0xf00b42, DSAuthModes.Owner);
-        assertEq(approvalDB._authority(), 0xf00b42, "authority not set");
+        controller.setApprovalDB(newApprovalDB);
+        assertEq(approvalDB._authority(), address(this), "authority not set");
         assertEq(controller.getApprovalDB(), newApprovalDB, "db not set");
     }
 
@@ -68,8 +68,8 @@ contract TokenControllerTest is ERC20Events, DSAuthUser, Test {
 
     function testSetBalanceDb() {
         var newBalanceDB = new DSBalanceDB();
-        controller.setBalanceDB(newBalanceDB, 0xf00b42, DSAuthModes.Owner);
-        assertEq(balanceDB._authority(), 0xf00b42, "authority not set");
+        controller.setBalanceDB(newBalanceDB);
+        assertEq(balanceDB._authority(), address(this), "authority not set");
         assertEq(controller.getBalanceDB(), newBalanceDB, "db not set");
     }
 

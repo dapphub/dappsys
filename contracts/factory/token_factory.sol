@@ -14,19 +14,19 @@ contract DSTokenFactory is DSAuthUser {
         _data = data;
         _auth = auth;
     }
-    function buildDSTokenController( DSBalanceDB bal_db, DSApprovalDB appr_db )
+    function buildDSTokenController( DSTokenFrontend frontend, DSBalanceDB bal_db, DSApprovalDB appr_db )
              external
              returns (DSTokenController)
     {
-        var c = new DSTokenController( bal_db, appr_db );
+        var c = new DSTokenController( frontend, bal_db, appr_db );
         c.updateAuthority(msg.sender, DSAuthModes.Owner);
         return c;
     }
-    function buildDSTokenFrontend( DSTokenController cont )
+    function buildDSTokenFrontend()
              external
              returns (DSTokenFrontend)
     {
-        var c = new DSTokenFrontend( cont );
+        var c = new DSTokenFrontend();
         c.updateAuthority(msg.sender, DSAuthModes.Owner);
         return c;
     }
@@ -38,22 +38,18 @@ contract DSTokenFactory is DSAuthUser {
         return c;
     }
 */
+
     // @dev Precondition: authority._authority() == address(this) && authority._auth_mode() == false;
     //      Postcondition:  authority._authority() == msg.sender && authority._auth_mode() == false;
-    function buildDSTokenBasicSystem( DSBasicAuthority authority )
+    function installDSTokenBasicSystem( DSBasicAuthority authority )
              returns( DSTokenFrontend frontend )
     {
-/*
-        if( authority._authority() != address(this) || authority._auth_mode() != false ) {
-            throw;
-        }
-*/
         var balance_db = _data.buildDSBalanceDB();
         var approval_db = _data.buildDSApprovalDB();
-        var controller = new DSTokenController( balance_db, approval_db );
-        frontend = new DSTokenFrontend( controller );
+        frontend = new DSTokenFrontend();
+        var controller = new DSTokenController( frontend, balance_db, approval_db );
 
-        controller.setFrontend( frontend );
+        frontend.setController( controller );
 
         balance_db.updateAuthority( authority, DSAuthModes.Authority );
         approval_db.updateAuthority( authority, DSAuthModes.Authority );

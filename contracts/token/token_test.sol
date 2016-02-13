@@ -152,7 +152,7 @@ contract DSTokenSystemTest is TestFactoryUser, DSTokenTest {
     function createToken() internal returns (DSToken) {
         auth = factory.buildDSBasicAuthority();
         auth.updateAuthority(address(factory), DSAuthModes.Owner);
-        return factory.buildDSBasicTokenSystem", auth);
+        return factory.installDSTokenBasicSystem(auth);
     }
 
     function setUp() {

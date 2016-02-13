@@ -56,7 +56,7 @@ contract TokenFrontendTest is Test, DSAuthUser {
         frontend.setController(newController);
         assertEq(frontend.getController(), newController);
         assertEq(controller._authority(), DSAuthority(this));
-        assertEq(controller._auth_mode(), DSAuthModes.Owner);
+        assertTrue(controller._auth_mode() == DSAuthModes.Owner);
     }
 
     function testAllowanceStartsAtZero() logs_gas {

@@ -43,7 +43,7 @@ contract FactoryTest is Test, TestFactoryUser {
                                  msFactory, authFactory);
     }
     function testBuildTokenSystemCost() logs_gas() {
-        factory.buildDSTokenBasicSystem(tmp_auth);
+        factory.installDSTokenBasicSystem(tmp_auth);
     }
 }
 
