@@ -29,10 +29,10 @@ contract TokenFrontendTest is Test, DSAuthUser {
     function TokenFrontendTest() {
         approvalDB = new DSApprovalDB();
         balanceDB = new DSBalanceDB();
-        controller = new DSTokenController(balanceDB, approvalDB);
-        frontend = new DSTokenFrontend(controller);
+        frontend = new DSTokenFrontend();
+        controller = new DSTokenController(frontend, balanceDB, approvalDB);
 
-        var eventFrontend = new DSTokenFrontend(controller);
+        var eventFrontend = new DSTokenFrontend();
         eventFrontend.updateAuthority(controller, DSAuthModes.Owner);
         controller.setFrontend(eventFrontend);
     }
@@ -52,9 +52,11 @@ contract TokenFrontendTest is Test, DSAuthUser {
     }
 
     function testSetController(){
-        var newController = new DSTokenController(balanceDB, approvalDB);
-        assertTrue(frontend.setController(newController));
+        var newController = new DSTokenController(frontend, balanceDB, approvalDB);
+        frontend.setController(newController);
         assertEq(frontend.getController(), newController);
+        assertEq(controller._authority(), DSAuthority(this));
+        assertEq(controller._auth_mode(), DSAuthModes.Owner);
     }
 
     function testAllowanceStartsAtZero() logs_gas {

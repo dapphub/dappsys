@@ -25,13 +25,9 @@ contract DSTokenControllerType is ERC20Stateless
     // Administrative functions
     function getFrontend() constant returns (DSTokenFrontend);
     function setFrontend( DSTokenFrontend frontend );
-    function setBalanceDB( DSBalanceDB new_db,
-                           address new_authority_for_old_db,
-                           DSAuthModes mode );
+    function setBalanceDB( DSBalanceDB new_db );
     function getBalanceDB() constant returns (DSBalanceDB);
-    function setApprovalDB( DSApprovalDB new_db,
-                            address new_authority_for_old_db,
-                            DSAuthModes new_auth_mode_for_old_db);
+    function setApprovalDB( DSApprovalDB new_db );
     function getApprovalDB() constant returns (DSApprovalDB);
 
 }
@@ -46,17 +42,13 @@ contract DSTokenController is DSTokenControllerType
     DSTokenFrontend            _frontend;
 
     // Setup and admin functions
-    function DSTokenController( DSBalanceDB baldb, DSApprovalDB apprdb ) {
+    function DSTokenController( DSTokenFrontend frontend, DSBalanceDB baldb, DSApprovalDB apprdb ) {
+        _frontend = frontend;
         _balances = baldb;
         _approvals = apprdb;
     }
     function getFrontend() constant returns (DSTokenFrontend) {
         return _frontend;
-    }
-    function setFrontend( DSTokenFrontend frontend )
-             auth()
-    {
-        _frontend = frontend;
     }
     function getApprovalDB() constant returns (DSApprovalDB) {
         return _approvals;
@@ -64,28 +56,25 @@ contract DSTokenController is DSTokenControllerType
     function getBalanceDB() constant returns (DSBalanceDB) {
         return _balances;
     }
-    function setBalanceDB( DSBalanceDB new_db
-                         , address new_authority_for_old_db
-                         , DSAuthModes new_auth_mode_for_old_db )
+    function setFrontend( DSTokenFrontend frontend )
              auth()
     {
-        _balances.updateAuthority(
-            new_authority_for_old_db,
-            new_auth_mode_for_old_db);
+        _frontend.updateAuthority( msg.sender, DSAuthModes.Owner );    
+        _frontend = frontend;
+    }
+    function setBalanceDB( DSBalanceDB new_db )
+             auth()
+    {
+        _balances.updateAuthority( msg.sender, DSAuthModes.Owner );
         _balances = new_db;
     }
 
-    function setApprovalDB( DSApprovalDB new_db
-                          , address new_authority_for_old_db
-                          , DSAuthModes new_auth_mode_for_old_db )
+    function setApprovalDB( DSApprovalDB new_db )
              auth()
     {
-        _approvals.updateAuthority(
-            new_authority_for_old_db,
-            new_auth_mode_for_old_db);
+        _approvals.updateAuthority( msg.sender, DSAuthModes.Owner );
         _approvals = new_db;
     }
-
 
 
     // Stateless ERC20 functions. Doesn't need to know who the sender is.

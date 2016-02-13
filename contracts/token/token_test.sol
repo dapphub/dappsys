@@ -152,7 +152,7 @@ contract DSTokenSystemTest is TestFactoryUser, DSTokenTest {
     function createToken() internal returns (DSToken) {
         auth = factory.buildDSBasicAuthority();
         auth.updateAuthority(address(factory), DSAuthModes.Owner);
-        return factory.buildDSTokenBasicSystem(auth);
+        return factory.buildDSBasicTokenSystem", auth);
     }
 
     function setUp() {
@@ -165,7 +165,7 @@ contract DSTokenSystemTest is TestFactoryUser, DSTokenTest {
     }
     function testBalanceAuth() {
         var baldb = DSTokenFrontend(token).getController().getBalanceDB();
-        assertTrue(baldb._authority() == address(auth));
+        assertTrue( baldb._authority() == address(auth));
         assertTrue( baldb._auth_mode() == DSAuthModes.Authority );
     }
     function testOwnAuth() {
