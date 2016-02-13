@@ -57,17 +57,17 @@ contract DSTokenFactory is DSAuthUser {
         frontend.updateAuthority( authority, DSAuthModes.Authority );
 
         // The only data ops the controller does is `move` balances and `set` approvals.
-        authority.setCanCall( controller, balance_db, bytes4(sha3("moveBalance(address,address,uint256)")), true );
-        authority.setCanCall( controller, approval_db, bytes4(sha3("setApproval(address,address,uint256)")), true );
+        authority.setCanCall( controller, balance_db, "moveBalance(address,address,uint256)", true );
+        authority.setCanCall( controller, approval_db, "setApproval(address,address,uint256)", true );
 
         // The controller calls back to the forntend for the 2 events.
-        authority.setCanCall( controller, frontend, bytes4(sha3("emitTransfer(address,address,uint256)")), true );
-        authority.setCanCall( controller, frontend, bytes4(sha3("emitApproval(address,address,uint256)")), true );
+        authority.setCanCall( controller, frontend, "emitTransfer(address,address,uint256)", true );
+        authority.setCanCall( controller, frontend, "emitApproval(address,address,uint256)", true );
 
         // The frontend can call the proxy functions.
-        authority.setCanCall( frontend, controller, bytes4(sha3("transfer(address,address,uint256)")), true );
-        authority.setCanCall( frontend, controller, bytes4(sha3("transferFrom(address,address,address,uint256)")), true );
-        authority.setCanCall( frontend, controller, bytes4(sha3("approve(address,address,uint256)")), true );
+        authority.setCanCall( frontend, controller, "transfer(address,address,uint256)", true );
+        authority.setCanCall( frontend, controller, "transferFrom(address,address,address,uint256)", true );
+        authority.setCanCall( frontend, controller, "approve(address,address,uint256)", true );
 
         authority.updateAuthority(msg.sender, DSAuthModes.Owner);
 
