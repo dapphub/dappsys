@@ -179,9 +179,8 @@ contract DSEasyMultisig is DSBaseActor
         if( this.balance < a.value ) {
             throw;
         }
+        exec( a.target, a.calldata, a.value );
         a.triggered = true;
-
-        a.result = exec( a.target, a.calldata, a.value );
         actions[action_id] = a;
         Triggered(action_id, a.result);
     }
