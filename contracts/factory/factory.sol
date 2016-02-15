@@ -23,10 +23,12 @@ contract DSFactory {
     function buildDSBalanceDB() returns (DSBalanceDB);
     function buildDSApprovalDB() returns (DSApprovalDB);
     function buildDSMap() returns (DSMap);
+    function buildDSNullMap() returns (DSNullMap);
     // token
     function buildDSTokenController( DSTokenFrontend frontend, DSBalanceDB bal_db, DSApprovalDB appr_db )
              returns (DSTokenController);
     function buildDSTokenFrontend() returns (DSTokenFrontend);
+    function buildDSTokenRegistry() returns (DSTokenRegistry);
     function installDSTokenBasicSystem( DSBasicAuthority authority ) 
              returns( DSTokenFrontend token_frontend );
     // gov
@@ -52,52 +54,65 @@ contract DSFactory1 is DSFactory, DSAuthUser {
         _token_install = token_install;
     }
 
-    function buildDSBasicAuthority() returns (DSBasicAuthority c) {
-        c = _auth.buildDSBasicAuthority();
-        c.updateAuthority(msg.sender, DSAuthModes.Owner);
+    function buildDSBasicAuthority() returns (DSBasicAuthority ret) {
+        ret = _auth.buildDSBasicAuthority();
+        returnOwned( ret );
     }
-    function buildDSBalanceDB() returns (DSBalanceDB c) {
-        c = _data.buildDSBalanceDB();
-        c.updateAuthority(msg.sender, DSAuthModes.Owner);
+    function buildDSBalanceDB() returns (DSBalanceDB ret) {
+        ret = _data.buildDSBalanceDB();
+        returnOwned( ret );
     }
-    function buildDSMap() returns (DSMap c) {
-        c = _data.buildDSMap();
-        c.updateAuthority(msg.sender, DSAuthModes.Owner);
+    function buildDSMap() returns (DSMap ret) {
+        ret = _data.buildDSMap();
+        returnOwned( ret );
     }
-    function buildDSApprovalDB() returns (DSApprovalDB c) {
-        c = _data.buildDSApprovalDB();
-        c.updateAuthority(msg.sender, DSAuthModes.Owner);
+    function buildDSNullMap() returns (DSNullMap ret) {
+        ret = _data.buildDSNullMap();
+        returnOwned( ret );
+    }
+    function buildDSApprovalDB() returns (DSApprovalDB ret) {
+        ret = _data.buildDSApprovalDB();
+        returnOwned( ret );
+    }
+    function buildDSTokenRegistry() returns (DSTokenRegistry ret)
+    {
+        ret = _token.buildDSTokenRegistry();
+        returnOwned( ret );
     }
     function buildDSTokenController( DSTokenFrontend frontend, DSBalanceDB bal_db, DSApprovalDB appr_db )
-             returns (DSTokenController c)
+             returns (DSTokenController ret)
     {
-        c = _token.buildDSTokenController( frontend, bal_db, appr_db );
-        c.updateAuthority(msg.sender, DSAuthModes.Owner);
+        ret = _token.buildDSTokenController( frontend, bal_db, appr_db );
+        returnOwned( ret );
     }
-
-    // TODO document pre/post conditions
+    function buildDSTokenFrontend() returns (DSTokenFrontend ret)
+    {
+        ret = _token.buildDSTokenFrontend();
+        returnOwned( ret );
+    }
+    // @dev Expects to own `authority`
     function installDSTokenBasicSystem( DSBasicAuthority authority )
              returns (DSTokenFrontend frontend )
     {
-        authority.updateAuthority(_token_install, DSAuthModes.Owner);
+        setOwner( authority, _token_install );
         frontend = _token_install.installDSTokenBasicSystem( authority );
-        authority.updateAuthority( msg.sender, DSAuthModes.Owner );
+        returnOwned( authority );
         return frontend;
     }
-    function buildDSTokenFrontend() returns (DSTokenFrontend c)
+    function buildDSEasyMultisig( uint n, uint m, uint expiration ) returns (DSEasyMultisig ret)
     {
-        c = _token.buildDSTokenFrontend();
-        c.updateAuthority(msg.sender, DSAuthModes.Owner);
-        return c;
+        ret = _ms.buildDSEasyMultisig( n, m, expiration );
+        returnOwned( ret );
     }
-    function buildDSEasyMultisig( uint n, uint m, uint expiration ) returns (DSEasyMultisig)
-    {
-        var c = _ms.buildDSEasyMultisig( n, m, expiration );
-        c.updateAuthority(msg.sender, DSAuthModes.Owner);
-        return c;
-    }
-    function() returns (bytes32) {
-        return 0x0;
+    function() {
+        throw;
     }
 }
 
+contract DSFactory1Morden is DSFactory1 (
+    DSAuthFactory(0x2ebb6e441d68efb9124ebc4729b34ea6df6dbc06)
+  , DSDataFactory(0x068a602cd168f59d61ae514a6807467480327786)
+  , DSMultisigFactory(0x05ebf0e9e5db6c1f524c2e6e2078fcdbc1ebe123)
+  , DSTokenFactory(0x3e7dd3254b2f64d04634ad31a369d7a84e7c424a)
+  , DSTokenInstaller(0xd82a326c22fd016b389916ac641cb4f6ea5fa04b)
+) {}

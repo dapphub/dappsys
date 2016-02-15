@@ -6,28 +6,28 @@ import 'factory/auth_factory.sol';
 import 'token/controller.sol';
 import 'token/base.sol';
 import 'token/frontend.sol';
+import 'token/registry.sol';
 
 contract DSTokenFactory is DSAuthUser {
     function buildDSTokenController( DSTokenFrontend frontend, DSBalanceDB bal_db, DSApprovalDB appr_db )
              external
-             returns (DSTokenController)
+             returns (DSTokenController ret)
     {
-        var c = new DSTokenController( frontend, bal_db, appr_db );
-        c.updateAuthority(msg.sender, DSAuthModes.Owner);
-        return c;
+        ret = new DSTokenController( frontend, bal_db, appr_db );
+        returnOwned( ret );
     }
     function buildDSTokenFrontend()
              external
-             returns (DSTokenFrontend)
+             returns (DSTokenFrontend ret)
     {
-        var c = new DSTokenFrontend();
-        c.updateAuthority(msg.sender, DSAuthModes.Owner);
-        return c;
+        ret = new DSTokenFrontend();
+        returnOwned( ret );
     }
-    function buildDSTokenBase( uint initial_balance ) returns (DSTokenBase) {
-        var c = new DSTokenBase(initial_balance);
-        c.transfer(msg.sender, initial_balance);
-        return c;
+    function buildDSTokenRegistry()
+             returns (DSTokenRegistry ret)
+    {
+        ret = new DSTokenRegistry();
+        returnOwned( ret );
     }
 }
 
@@ -45,17 +45,17 @@ contract DSTokenInstaller is DSAuthUser {
     function installDSTokenBasicSystem( DSBasicAuthority authority )
              returns( DSTokenFrontend frontend )
     {
+        frontend = _token.buildDSTokenFrontend();
         var balance_db = _data.buildDSBalanceDB();
         var approval_db = _data.buildDSApprovalDB();
-        frontend = _token.buildDSTokenFrontend();
         var controller = _token.buildDSTokenController( frontend, balance_db, approval_db );
 
         frontend.setController( controller );
 
-        balance_db.updateAuthority( authority, DSAuthModes.Authority );
-        approval_db.updateAuthority( authority, DSAuthModes.Authority );
-        controller.updateAuthority( authority, DSAuthModes.Authority );
-        frontend.updateAuthority( authority, DSAuthModes.Authority );
+        setAuthority( balance_db, authority );
+        setAuthority( approval_db, authority );
+        setAuthority( controller, authority );
+        setAuthority( frontend, authority );
 
         // The only data ops the controller does is `move` balances and `set` approvals.
         authority.setCanCall( controller, balance_db, "moveBalance(address,address,uint256)", true );
@@ -70,8 +70,13 @@ contract DSTokenInstaller is DSAuthUser {
         authority.setCanCall( frontend, controller, "transferFrom(address,address,address,uint256)", true );
         authority.setCanCall( frontend, controller, "approve(address,address,uint256)", true );
 
-        authority.updateAuthority(msg.sender, DSAuthModes.Owner);
-
+        returnOwned( authority );
         return frontend;
     }
 }
+
+contract DSTokenInstallerMorden is DSTokenInstaller (
+    DSAuthFactory(0x068a602cd168f59d61ae514a6807467480327786)
+  , DSDataFactory(0x05ebf0e9e5db6c1f524c2e6e2078fcdbc1ebe123)
+  , DSTokenFactory(0x3e7dd3254b2f64d04634ad31a369d7a84e7c424a)
+) {}
