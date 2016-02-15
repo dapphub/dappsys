@@ -23,7 +23,8 @@ contract DSBasicAuthority is DSAuthority
              constant
              returns (bool)
     {
-        return _can_call[caller_address][code_address][sig];
+        return _can_call[caller_address][code_address][0x0]
+            || _can_call[caller_address][code_address][sig];
     }
 
     function setCanCall( address caller_address

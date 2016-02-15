@@ -1,4 +1,3 @@
-import 'dapple/debug.sol';
 import 'auth.sol';
 import 'actor/base.sol';
 
@@ -34,7 +33,6 @@ contract DSEasyMultisig is DSBaseActor
                          , DSEasyMultisigEvents
                          , DSAuthUser
                          , DSAuth
-                         , Debug
 {
     // How many confirmations an action needs to execute.
     uint _required;
