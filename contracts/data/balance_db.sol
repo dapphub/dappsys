@@ -4,7 +4,7 @@ import 'auth.sol';
 import 'util/safety.sol';
 
 contract DSBalanceDBEvents {
-    event BalanceUpdate( address who, uint new_amount );
+    event BalanceUpdate( address indexed who, uint new_amount );
 }
 
 contract DSBalanceDB is DSAuth
