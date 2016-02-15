@@ -5,9 +5,8 @@ import 'dapple/debug.sol';
 // Simple example and passthrough for testing
 contract DSSimpleActor is DSBaseActor {
     function execute( address target, bytes calldata, uint value )
-             returns (bool call_ret )
     {
-        return exec( target, calldata, value );
+        exec( target, calldata, value );
     }
     function tryExecute( address target, bytes calldata, uint value )
              returns (bool call_ret )
@@ -56,7 +55,7 @@ contract DSBaseActorTest is Test {
         for( var i = 0; i < 35; i++ ) {
             calldata.push(byte(i));
         }
-        assertTrue(a.execute( address(cr), calldata, 0 ));
+        a.execute( address(cr), calldata, 0 );
         assertTrue( cr.compareLastCalldata( calldata ) );
     }
     function testTryProxyCall() {
@@ -73,7 +72,7 @@ contract DSBaseActorTest is Test {
             calldata.push(byte(i));
         }
         assertEq(a.balance, 10 wei, "ether not sent to actor");
-        assertTrue(a.execute(address(cr), calldata, 10 wei));
+        a.execute(address(cr), calldata, 10 wei);
         assertTrue( cr.compareLastCalldata( calldata ),
                    "call data does not match" );
         assertEq(cr.balance, 10 wei);
