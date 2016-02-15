@@ -4,6 +4,6 @@ import 'auth/basic_authority.sol';
 contract DSAuthFactory is DSAuthUser {
     function buildDSBasicAuthority() returns (DSBasicAuthority ret) {
         ret = new DSBasicAuthority();
-        returnOwned( ret );
+        setOwner( ret, msg.sender );
     }
 }

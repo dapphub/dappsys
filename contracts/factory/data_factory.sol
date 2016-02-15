@@ -7,18 +7,18 @@ import 'data/map.sol';
 contract DSDataFactory is DSAuthUser {
     function buildDSBalanceDB() returns (DSBalanceDB ret) {
         ret = new DSBalanceDB();
-        returnOwned( ret );
+        setOwner( ret, msg.sender );
     }
     function buildDSApprovalDB() returns (DSApprovalDB ret) {
         ret = new DSApprovalDB();
-        returnOwned( ret );
+        setOwner( ret, msg.sender );
     }
     function buildDSMap() returns (DSMap ret) {
         ret = new DSMap();
-        returnOwned( ret );
+        setOwner( ret, msg.sender );
     }
     function buildDSNullMap() returns (DSNullMap ret) {
         ret = new DSNullMap();
-        returnOwned( ret );
+        setOwner( ret, msg.sender );
     }
 }

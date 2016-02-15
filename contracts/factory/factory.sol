@@ -56,39 +56,39 @@ contract DSFactory1 is DSFactory, DSAuthUser {
 
     function buildDSBasicAuthority() returns (DSBasicAuthority ret) {
         ret = _auth.buildDSBasicAuthority();
-        returnOwned( ret );
+        setOwner( ret, msg.sender );
     }
     function buildDSBalanceDB() returns (DSBalanceDB ret) {
         ret = _data.buildDSBalanceDB();
-        returnOwned( ret );
+        setOwner( ret, msg.sender );
     }
     function buildDSMap() returns (DSMap ret) {
         ret = _data.buildDSMap();
-        returnOwned( ret );
+        setOwner( ret, msg.sender );
     }
     function buildDSNullMap() returns (DSNullMap ret) {
         ret = _data.buildDSNullMap();
-        returnOwned( ret );
+        setOwner( ret, msg.sender );
     }
     function buildDSApprovalDB() returns (DSApprovalDB ret) {
         ret = _data.buildDSApprovalDB();
-        returnOwned( ret );
+        setOwner( ret, msg.sender );
     }
     function buildDSTokenRegistry() returns (DSTokenRegistry ret)
     {
         ret = _token.buildDSTokenRegistry();
-        returnOwned( ret );
+        setOwner( ret, msg.sender );
     }
     function buildDSTokenController( DSTokenFrontend frontend, DSBalanceDB bal_db, DSApprovalDB appr_db )
              returns (DSTokenController ret)
     {
         ret = _token.buildDSTokenController( frontend, bal_db, appr_db );
-        returnOwned( ret );
+        setOwner( ret, msg.sender );
     }
     function buildDSTokenFrontend() returns (DSTokenFrontend ret)
     {
         ret = _token.buildDSTokenFrontend();
-        returnOwned( ret );
+        setOwner( ret, msg.sender );
     }
     // @dev Expects to own `authority`
     function installDSTokenBasicSystem( DSBasicAuthority authority )
@@ -96,13 +96,13 @@ contract DSFactory1 is DSFactory, DSAuthUser {
     {
         setOwner( authority, _token_install );
         frontend = _token_install.installDSTokenBasicSystem( authority );
-        returnOwned( authority );
+        setOwner( authority, msg.sender );
         return frontend;
     }
     function buildDSEasyMultisig( uint n, uint m, uint expiration ) returns (DSEasyMultisig ret)
     {
         ret = _ms.buildDSEasyMultisig( n, m, expiration );
-        returnOwned( ret );
+        setOwner( ret, msg.sender );
     }
     function() {
         throw;

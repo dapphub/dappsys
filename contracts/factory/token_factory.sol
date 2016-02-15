@@ -14,20 +14,20 @@ contract DSTokenFactory is DSAuthUser {
              returns (DSTokenController ret)
     {
         ret = new DSTokenController( frontend, bal_db, appr_db );
-        returnOwned( ret );
+        setOwner( ret, msg.sender );
     }
     function buildDSTokenFrontend()
              external
              returns (DSTokenFrontend ret)
     {
         ret = new DSTokenFrontend();
-        returnOwned( ret );
+        setOwner( ret, msg.sender );
     }
     function buildDSTokenRegistry()
              returns (DSTokenRegistry ret)
     {
         ret = new DSTokenRegistry();
-        returnOwned( ret );
+        setOwner( ret, msg.sender );
     }
 }
 
@@ -70,7 +70,7 @@ contract DSTokenInstaller is DSAuthUser {
         authority.setCanCall( frontend, controller, "transferFrom(address,address,address,uint256)", true );
         authority.setCanCall( frontend, controller, "approve(address,address,uint256)", true );
 
-        returnOwned( authority );
+        setOwner( authority, msg.sender);
         return frontend;
     }
 }

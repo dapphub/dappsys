@@ -2,10 +2,9 @@ import 'auth.sol';
 import 'gov/easy_multisig.sol';
 
 contract DSMultisigFactory is DSAuthUser {
-    function buildDSEasyMultisig( uint n, uint m, uint expiration ) returns (DSEasyMultisig)
+    function buildDSEasyMultisig( uint n, uint m, uint expiration ) returns (DSEasyMultisig ret)
     {
-        var c = new DSEasyMultisig( n, m, expiration );
-        c.updateAuthority(msg.sender, DSAuthModes.Owner);
-        return c;
+        ret = new DSEasyMultisig( n, m, expiration );
+        setOwner( ret, msg.sender );
     }
 }
