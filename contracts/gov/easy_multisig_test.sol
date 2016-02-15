@@ -75,7 +75,7 @@ contract DSEasyMultisigTest is Test, DSEasyMultisigEvents
         Proposed(1, expected_calldata);
         Confirmed(1, this);
         Confirmed(1, t1);
-        Triggered(1, true);
+        Triggered(1);
 
         var h = new helper();
         helper(ms).doSomething(1);
@@ -83,12 +83,12 @@ contract DSEasyMultisigTest is Test, DSEasyMultisigEvents
         assertEq( h._arg(), 0, "call shouldn't have succeeded" );
         var (r, m, e, id) = ms.getInfo();
         assertEq( id, 1, "wrong last action id");
-        uint c; bool t; bool res;
-        (c, e, t, res) = ms.getActionStatus(1);
+        uint c; bool t;
+        (c, e, t) = ms.getActionStatus(1);
         assertTrue( c == 0, "wrong number of confirmations" );
         ms.confirm(1);
         DSEasyMultisig(t1).confirm(1);
-        (c, e, t, res) = ms.getActionStatus(1);
+        (c, e, t) = ms.getActionStatus(1);
         assertTrue( c == 2, "wrong number of confirmations" );
         DSEasyMultisig(t1).trigger(1);
         assertEq( h._arg(), 1, "wrong last arg" );
