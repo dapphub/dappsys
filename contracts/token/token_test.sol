@@ -2,7 +2,6 @@ import 'auth.sol';
 import 'dapple/test.sol';
 import 'dapple/debug.sol';
 import 'token/base.sol';
-import 'auth/authority.sol';
 import 'factory/factory.sol';
 import 'factory/factory_test.sol';
 

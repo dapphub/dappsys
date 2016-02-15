@@ -1,4 +1,3 @@
-import 'auth/authority.sol';
 import 'auth.sol';
 
 contract DSBasicAuthorityEvents {

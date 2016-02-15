@@ -1,3 +1,4 @@
+// import this as "auth.sol" and use "DSAuth"
 import 'auth/enum.sol';
 import 'auth/events.sol';
 import 'auth/authority.sol';

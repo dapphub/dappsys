@@ -1,5 +1,4 @@
 import 'dapple/test.sol';
-import 'auth/authority.sol';
 import 'auth.sol';
 
 contract Vault is DSAuth {

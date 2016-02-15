@@ -1,8 +1,5 @@
 import 'dapple/test.sol';
 import 'auth.sol';
-import 'auth/authorized.sol';
-import 'auth/authority.sol';
-import 'auth/events.sol';
 
 contract DSAuthorizedUser is DSAuthorized {
     function triggerAuth() auth() returns (bool) {

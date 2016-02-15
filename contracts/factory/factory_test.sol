@@ -1,6 +1,5 @@
 import 'auth.sol';
 import 'factory/factory.sol';
-import 'auth/authority.sol';
 import 'dapple/test.sol';
 
 contract TestFactoryUser is DSAuthUser {
