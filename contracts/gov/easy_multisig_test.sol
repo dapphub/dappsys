@@ -70,7 +70,9 @@ contract DSEasyMultisigTest is Test, DSEasyMultisigEvents
     }
     function testEasyPropose() {
         expectEventsExact(ms);
-        Proposed(1);
+        bytes memory expected_calldata;
+        // expected_calldata = bytes4(sha3("doSomething(uint256)")) + bytes32(1);
+        Proposed(1, expected_calldata);
         Confirmed(1, this);
         Confirmed(1, t1);
         Triggered(1, true);

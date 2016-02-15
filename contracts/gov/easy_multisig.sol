@@ -4,9 +4,9 @@ import 'actor/base.sol';
 
 contract DSEasyMultisigEvents {
     event MemberAdded(address who);
-    event Proposed(uint action_id);
-    event Confirmed(uint action_id, address who);
-    event Triggered(uint action_id, bool result);
+    event Proposed(uint indexed action_id, bytes calldata);
+    event Confirmed(uint indexed action_id, address who);
+    event Triggered(uint indexed action_id, bool result);
 }
 
 /* A multisig actor optimized for ease of use.
@@ -34,7 +34,6 @@ contract DSEasyMultisig is DSBaseActor
                          , DSEasyMultisigEvents
                          , DSAuthUser
                          , DSAuth
-                         , Debug
 {
     // How many confirmations an action needs to execute.
     uint _required;
@@ -110,8 +109,6 @@ contract DSEasyMultisig is DSBaseActor
         return (a.confirmations, a.expiration, a.triggered, a.result);
     }
 
-
-
     // `propose` an action using the calldata from this sender's last call.
     function easyPropose( address target, uint value ) returns (uint action_id) {
         return propose( target, easy_calldata[msg.sender], value );
@@ -135,7 +132,7 @@ contract DSEasyMultisig is DSBaseActor
         // Increment first because, 0 is not a valid ID.
         _last_action_id++;
         actions[_last_action_id] = a;
-        Proposed(_last_action_id);
+        Proposed(_last_action_id, calldata);
         return _last_action_id;
     }
 
