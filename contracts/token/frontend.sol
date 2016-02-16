@@ -12,7 +12,7 @@ contract DSTokenFrontend is DSToken
                           , DSTokenEventCallback
                           , DSAuth
 {
-    DSTokenControllerType _controller;
+    DSTokenController _controller;
     function setController( DSTokenController controller )
              auth()
     {
