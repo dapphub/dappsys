@@ -45,26 +45,26 @@ How to
 
 ##### Mixin Types
 
-    `DSBaseActor`: `exec` and `tryExec`, wrappers around `.call`.
+`DSBaseActor`: `exec` and `tryExec`, wrappers around `.call`.
 
 
 ### `data`:
 
 ##### Concrete Types
 
-    `DSMap`: word-sized keys to word-sized values
+`DSMap`: word-sized keys to word-sized values
 
-    `DSNullMap`: Nullable version of `DSMap`. Throws on null `get`, has `tryGet` with error return argument.
+`DSNullMap`: Nullable version of `DSMap`. Throws on null `get`, has `tryGet` with error return argument.
 
-    `DSBalanceDB`: Typed map for "balances" (set/add/subtract/move), used with `token`
+`DSBalanceDB`: Typed map for "balances" (set/add/subtract/move), used with `token`
 
-    `DSApprovalDB`: Typed map for "approvals" (set), used with `token`
+`DSApprovalDB`: Typed map for "approvals" (set), used with `token`
 
 ### `factory`:
 
 ##### Singletons
 
-    `DSFactory1`: Factories for most types in v1. TODO special usage for `install` vs `build`
+`DSFactory1`: Factories for most types in v1. TODO special usage for `install` vs `build`
 
 ### `gov`:
 
