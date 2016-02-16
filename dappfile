@@ -1,8 +1,10 @@
+name: dappsys
 layout:
   sol_sources: contracts
   build_dir: build
 ignore: []
 environments:
+  default: morden
   morden:
     objects:
       auth_factory1:
