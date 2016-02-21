@@ -2,6 +2,7 @@
 // For now, this just means the multisig contract, but it could
 // be used for stake-vote or futarchy.
 contract DSBaseActor {
+    // return result of `call` keyword
     function tryExec( address target, bytes calldata, uint value)
              internal
              returns (bool call_ret)
@@ -10,12 +11,10 @@ contract DSBaseActor {
     }
     function exec( address target, bytes calldata, uint value)
              internal
-             returns (bool call_ret)
     {
-        if(tryExec(target, calldata, value)) {
-            return true;
+        if(!tryExec(target, calldata, value)) {
+            throw;
         }
-        throw;
     }
 }
 

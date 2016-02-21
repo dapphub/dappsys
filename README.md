@@ -7,89 +7,106 @@
 Installation
 ---
 
-This will work Soon:
-
     npm install dapple
-    dapple install dappsys
+    dapple install https://github.com/nexusdev/dappsys
 
-Modules
+How to
 ---
 
-### v1 modules
+1.0 Contracts
+---
 
-#### `actor`
-##### `actor/base.sol`
-##### `actor/base_actor.sol`
-##### `actor/base_actor_test.sol`
+### `auth`:
+
+##### Mixin Types
+
+`DSAuth` or `DSAuthorized`: Mixin contract with the `auth` modifier.
+
+`DSAuthUser`: `DSAuthModesEnum` + `DSAuthorizedEvents` + `DSAuthUtils`
+
+`DSAuthUtils`: Wrappers for `updateAuthority` (`setOwner` and `setAuthority`)
+
+##### Concrete Types
+
+`DSBasicAuthority`: Simple `DSAuthority` implementation with `setCanCall(caller, code, sig, can_call)`
+
+##### Abstract Types:
 
 
-#### `auth`
+`DSAuthority`: `canCall(caller, code, sig) returns (cal_call)`
 
-Base command-and-control contracts. 
+`DSAuthorizedEvents`: Event definitions for `DSAuthorized` events.
 
-tests/docs
-* `auth/auth.sol`
-* `auth/authority.sol`
-* `auth/basic_authority.sol`
-
-design
-* `auth/group_authority.sol`
-
-
-#### `data`
-
-Database contracts.
-
-tests/docs
-* `data/approval_db.sol`
-* `data/balance_db.sol`
-* `data/map.sol`
-
-design
-* `data/auth_db.sol`
-
-#### `gov`
-
-* multisig
-* stake-vote
-
-#### `token`
-
-impl:
-* `token/base.sol`
-* `token/controller.sol`
-* `token/erc20.sol`
-* `token/eth_wrapper.sol`
-* `token/proxy.sol`
-* `token/token.sol`
-
-design
-`token/system.sol`
-`token/user.sol`
+`DSAuthModesEnum`: Enum definition for `DSAuthModes`.
 
 
 
+### `actor`:
 
-### v2 plans
-#### `kern`
+##### Mixin Types
 
-This contract will be a "fully dynamic object". The creator owns a contract which can be modified arbitraily, including the ability to "solidify" and constrain its ability to change itself. It is the union of several generalizations:
-
-* A *dynamic ABI* (`dynin`)
-* Ability to do *dynamic calls* (`dynout`)
-* Ability to do *dynamic events* (`dynlog`)
-* A managed subsystem (`auth`)
-
-The value of the first 3 components is that together that they let you simulate any compiled contract, modulo gas cost and stack depth.
-The `auth` component is a simple set of conventions for contract command-and-control.
-
-[1] certain restrictions in the Solidity language definition prevent us from creating this contract in pure Solidity. For now, the Kernel is split into component contracts, giving you several workaround options. Fortunately these critical features are still on the official solidity roadmap.
+`DSBaseActor`: `exec` and `tryExec`, wrappers around `.call`.
 
 
-#### `lang`
+### `data`:
 
-Tests to explore solidity's corner cases, and some helper mixins.
+##### Concrete Types
 
-#### `util`
+`DSMap`: word-sized keys to word-sized values
 
-misc utilities
+`DSNullMap`: Nullable version of `DSMap`. Throws on null `get`, has `tryGet` with error return argument.
+
+`DSBalanceDB`: Typed map for "balances" (set/add/subtract/move), used with `token`
+
+`DSApprovalDB`: Typed map for "approvals" (set), used with `token`
+
+### `factory`:
+
+##### Singletons
+
+`DSFactory1`: Factories for most types in v1. TODO special usage for `install` vs `build`
+
+### `gov`:
+
+##### Concrete Types
+
+`DSEasyMultisig`: A multisig actor optimized for ease of use.
+
+
+### `token`
+
+##### Abstract Types
+
+`ERC20`: Token standard: https://github.com/ethereum/EIPs/issues/20
+
+`ERC20Stateful`: Subset of `ERC20` which affects state and also depends on `msg.sender`.
+
+`ERC20Stateless`: Subset of `ERC20` which are getters that do not affect state and do not depend on `msg.sender`.
+
+`ERC20Events`: Type that contains `ERC20` event definitions.
+
+
+`DSToken`: alias for `ERC20`
+
+
+`DSTokenControllerType`: Variants of `ERC20Stateful` with an extra `_caller` argument.
+
+`DSTokenEventCallback`: `emitX` for `X` in `ERC20Events`
+
+##### Concrete Types
+
+`DSTokenRegistry`: `DSTokenProvider` implementation - a `DSNullMap` with `getToken`, address-returning alias for `get`.
+
+`DSTokenFrontend`: A proxy contract for `ERC20`/`DSToken` which forwards to a set `DSTokenControllerType`. See `factory/token_installer.sol`.
+
+`DSTokenController`: A `DSTokeControllerType` implementation which implements minimal `ERC20` logic. See `factory/token_installer.sol`.
+
+##### Mixin Types
+
+`DSTokenProviderUser`: `DSToken` functions with an extra `bytes32 symbol` argument, plus some extra helper mixins and internal functions for common token usages.
+
+`DSTokenBase`: A base contract for single-contract token implementations.
+
+##### Singletons
+
+`DSEthToken`: A contract which wraps the native ether functionality in an `ERC20`-compliant Token contract.
