@@ -9,22 +9,22 @@ environments:
     objects:
       auth_factory1:
         class: DSAuthFactory
-        address: '0x2ebb6e441d68efb9124ebc4729b34ea6df6dbc06'
+        address: '0xaab68ae2636257caa0cd7de861a70c60010e9fb3'
       data_factory1:
         class: DSDataFactory
-        address: '0x068a602cd168f59d61ae514a6807467480327786'
+        address: '0xc5283a6a58c6f1f6b7d6804c6be5a9045cc02a50'
       multisig_factory1:
         class: DSMultisigFactory
-        address: '0x05ebf0e9e5db6c1f524c2e6e2078fcdbc1ebe123'
+        address: '0xafeef3d107ecdf5be9e3e5fad6134ed98034c100'
       token_factory1:
         class: DSTokenFactory
-        address: '0x3e7dd3254b2f64d04634ad31a369d7a84e7c424a'
+        address: '0x8e8276455d0981d1c86dbf2ad8357722e1ea9984'
       token_installer1:
-        class: DSTokenInstallerMorden
-        address: '0xd82a326c22fd016b389916ac641cb4f6ea5fa04b'
+        class: DSTokenInstaller
+        address: '0x6d28d1c7c7c7f1473dec9d9e039df0b142702b09'
       eth_token1:
         class: DSEthToken
-        address: '0xe1f0745fbfed21bd9f24089af5209ad9f081d214'
+        address: '0x5903c549ef9d068e6bbcacdb9f30ade178d6b658'
       factory1:
-        class: DSFactory1Morden
-        address: '0x285801befe3e97b2260a529f0d2fceebd51af01a'
+        class: DSFactory1
+        address: '0x9a9a025414e175e6cd11e43d4adbbd2c86446a69'
