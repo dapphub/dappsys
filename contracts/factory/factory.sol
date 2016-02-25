@@ -29,7 +29,7 @@ contract DSFactory {
              returns (DSTokenController);
     function buildDSTokenFrontend() returns (DSTokenFrontend);
     function buildDSTokenRegistry() returns (DSTokenRegistry);
-    function installDSTokenBasicSystem( DSBasicAuthority authority ) 
+    function installDSTokenBasicSystem( DSBasicAuthority authority )
              returns( DSTokenFrontend token_frontend );
     // gov
     function buildDSEasyMultisig( uint n, uint m, uint expiration ) returns (DSEasyMultisig);
@@ -104,9 +104,7 @@ contract DSFactory1 is DSFactory, DSAuthUser {
         ret = _ms.buildDSEasyMultisig( n, m, expiration );
         setOwner( ret, msg.sender );
     }
-/*
     function() {
         throw;
     }
-*/
 }

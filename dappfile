@@ -4,50 +4,49 @@ layout:
   build_dir: build
 ignore: []
 environments:
-  default: morden
   morden:
     objects:
       auth_factory1:
         class: DSAuthFactory
-        address: '0xaab68ae2636257caa0cd7de861a70c60010e9fb3'
+        address: '0x76f1028bcda554f9fe9d12155a7359769494201f'
       data_factory1:
         class: DSDataFactory
-        address: '0xc5283a6a58c6f1f6b7d6804c6be5a9045cc02a50'
+        address: '0xd9534e278bfdf6960691eea2ce44265838c143c8'
       multisig_factory1:
         class: DSMultisigFactory
-        address: '0xafeef3d107ecdf5be9e3e5fad6134ed98034c100'
+        address: '0xb99c81fc32fba27a34d7dcf6fd5873a9717946c6'
       token_factory1:
         class: DSTokenFactory
-        address: '0x8e8276455d0981d1c86dbf2ad8357722e1ea9984'
+        address: '0x4ab815b096ade026c604f1f51b5f33947471ed9a'
       token_installer1:
         class: DSTokenInstaller
-        address: '0x6d28d1c7c7c7f1473dec9d9e039df0b142702b09'
-      eth_token1:
-        class: DSEthToken
-        address: '0x5903c549ef9d068e6bbcacdb9f30ade178d6b658'
+        address: '0x8e23132a3076e652696d61d581c44d6f94fc1cfa'
       factory1:
         class: DSFactory1
-        address: '0x9a9a025414e175e6cd11e43d4adbbd2c86446a69'
+        address: '0x1fda97d224ebce016b9a2cb4a96864ef18090462'
+      eth_token1:
+        class: DSEthToken
+        address: '0xa8079609a6aa4545aa0ab6c9d108bbeab187f5c9'
   live:
     objects:
       auth_factory1:
         class: DSAuthFactory
-        address: '0x79f1b7a36a03397e348eab8e9f088359097f05ac'
+        address: '0x52802189f8a5f7d0d3d80ae7c02c28514c978871'
       data_factory1:
         class: DSDataFactory
-        address: '0x5f63030bde36cd75a895d392ec9626e610478d7f'
+        address: '0xd7d9821bbf2857230482a94ff2f16ab370ca6bbb'
       multisig_factory1:
         class: DSMultisigFactory
-        address: '0x05fbeb6d83475038107d8c2fc921135dc595918b'
+        address: '0x9404b6d3fdc712fb1733dcefdef5623c4d2ce7c0'
       token_factory1:
         class: DSTokenFactory
-        address: '0x342779e5053e86db6802013124ae7ebf837cd1de'
+        address: '0x285d11b03c9dc1f0eec21b1f18b4e1293fede90e'
       token_installer1:
         class: DSTokenInstaller
-        address: '0xe32c749b11053e0aa8262462f84f184e66e43251'
-      eth_token1:
-        class: DSEthToken
-        address: '0xb345180d0a2c791d4943a239f8ebb50efa01c81a'
+        address: '0x9ae19a2fd7465f38f91cc72bdd98fba92c12c00b'
       factory1:
         class: DSFactory1
-        address: '0x3a43d0899024935258d231bb32420a28a6db08ca'
+        address: '0x4e3037b3be6b39debe54d42b2b0472326b62576d'
+      eth_token1:
+        class: DSEthToken
+        address: '0x47f52d380f2983675a4020915b77dc48f773fc33'
