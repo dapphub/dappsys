@@ -11,7 +11,7 @@ var token_factory1 = new DSTokenFactory()
 export token_factory1
 
 var token_installer1 = new DSTokenInstaller( auth_factory1, data_factory1, token_factory1 )
-export token_installer
+export token_installer1
 
 var factory1 = new DSFactory1( auth_factory1, data_factory1, multisig_factory1, token_factory1, token_installer1 )
 export factory1
