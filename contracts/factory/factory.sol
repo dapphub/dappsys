@@ -104,15 +104,9 @@ contract DSFactory1 is DSFactory, DSAuthUser {
         ret = _ms.buildDSEasyMultisig( n, m, expiration );
         setOwner( ret, msg.sender );
     }
+/*
     function() {
         throw;
     }
+*/
 }
-
-contract DSFactory1Morden is DSFactory1 (
-    DSAuthFactory(0x2ebb6e441d68efb9124ebc4729b34ea6df6dbc06)
-  , DSDataFactory(0x068a602cd168f59d61ae514a6807467480327786)
-  , DSMultisigFactory(0x05ebf0e9e5db6c1f524c2e6e2078fcdbc1ebe123)
-  , DSTokenFactory(0x3e7dd3254b2f64d04634ad31a369d7a84e7c424a)
-  , DSTokenInstaller(0xd82a326c22fd016b389916ac641cb4f6ea5fa04b)
-) {}

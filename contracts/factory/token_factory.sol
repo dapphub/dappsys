@@ -74,9 +74,3 @@ contract DSTokenInstaller is DSAuthUser {
         return frontend;
     }
 }
-
-contract DSTokenInstallerMorden is DSTokenInstaller (
-    DSAuthFactory(0x068a602cd168f59d61ae514a6807467480327786)
-  , DSDataFactory(0x05ebf0e9e5db6c1f524c2e6e2078fcdbc1ebe123)
-  , DSTokenFactory(0x3e7dd3254b2f64d04634ad31a369d7a84e7c424a)
-) {}
