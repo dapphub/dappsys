@@ -28,3 +28,26 @@ environments:
       factory1:
         class: DSFactory1
         address: '0x9a9a025414e175e6cd11e43d4adbbd2c86446a69'
+  live:
+    objects:
+      auth_factory1:
+        class: DSAuthFactory
+        address: '0x79f1b7a36a03397e348eab8e9f088359097f05ac'
+      data_factory1:
+        class: DSDataFactory
+        address: '0x5f63030bde36cd75a895d392ec9626e610478d7f'
+      multisig_factory1:
+        class: DSMultisigFactory
+        address: '0x05fbeb6d83475038107d8c2fc921135dc595918b'
+      token_factory1:
+        class: DSTokenFactory
+        address: '0x342779e5053e86db6802013124ae7ebf837cd1de'
+      token_installer1:
+        class: DSTokenInstaller
+        address: '0xe32c749b11053e0aa8262462f84f184e66e43251'
+      eth_token1:
+        class: DSEthToken
+        address: '0xb345180d0a2c791d4943a239f8ebb50efa01c81a'
+      factory1:
+        class: DSFactory1
+        address: '0x3a43d0899024935258d231bb32420a28a6db08ca'
