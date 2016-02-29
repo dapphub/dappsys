@@ -28,6 +28,9 @@ environments:
       eth_token1:
         class: DSEthToken
         address: '0xa8079609a6aa4545aa0ab6c9d108bbeab187f5c9'
+      echo:
+        class: DSEcho
+        address: '0x803b0657331c7e9fa0124635d3ea5540d9150c2a'
   live:
     objects:
       auth_factory1:
@@ -51,3 +54,6 @@ environments:
       eth_token1:
         class: DSEthToken
         address: '0x47f52d380f2983675a4020915b77dc48f773fc33'
+      echo:
+        class: DSEcho
+        address: '0x7d3767952188c0843876a3c30e6985d13ba6cec2'
