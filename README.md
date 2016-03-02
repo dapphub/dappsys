@@ -1,5 +1,6 @@
 `dappsys`
 ===
+[![Dappsys Version](https://img.shields.io/badge/version-0.1.0-8D86C9.svg?style=flat-square)](#)
 [![Slack Status](http://slack.makerdao.com/badge.svg)](https://slack.makerdao.com)
 
 `dappsys` is **contract system framework**. It is a collection of Solidity contracts (classes) to help manage multi-contract dapps on ethereum.
