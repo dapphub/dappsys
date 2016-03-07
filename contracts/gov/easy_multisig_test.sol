@@ -70,12 +70,24 @@ contract DSEasyMultisigTest is Test, DSEasyMultisigEvents
     }
     function testEasyPropose() {
         expectEventsExact(ms);
-        bytes memory expected_calldata;
-        // expected_calldata = bytes4(sha3("doSomething(uint256)")) + bytes32(1);
+        bytes memory expected_calldata = new bytes(36);
+
+        //bytes4(sha3("doSomething(uint256)"));
+        expected_calldata[0] = 0xa6;
+        expected_calldata[1] = 0xb2;
+        expected_calldata[2] = 0x06;
+        expected_calldata[3] = 0xbf;
+
+        //bytes32(1);
+        for (var i=0; i < 32; i++) {
+            expected_calldata[i+4] = 0x0;
+        }
+        expected_calldata[35] = 0x1;
+
         Proposed(1, expected_calldata);
         Confirmed(1, this);
         Confirmed(1, t1);
-        Triggered(1, true);
+        Triggered(1);
 
         var h = new helper();
         helper(ms).doSomething(1);
@@ -83,12 +95,12 @@ contract DSEasyMultisigTest is Test, DSEasyMultisigEvents
         assertEq( h._arg(), 0, "call shouldn't have succeeded" );
         var (r, m, e, id) = ms.getInfo();
         assertEq( id, 1, "wrong last action id");
-        uint c; bool t; bool res;
-        (c, e, t, res) = ms.getActionStatus(1);
+        uint c; bool t;
+        (c, e, t) = ms.getActionStatus(1);
         assertTrue( c == 0, "wrong number of confirmations" );
         ms.confirm(1);
         DSEasyMultisig(t1).confirm(1);
-        (c, e, t, res) = ms.getActionStatus(1);
+        (c, e, t) = ms.getActionStatus(1);
         assertTrue( c == 2, "wrong number of confirmations" );
         DSEasyMultisig(t1).trigger(1);
         assertEq( h._arg(), 1, "wrong last arg" );

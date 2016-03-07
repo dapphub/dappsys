@@ -58,25 +58,28 @@ contract DSTokenInstaller is DSAuthUser {
         setAuthority( frontend, authority );
 
         // The only data ops the controller does is `move` balances and `set` approvals.
-        authority.setCanCall( controller, balance_db, "moveBalance(address,address,uint256)", true );
-        authority.setCanCall( controller, approval_db, "setApproval(address,address,uint256)", true );
+        authority.setCanCall( controller, balance_db,
+                             bytes4(sha3("moveBalance(address,address,uint256)")), true );
+        authority.setCanCall( controller, approval_db,
+                             bytes4(sha3("setApproval(address,address,uint256)")), true );
 
         // The controller calls back to the forntend for the 2 events.
-        authority.setCanCall( controller, frontend, "emitTransfer(address,address,uint256)", true );
-        authority.setCanCall( controller, frontend, "emitApproval(address,address,uint256)", true );
+        authority.setCanCall( controller, frontend,
+                             bytes4(sha3("emitTransfer(address,address,uint256)")), true );
+        authority.setCanCall( controller, frontend,
+                             bytes4(sha3("emitApproval(address,address,uint256)")), true );
 
         // The frontend can call the proxy functions.
-        authority.setCanCall( frontend, controller, "transfer(address,address,uint256)", true );
-        authority.setCanCall( frontend, controller, "transferFrom(address,address,address,uint256)", true );
-        authority.setCanCall( frontend, controller, "approve(address,address,uint256)", true );
+        authority.setCanCall( frontend, controller,
+                             bytes4(sha3("transfer(address,address,uint256)")), true );
+        authority.setCanCall( frontend, controller,
+                             bytes4(sha3("transferFrom(address,address,address,uint256)")),
+                             true );
+
+        authority.setCanCall( frontend, controller,
+                             bytes4(sha3("approve(address,address,uint256)")), true );
 
         setOwner( authority, msg.sender);
         return frontend;
     }
 }
-
-contract DSTokenInstallerMorden is DSTokenInstaller (
-    DSAuthFactory(0x068a602cd168f59d61ae514a6807467480327786)
-  , DSDataFactory(0x05ebf0e9e5db6c1f524c2e6e2078fcdbc1ebe123)
-  , DSTokenFactory(0x3e7dd3254b2f64d04634ad31a369d7a84e7c424a)
-) {}

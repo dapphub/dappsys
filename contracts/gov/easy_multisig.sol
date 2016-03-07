@@ -6,7 +6,7 @@ contract DSEasyMultisigEvents {
     event MemberAdded(address who);
     event Proposed(uint indexed action_id, bytes calldata);
     event Confirmed(uint indexed action_id, address who);
-    event Triggered(uint indexed action_id, bool result);
+    event Triggered(uint indexed action_id);
 }
 
 /* A multisig actor optimized for ease of use.
@@ -54,12 +54,11 @@ contract DSEasyMultisig is DSBaseActor
 
         uint confirmations; // If this number reaches `required`, you can trigger
         uint expiration; // Last timestamp this action can execute
-        bool triggered; // Did we try to trigger this action
-        bool result; // What was the return value of `.send` for the action, if we triggered it
+        bool triggered; // Was this action successfully triggered (multisig does not catch exceptions)
     }
-    // TODO how does this public getter work if `action` contains a `bytes`?
 
-    mapping( uint => action ) public actions;
+    mapping( uint => action ) actions;
+
     // action_id -> member -> confirmed
     mapping( uint => mapping( address => bool ) ) confirmations;
     // A record of the last fallback calldata recorded for this sender.
@@ -86,7 +85,7 @@ contract DSEasyMultisig is DSBaseActor
         MemberAdded(who);
         _members_remaining--;
         if( _members_remaining == 0 ) {
-            updateAuthority(address(0x0), DSAuthModes.Owner);
+            updateAuthority( address(0x0), DSAuthModes.Owner );
         }
     }
     function isMember( address who ) constant returns (bool) {
@@ -103,10 +102,10 @@ contract DSEasyMultisig is DSBaseActor
     // Public getter for the action mapping doesn't work in web3.js yet
     function getActionStatus(uint action_id)
              constant
-             returns (uint confirmations, uint expiration, bool triggered, bool result)
+             returns (uint confirmations, uint expiration, bool triggered)
     {
         var a = actions[action_id];
-        return (a.confirmations, a.expiration, a.triggered, a.result);
+        return (a.confirmations, a.expiration, a.triggered);
     }
 
     // `propose` an action using the calldata from this sender's last call.
@@ -180,9 +179,8 @@ contract DSEasyMultisig is DSBaseActor
             throw;
         }
         a.triggered = true;
-
-        a.result = exec( a.target, a.calldata, a.value );
+        exec( a.target, a.calldata, a.value );
         actions[action_id] = a;
-        Triggered(action_id, a.result);
+        Triggered(action_id);
     }
 }
