@@ -102,10 +102,10 @@ contract DSEasyMultisig is DSBaseActor
     // Public getter for the action mapping doesn't work in web3.js yet
     function getActionStatus(uint action_id)
              constant
-             returns (uint confirmations, uint expiration, bool triggered)
+             returns (uint confirmations, uint expiration, bool triggered, address target, uint eth_value)
     {
         var a = actions[action_id];
-        return (a.confirmations, a.expiration, a.triggered);
+        return (a.confirmations, a.expiration, a.triggered, a.target, a.value);
     }
 
     // `propose` an action using the calldata from this sender's last call.

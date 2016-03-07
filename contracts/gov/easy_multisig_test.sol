@@ -96,11 +96,14 @@ contract DSEasyMultisigTest is Test, DSEasyMultisigEvents
         var (r, m, e, id) = ms.getInfo();
         assertEq( id, 1, "wrong last action id");
         uint c; bool t;
-        (c, e, t) = ms.getActionStatus(1);
+        address target; uint value;
+        (c, e, t, target, value) = ms.getActionStatus(1);
         assertTrue( c == 0, "wrong number of confirmations" );
+        assertEq( target, address(h) );
+        assertEq( value, 0 );
         ms.confirm(1);
         DSEasyMultisig(t1).confirm(1);
-        (c, e, t) = ms.getActionStatus(1);
+        (c, e, t, target, value) = ms.getActionStatus(1);
         assertTrue( c == 2, "wrong number of confirmations" );
         DSEasyMultisig(t1).trigger(1);
         assertEq( h._arg(), 1, "wrong last arg" );
