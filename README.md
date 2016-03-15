@@ -22,7 +22,7 @@ Installation
 How to
 ---
 
-1.0 Contracts
+0.1.* Contracts
 ---
 
 ### `auth`:
