@@ -1,23 +1,23 @@
-var auth_factory2 = new DSAuthFactory()
-export auth_factory2
+var auth_factory1 = new DSAuthFactory()
+export auth_factory1
 
-var data_factory2 = new DSDataFactory()
-export data_factory2
+var data_factory1 = new DSDataFactory()
+export data_factory1
 
-var multisig_factory2 = new DSMultisigFactory()
-export multisig_factory2
+var multisig_factory1 = new DSMultisigFactory()
+export multisig_factory1
 
-var token_factory2 = new DSTokenFactory()
-export token_factory2
+var token_factory1 = new DSTokenFactory()
+export token_factory1
 
-var token_installer2 = new DSTokenInstaller( auth_factory2, data_factory2, token_factory2 )
-export token_installer2
+var token_installer1 = new DSTokenInstaller( auth_factory2, data_factory2, token_factory2 )
+export token_installer1
 
-var factory2 = new DSFactory1( auth_factory2, data_factory2, multisig_factory2, token_factory2, token_installer2 )
-export factory2
+var factory1 = new DSFactory1( auth_factory2, data_factory2, multisig_factory2, token_factory2, token_installer2 )
+export factory1
 
-var eth_token2 = new DSEthToken()
-export eth_token2
+var eth_token = new DSEthToken()
+export eth_token
 
 var echo = new DSEcho()
 export echo
