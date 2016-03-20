@@ -16,8 +16,8 @@ export token_installer1
 var factory1 = new DSFactory1( auth_factory1, data_factory1, multisig_factory1, token_factory1, token_installer1 )
 export factory1
 
-var eth_token1 = new DSEthToken()
-export eth_token1
+var eth_token = new DSEthToken()
+export eth_token
 
 var echo = new DSEcho()
 export echo
