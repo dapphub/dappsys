@@ -31,3 +31,29 @@ environments:
       echo:
         class: DSEcho
         address: '0x002956c57c04f4b0469fa5cfa137a0b823e49293'
+  live:
+    objects:
+      auth_factory1:
+        class: DSAuthFactory
+        address: '0x671bed5a8402cd6c250a17e5f02e08c85d51542f'
+      data_factory1:
+        class: DSDataFactory
+        address: '0x5d7af7715dfbbfc86e2505c308468f78702a99d9'
+      multisig_factory1:
+        class: DSMultisigFactory
+        address: '0x82f39d996d1e9ab119e4b33d581c3eeb4133acf6'
+      token_factory1:
+        class: DSTokenFactory
+        address: '0x12bcc9daffda452b6c4b0a1571360925a64fcc79'
+      token_installer1:
+        class: DSTokenInstaller
+        address: '0x460df00675f994928457771eb3b9732a99314cbe'
+      factory1:
+        class: DSFactory1
+        address: '0x2c139c5a8dd6be98067c5b4258e0dedcdbbff78b'
+      eth_token:
+        class: DSEthToken
+        address: '0xd654bdd32fc99471455e86c2e7f7d7b6437e9179'
+      echo:
+        class: DSEcho
+        address: '0x992c64ac907ef9e531e7ff8d06cec599778a0e72'
