@@ -9,7 +9,7 @@ Audit
 
 On February 24th, 2016, [Piper Merriam](https://keybase.io/pipermerriam)
 completed and signed [a code
-audit](https://github.com/nexusdev/dappsys/blob/master/nexus-review-final-2016-02-24.md)
+audit](https://github.com/nexusdev/dappsys/blob/master/doc/nexus-review-final-2016-02-24.md)
  covering the state of Dappsys as of [commit
 4dceee5](https://github.com/nexusdev/dappsys/commit/4dceee5272b51744a89009907d5ca85a0a82faed).
 
