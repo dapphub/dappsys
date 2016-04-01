@@ -3,7 +3,7 @@ import 'auth.sol';
 import 'data/balance_db.sol';
 import 'data/approval_db.sol';
 
-import 'token/controller.sol';
+import 'token/controllers/base.sol';
 
 import 'util/safety.sol';
 
@@ -98,7 +98,9 @@ contract DSConfigurableTokenController is DSTokenController {
     DSTokenSystemTransferFromActionType[] transferFrom_actions;
     DSTokenSystemApproveActionType[] approve_actions;
 
-    function transfer( address _frontend_caller, address to, uint value ) auth() returns (bool ok)
+    function transfer( address _frontend_caller, address to, uint value )
+             auth() 
+             returns (bool ok)
     {
         for(var i = 0; i < transfer_actions.length; i++ ) {
             ok = transfer_actions[i].transfer( _frontend_caller, to, value );
