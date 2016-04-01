@@ -84,15 +84,15 @@ contract DSTokenDefaultApproveHook is DSAuth
         _parent = parent_controller;
     }
 
-    function approve( address _frontend_caller, address spender, uint value)
+    function approve( address _caller, address spender, uint value)
              auth()
              returns (bool)
     {
         var approvals = _parent.getApprovalDB();
         var frontend = _parent.getFrontend();
 
-        approvals.setApproval( _frontend_caller, spender, value );
-        frontend.emitApproval( _frontend_caller, spender, value);
+        approvals.setApproval( _caller, spender, value );
+        frontend.emitApproval( _caller, spender, value);
     }
 
 }
