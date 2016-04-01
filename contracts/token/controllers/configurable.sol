@@ -5,16 +5,18 @@ import 'data/approval_db.sol';
 
 import 'token/controller.sol';
 
+import 'util/safety.sol';
+
 
 // Sub-actions to be run on stateful token function calls
 contract DSTokenSystemTransferActionType {
-    function transfer( address _frontend_caller, address to, uint value ) return (bool ok);
+    function transfer( address _frontend_caller, address to, uint value ) returns (bool ok);
 }
 contract DSTokenSystemTransferFromActionType {
-    function transferFrom( address _frontend_caller, address from, address to, uint value ) return (bool ok);
+    function transferFrom( address _frontend_caller, address from, address to, uint value ) returns (bool ok);
 }
 contract DSTokenSystemApproveActionType {
-    function approve( address _frontend_caller, address to, uint value ) return (bool ok);
+    function approve( address _frontend_caller, address to, uint value ) returns (bool ok);
 }
 
 // implements the business logic of the original token controller
@@ -22,18 +24,17 @@ contract DSTokenControllerDefaultActions is DSAuth
     , DSTokenSystemTransferActionType
     , DSTokenSystemTransferFromActionType
     , DSTokenSystemApproveActionType
+    , DSSafeAddSub
 {
     DSTokenControllerType _parent;
 
-    function DSTokenControllerDefaultActions( DSTokenFrontend frontend
-                                            , DSBalanceDB balance_db
-                                            , DSApprovalDB approval_db )    
+    function DSTokenControllerDefaultActions( DSTokenControllerType parent_controller )
     {
         _parent = parent_controller;
     }
     function transfer( address _frontend_caller, address to, uint value )
              auth()
-             return (bool ok)
+             returns (bool ok)
     {
         var balances = _parent.getBalanceDB();
         var approvals = _parent.getApprovalDB();
@@ -78,7 +79,7 @@ contract DSTokenControllerDefaultActions is DSAuth
         frontend.emitTransfer( from, to, value );
         return true;
     }
-    function approve( address _caller, address spender, uint value)
+    function approve( address _frontend_caller, address spender, uint value)
              auth()
              returns (bool)
     {
@@ -100,14 +101,14 @@ contract DSConfigurableTokenController is DSTokenController {
     function transfer( address _frontend_caller, address to, uint value ) auth() returns (bool ok)
     {
         for(var i = 0; i < transfer_actions.length; i++ ) {
-            var ok = transfer_actions.transfer( _frontend_caller, to, value );
+            ok = transfer_actions[i].transfer( _frontend_caller, to, value );
             if( !ok ) {
                 throw;
             }
         }
         return true;
     }
-    function setTransferHook( uint8 index, DSTokenSystemTransferAction action ) auth() {
+    function setTransferHook( uint8 index, DSTokenSystemTransferActionType action ) auth() {
         transfer_actions[index] = action;
     }
 }
