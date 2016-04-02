@@ -11,6 +11,7 @@ contract DSTokenTester is Tester, Debug {
     function doTransferFrom(address from, address to, uint amount)
         returns (bool)
     {
+        logs("in doTransferFrom");
         return DSToken(_t).transferFrom(from, to, amount);
     }
 
@@ -71,6 +72,7 @@ contract DSTokenTest is Test, DSAuthUser {
 
     function testValidTransfers() logs_gas {
         uint sentAmount = 250;
+        log_named_address("token11111", token);
         token.transfer(user2, sentAmount);
         assertEq(token.balanceOf(user2), sentAmount);
         assertEq(token.balanceOf(me), initialBalance - sentAmount);

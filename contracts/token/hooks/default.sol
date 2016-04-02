@@ -4,7 +4,7 @@ import 'token/hooks/types.sol';
 import 'token/controllers/base.sol';
 
 // implements the business logic of the original token controller
-contract DSTokenDefaultTransferHook is DSAuth
+contract DSTokenDefaultTransferHook is DSAuth, Debug
     , DSTokenSystemTransferHookType
     , DSSafeAddSub
 {
@@ -18,6 +18,7 @@ contract DSTokenDefaultTransferHook is DSAuth
              auth()
              returns (bool ok)
     {
+        logs("in transfer hook 444444");
         var balances = _parent.getBalanceDB();
         var approvals = _parent.getApprovalDB();
         var frontend = _parent.getFrontend();
@@ -92,7 +93,8 @@ contract DSTokenDefaultApproveHook is DSAuth
         var frontend = _parent.getFrontend();
 
         approvals.setApproval( _caller, spender, value );
-        frontend.emitApproval( _caller, spender, value);
+        frontend.emitApproval( _caller, spender, value );
+        return true;
     }
 
 }
