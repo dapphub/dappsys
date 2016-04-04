@@ -1,4 +1,4 @@
-import 'actor/base_actor.sol';
+import 'actor/base.sol';
 import 'dapple/test.sol';
 import 'dapple/debug.sol';
 
