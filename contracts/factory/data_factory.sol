@@ -1,8 +1,5 @@
 import 'auth.sol';
-import 'data/balance_db.sol';
-import 'data/approval_db.sol';
-import 'data/nullmap.sol';
-import 'data/map.sol';
+import 'data.sol';
 
 contract DSDataFactory is DSAuthUser {
     function buildDSBalanceDB() returns (DSBalanceDB ret) {
