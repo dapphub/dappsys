@@ -11,10 +11,16 @@ import 'token/hooks/default.sol';
 import 'util/safety.sol';
 
 
+
 contract DSConfigurableTokenController is DSTokenController, Debug{
     DSTokenSystemTransferHookType[] transfer_hooks;
     DSTokenSystemTransferFromHookType[] transferFrom_hooks;
     DSTokenSystemApproveHookType[] approve_hooks;
+    
+    mapping( bytes8 => address ) _refs;
+    function getLocalRef(bytes8 name) internal returns (address) {
+        return _refs[name];
+    }
 
     function DSConfigurableTokenController( DSTokenFrontend frontend, DSBalanceDB baldb, DSApprovalDB apprdb )
              DSTokenController( frontend, baldb, apprdb )
@@ -27,11 +33,7 @@ contract DSConfigurableTokenController is DSTokenController, Debug{
     {
         logs("in transfer 333333");
         for(var i = 0; i < transfer_hooks.length; i++ ) {
-            var ok = transfer_hooks[i].transfer( _caller, to, value );
-            log_named_bool("ok:", ok);
-            if( !ok ) {
-                throw;
-            }
+            transfer_hooks[i].transfer( _caller, to, value );
         }
         return true;
     }
@@ -41,11 +43,7 @@ contract DSConfigurableTokenController is DSTokenController, Debug{
     {
         logs("in transferFrom");
         for(var i = 0; i < transferFrom_hooks.length; i++ ) {
-            var ok = transferFrom_hooks[i].transferFrom( _caller, from, to, value );
-            logs("after a transferFrom hook");
-            if( !ok ) {
-                throw;
-            }
+            transferFrom_hooks[i].transferFrom( _caller, from, to, value );
         }
         return true;
 
@@ -55,10 +53,7 @@ contract DSConfigurableTokenController is DSTokenController, Debug{
              returns (bool)
     {
         for(var i = 0; i < approve_hooks.length; i++ ) {
-            var ok = approve_hooks[i].approve( _caller, spender, value );
-            if( !ok ) {
-                throw;
-            }
+            approve_hooks[i].approve( _caller, spender, value );
         }
         return true;
     }
