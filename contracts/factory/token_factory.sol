@@ -3,7 +3,7 @@ import 'auth/basic_authority.sol';
 import 'data/balance_db.sol';
 import 'factory/data_factory.sol';
 import 'factory/auth_factory.sol';
-import 'token/controllers/base.sol';
+import 'token/controller.sol';
 import 'token/base.sol';
 import 'token/frontend.sol';
 import 'token/registry.sol';

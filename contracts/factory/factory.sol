@@ -4,7 +4,7 @@ import 'data/balance_db.sol';
 import 'data/approval_db.sol';
 import 'gov/easy_multisig.sol';
 import 'token/base.sol';
-import 'token/controllers/base.sol';
+import 'token/controller.sol';
 import 'token/frontend.sol';
 
 import 'factory/auth_factory.sol';

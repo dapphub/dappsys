@@ -12,7 +12,6 @@ contract DSBalanceDBEvents {
 contract DSBalanceDB is DSAuth
                       , DSSafeAddSub
                       , DSBalanceDBEvents
-, Debug
 {
     uint _supply;
     mapping( address => uint )  _balances;
@@ -58,7 +57,6 @@ contract DSBalanceDB is DSAuth
     function moveBalance( address from, address to, uint amount )
              auth()
     {
-        logs("in moveBalance");
         _balances[from] = safeSub( _balances[from], amount );
         _balances[to] = safeAdd( _balances[to], amount );
         BalanceUpdate( from, _balances[from] );

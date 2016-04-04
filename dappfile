@@ -3,7 +3,10 @@ version: 0.2.0
 layout:
   sol_sources: contracts
   build_dir: build
-ignore: []
+ignore:
+    - auth/group_authority.sol
+    - data/vote_db.sol
+    - token/hooks/vote_sync.sol
 environments:
   morden:
     objects:
