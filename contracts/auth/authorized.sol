@@ -30,7 +30,7 @@ contract DSAuthorized is DSAuthModesEnum, DSAuthorizedEvents
             throw;
         }
     }
-    // A version of `auth()` which implicitly returns 0 instead of throwing.
+    // A version of `auth()` which implicitly returns garbage instead of throwing.
     modifier try_auth() {
         if( isAuthorized() ) {
             _
