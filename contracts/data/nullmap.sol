@@ -1,5 +1,5 @@
 // Nullable Map. Distinguishes between 0x0 and "unset".
-// This is preferable for contracts that store addresses because it
+// This is useful for contracts that store addresses because it
 // stops consumers from accidentally calling address(0x0).
 
 import 'auth.sol';
