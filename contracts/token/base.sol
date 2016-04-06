@@ -1,7 +1,7 @@
 // A base contract for single-contract tokens. All the data is held in
 // the storage locally and there are no extra functions (initial issuance
 // is done via constructor argument).
-// Contracts that plan to ever export data should be using `token/controller.sol`.
+// Contracts that plan to ever export data should be using `token/controllers/base.sol`.
 
 // Everything throws instead of returning false on failure.
 
