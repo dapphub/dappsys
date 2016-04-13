@@ -3,8 +3,6 @@
 import 'auth.sol';
 import 'util/safety.sol';
 
-import 'dapple/debug.sol';
-
 contract DSBalanceDBEvents {
     event BalanceUpdate( address indexed who, uint new_amount );
 }

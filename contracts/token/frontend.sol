@@ -6,8 +6,6 @@ import 'token/controller.sol';
 import 'token/event_callback.sol';
 import 'token/token.sol';
 
-import 'dapple/debug.sol';
-
 contract DSTokenFrontend is DSToken
                           , DSTokenEventCallback
                           , DSAuth
