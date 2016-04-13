@@ -1,4 +1,3 @@
-import 'dapple/debug.sol';
 import 'auth.sol';
 import 'actor/base.sol';
 
