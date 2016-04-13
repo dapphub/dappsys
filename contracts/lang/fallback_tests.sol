@@ -16,7 +16,7 @@ contract UndefinedFunction {
 contract TypedFallback {
     function() returns (bytes32) {
         return 0x42;
-        // same as "return bytes32(0x0);"
+        // same as "return bytes32(0x42);"
     }
 }
 
