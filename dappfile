@@ -4,7 +4,9 @@ layout:
   sol_sources: contracts
   build_dir: build
 ignore:
+    - actor/interpreter.sol
     - auth/group_authority.sol
+    - auth/authority_lock.sol
     - data/vote_db.sol
     - token/hooks/vote_sync.sol
 environments:

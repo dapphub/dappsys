@@ -55,9 +55,8 @@ contract FallbackTest is Test {
         assertEq32(ret, 0x42);
     }
     function testUntypedFallbackReturnsGarbage() {
-        var ret = UndefinedFunction(undefined).undefinedFunction();
+        var ret = UndefinedFunction(untyped).undefinedFunction();
         assertTrue( ret != bytes32(0), "ret is 0 by coincidence" );
-        log_named_bytes32("garbage", ret);
     }
     function testUndefinedFallbackReturnsGarbage() {
         var ret = UndefinedFunction(undefined).undefinedFunction();
