@@ -1,5 +1,4 @@
+build
+
 *.sw*
 *.DS_Store
-admin-gui/node_modules
-admin-gui/bower_components
-build/__*
