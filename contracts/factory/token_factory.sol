@@ -1,6 +1,6 @@
 import 'auth.sol';
 import 'auth/basic_authority.sol';
-import 'data/balance_db.sol';
+import 'data.sol';
 import 'factory/data_factory.sol';
 import 'factory/auth_factory.sol';
 import 'token/controller.sol';

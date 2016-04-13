@@ -16,13 +16,13 @@ audit](https://github.com/nexusdev/dappsys/blob/master/doc/nexus-review-final-20
 Installation
 ---
 
-    npm install dapple
-    dapple install https://github.com/nexusdev/dappsys
+    npm install -g dapple
+    # `dapple install` is not reliable yet
+    # dapple install dappsys 0.2.0
+    git submodule add https://github.com/nexusdev/dappsys dapple_packages/dappsys
 
-How to
----
 
-0.1.* Contracts
+0.2.0 Contracts
 ---
 
 ### `auth`:

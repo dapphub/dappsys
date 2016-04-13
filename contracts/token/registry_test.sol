@@ -18,9 +18,17 @@ contract TokenRegistryTest is Test {
         registry.set(tokenName, bytes32(address(token)));
         assertEq(registry.getToken(tokenName), token);
     }
-
     function testFailGetUnsetToken() {
         bytes32 tokenName = "Kanye Coin";
         assertEq(registry.getToken(tokenName), token);
+    }
+    function testTryGetToken() {
+        bytes32 tokenName = "Kanye Coin";
+        registry.set(tokenName, bytes32(address(token)));
+        var (_token, ok) = registry.tryGetToken(tokenName);
+        assertTrue(ok);
+        assertEq(token, _token);
+        (_token, ok) = registry.tryGetToken("NIL");
+        assertFalse(ok);
     }
 }
