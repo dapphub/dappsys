@@ -108,7 +108,6 @@ contract DSTokenController is DSTokenControllerType
              auth()
              returns (bool)
     {
-        var from_balance = _balances.getBalance( from );
         // if you don't have enough balance, throw
         if( _balances.getBalance(from) < value ) {
             throw;
