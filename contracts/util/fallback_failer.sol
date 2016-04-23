@@ -1,0 +1,6 @@
+contract DSFallbackFailer {
+    function () {
+        throw;
+    }
+}
+
