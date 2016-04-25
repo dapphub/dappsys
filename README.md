@@ -1,4 +1,4 @@
-`dappsys`  [!Solidity](https://img.shields.io/badge/language-solidity-lightgrey.svg?style=flat-square)](https://github.com/ethereum/go-ethereum/wiki/Contracts-and-Transactions#solidity)
+`dappsys`  [![Slack Status](https://img.shields.io/badge/language-solidity-lightgrey.svg?style=flat-square)](https://github.com/ethereum/go-ethereum/wiki/Contracts-and-Transactions#solidity)
 ===
 [![Slack Status](http://slack.makerdao.com/badge.svg)](https://slack.makerdao.com)
 
