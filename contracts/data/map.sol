@@ -1,5 +1,5 @@
 // A contract that is simply a fresh storage address space.
-// If you are storing addresses, consider using DSNullableMap.
+// If you are storing addresses, consider using DSNullMap.
 
 import 'auth.sol';
 
