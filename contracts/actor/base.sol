@@ -1,14 +1,23 @@
-// A base contract mostly used by governance contracts in `gov`.
-// For now, this just means the multisig contract, but it could
-// be used for stake-vote or futarchy.
-contract DSBaseActor {
-    // return result of `call` keyword
+contract DSActionStructUser {
     struct Action {
         address target;
         uint value;
         uint gas;
         bytes calldata;
         // bool triggered;
+    }
+    // todo store call_ret by default?
+}
+// A base contract used by governance contracts in `gov` and by the generic `DSController`.
+contract DSBaseActor is DSActionStructUser {
+    // todo gas???
+    function tryExec(Action a) internal returns (bool call_ret) {
+        return a.target.call.value(a.value)(a.calldata);
+    }
+    function exec(Action a) internal {
+        if(!tryExec(a)) {
+            throw;
+        }
     }
     function tryExec( address target, bytes calldata, uint value)
              internal
@@ -24,4 +33,3 @@ contract DSBaseActor {
         }
     }
 }
-
