@@ -3,7 +3,11 @@ version: 0.1.2
 layout:
   sol_sources: contracts
   build_dir: build
-ignore: []
+ignore:
+    - actor/interpreter.sol
+    - auth/group_authority.sol
+    - auth/authority_lock.sol
+    - data/vote_db.sol
 environments:
   morden:
     objects:
