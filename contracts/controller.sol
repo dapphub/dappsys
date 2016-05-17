@@ -1,6 +1,23 @@
 import 'auth.sol';
 import 'data/nullmap.sol';
 
+contract DSFrontendBase is DSAuth
+{
+    DSController _controller;
+    function DSFrontendBase( DSController controller ) {
+        setController(controller);
+    }
+    function setController( DSController controller ) {
+        _controller = controller;
+    }
+    function pushContext() internal {
+        _controller._ds_pushContext();
+    }
+    function popContext() internal returns (bytes32) {
+        return _controller._ds_popContext();
+    }
+}
+
 // Generic controller
 // Typed actions forwarded from approved `frontends`.
 
@@ -13,15 +30,35 @@ contract DSController is DSAuth, DSNullMap {
     }
     mapping( bytes4 => ActionSequence ) _scripts;
 
-    address sender;
-    bytes32 returned;
+    Context[] _stack;
+    struct Context {
+        address sender;
+        bytes32 returned;
+    }
 
-    function setReturn(bytes32 value)
+    function _ds_getSender() returns (address sender) {
+        return _stack[_stack.length-1].sender;
+    }
+    function _ds_setReturn(bytes32 value)
         auth
     {
+        _stack[_stack.length-1].returned = value;
+    }
+    function _ds_pushContext()
+        auth
+    {
+        _stack.push(Context(msg.sender, 0x0));
+    }
+    function _ds_popContext()
+        auth
+        returns (bytes32)
+    {
+        var ctx = _stack[_stack.length-1];
+        _stack.length--;
+        return ctx.returned;
     }
     function()
-        auth
+        // auth  ?
     {
         if( !isAuthorized() ) {
             throw;
@@ -35,9 +72,9 @@ contract DSController is DSAuth, DSNullMap {
     }
 }
 
-// Override this and add the *sender-extended* function type this action handles.
-// Use `auth` to restrict access to only *controllers*.
-//    TODO also time-extended signature? all context? store context elsewhere in global singleton??
+// Override this and add the function type this action handles.
+// Pass returns to the controller via `setReturn`.
+//  e.g.  transfer(address,uint);
 contract DSControlledAction is DSAuth {
     DSNullMap _env;
     function DSControlledAction( DSNullMap environment ) {
