@@ -3,6 +3,13 @@
 // be used for stake-vote or futarchy.
 contract DSBaseActor {
     // return result of `call` keyword
+    struct Action {
+        address target;
+        uint value;
+        uint gas;
+        bytes calldata;
+        // bool triggered;
+    }
     function tryExec( address target, bytes calldata, uint value)
              internal
              returns (bool call_ret)
