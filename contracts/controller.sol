@@ -78,10 +78,16 @@ contract DSController is DSAuth, DSNullMap, DSBaseActor {
 // Override this and add the function type this action handles.
 // Pass returns to the controller via `setReturn`.
 //  e.g.  transfer(address,uint);
-contract DSControlledAction is DSAuth {
+contract DSAction is DSAuth, DSFallbackFailer
+{
     DSNullMap _env;
     function DSControlledAction( DSNullMap environment ) {
         updateEnvironment(environment);
+    }
+    // TODO hard assumption that msg.sender is the controller.. needs to be enforced separately by `auth`.
+    // all this does is artificially hide a few controller functions that action's should call
+    function setReturn(bytes32 value) internal {
+        DSController(msg.sender)._ds_setReturn(value);
     }
     function updateEnvironment( DSNullMap environment )
         auth
