@@ -1,4 +1,5 @@
 import 'auth.sol';
+import 'actor/base.sol';
 import 'data/nullmap.sol';
 
 contract DSFrontendBase is DSAuth
@@ -11,7 +12,7 @@ contract DSFrontendBase is DSAuth
         _controller = controller;
     }
     function pushContext() internal {
-        _controller._ds_pushContext();
+        _controller._ds_pushContext(msg.sender);
     }
     function popContext() internal returns (bytes32) {
         return _controller._ds_popContext();
@@ -21,14 +22,14 @@ contract DSFrontendBase is DSAuth
 // Generic controller
 // Typed actions forwarded from approved `frontends`.
 
-contract DSController is DSAuth, DSNullMap {
+contract DSController is DSAuth, DSNullMap, DSBaseActor {
     // `_storage` on DSNullMap is the "environment" for the actions
     // use auth infrastructure to connect frontends
-    struct ActionSequence {
-        bool is_defined;
-        DSControlledAction[] steps;
+    struct ControlledAction {
+        Action action;
+        bool must_succeed;
     }
-    mapping( bytes4 => ActionSequence ) _scripts;
+    mapping( bytes4 => ControlledAction[] ) _scripts;
 
     Context[] _stack;
     struct Context {
@@ -44,10 +45,10 @@ contract DSController is DSAuth, DSNullMap {
     {
         _stack[_stack.length-1].returned = value;
     }
-    function _ds_pushContext()
+    function _ds_pushContext(address sender)
         auth
     {
-        _stack.push(Context(msg.sender, 0x0));
+        _stack.push(Context(sender, 0x0));
     }
     function _ds_popContext()
         auth
@@ -58,16 +59,15 @@ contract DSController is DSAuth, DSNullMap {
         return ctx.returned;
     }
     function()
-        // auth  ?
+        auth
     {
         if( !isAuthorized() ) {
             throw;
         }
-        
         var script = _scripts[msg.sig];
-        var steps = script.steps;
-        for( var i = 0; i < steps.length; i++ ) {
-            
+        for( var i = 0; i < script.length; i++ ) {
+            var controlled_action = script[i];
+            var success = tryExec(controlled_action.action);
         }
     }
 }
