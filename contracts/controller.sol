@@ -68,6 +68,9 @@ contract DSController is DSAuth, DSNullMap, DSBaseActor {
         for( var i = 0; i < script.length; i++ ) {
             var controlled_action = script[i];
             var success = tryExec(controlled_action.action);
+            if( !success && controlled_action.must_succeed ) {
+                throw;
+            }
         }
     }
 }
