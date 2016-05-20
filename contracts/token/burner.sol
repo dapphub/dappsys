@@ -1,6 +1,6 @@
 import 'token/token.sol';
 
-import 'token/supply_manager.sol';
+import 'token/supply_controller.sol';
 
 contract DSTokenBurner
 {
