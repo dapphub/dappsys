@@ -3,56 +3,21 @@ import 'util/fallback_failer.sol';
 import 'actor/base.sol';
 import 'data/nullmap.sol';
 
-contract DSFrontendBase is DSAuth
-{
-    DSController _controller;
-    function DSFrontendBase( DSController controller ) {
-        setController(controller);
-    }
-    function setController( DSController controller ) {
-        _controller = controller;
-    }
-    function pushContext() internal {
-        _controller._ds_pushContext(msg.sender);
-    }
-    function popContext() internal returns (bytes32) {
-        return _controller._ds_popContext();
-    }
-}
-
 // Generic controller
-// Typed actions forwarded from approved `frontends`.
+// TODO generic events
+contract DSController is DSAuth, DSBaseActor {
+    mapping( bytes32 => bytes32 ) _env;
 
-contract DSController is DSAuth, DSNullMap, DSBaseActor {
-    // `_storage` on DSNullMap is the "environment" for the actions
-    // use auth infrastructure to connect frontends
-    struct ControlledAction {
-        Action action;
-        bool must_succeed;
+    // Auth Group: actions
+    function _ds_getEnv(bytes32 key) returns (bytes32 value)
+    {
+        return _env[key];
     }
-    mapping( bytes4 => ControlledAction[] ) _scripts;
-
-    // A pair of hacks to enable configuring scripts while solidity is still limiting
-    function _ds_resetScript(bytes4 sig)
+    function _ds_setEnv(bytes32 key, bytes32 value)
         auth
     {
-        delete _scripts[sig];
+        _env[key] = value;
     }
-    function _ds_pushAction(bytes4 sig, address target, uint value, bytes calldata, bool must_succeed)
-        auth
-    {
-        var a = Action(target, value, calldata);
-        var ca = ControlledAction(a, must_succeed);
-        _scripts[sig].push(ca);
-    }
-    // -----
-
-    Context[] _stack;
-    struct Context {
-        address sender;
-        bytes32 returned;
-    }
-
     function _ds_getSender() returns (address sender) {
         return _stack[_stack.length-1].sender;
     }
@@ -61,13 +26,46 @@ contract DSController is DSAuth, DSNullMap, DSBaseActor {
     {
         _stack[_stack.length-1].returned = value;
     }
-    function _ds_pushContext(address sender)
+    // end action callbacks
+
+    
+// Auth group: admins
+    struct Action {
+        DSAction target;
+        uint value;
+        bytes calldata;
+        bool must_succeed;
+    }
+    mapping( bytes4 => Action[] ) _scripts;
+
+    // A pair of hacks to enable configuring scripts while solidity is still limiting
+    function _ds_resetScript(bytes4 sig)
         auth
     {
-        _stack.push(Context(sender, 0x0));
+        delete _scripts[sig];
     }
-    function _ds_popContext()
+    function _ds_pushAction(bytes4 sig, DSAction target, uint value, bytes calldata, bool must_succeed)
         auth
+    {
+        var a = Action(target, value, calldata, must_succeed);
+        _scripts[sig].push(a);
+    }
+    // end admin functions
+
+
+    // The fun parts
+    Context[] _stack;
+    struct Context {
+        address sender;
+        bytes32 returned;
+    }
+    function pushContext()
+        internal
+    {
+        _stack.push(Context(msg.sender, 0x0));
+    }
+    function popContext()
+        internal
         returns (bytes32)
     {
         var ctx = _stack[_stack.length-1];
@@ -76,15 +74,18 @@ contract DSController is DSAuth, DSNullMap, DSBaseActor {
     }
     function()
         auth
+        returns (bytes32)
     {
+        pushContext();
         var script = _scripts[msg.sig];
         for( var i = 0; i < script.length; i++ ) {
-            var controlled_action = script[i];
-            var success = tryExec(controlled_action.action);
-            if( !success && controlled_action.must_succeed ) {
+            var a = script[i];
+            var success = a.target.call.value(a.value)(a.calldata);
+            if( !success && a.must_succeed ) {
                 throw;
             }
         }
+        return popContext();
     }
 }
 
@@ -93,18 +94,18 @@ contract DSController is DSAuth, DSNullMap, DSBaseActor {
 //  e.g.  transfer(address,uint);
 contract DSAction is DSAuth, DSFallbackFailer
 {
-    DSNullMap _env;
-    function DSControlledAction( DSNullMap environment ) {
-        updateEnvironment(environment);
-    }
-    // TODO hard assumption that msg.sender is the controller.. needs to be enforced separately by `auth`.
-    // all this does is artificially hide a few controller functions that actions should call
-    function setReturn(bytes32 value) internal {
-        DSController(msg.sender)._ds_setReturn(value);
-    }
-    function updateEnvironment( DSNullMap environment )
+    DSController _controller;
+    function DSControlledAction( DSController environment )
+    { updateController(_controller); }
+    function updateController( DSController controller )
         auth
-    {
-        _env = environment;
-    }
+    { _controller = controller; }
+
+    function setReturn(bytes32 value)
+        internal
+    { DSController(_controller)._ds_setReturn(value); }
+
+    function getSender()
+        internal
+    { DSController(_controller)._ds_getSender(); }
 }
