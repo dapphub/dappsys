@@ -105,7 +105,22 @@ contract DSAction is DSAuth, DSFallbackFailer
         internal
     { DSController(_controller)._ds_setReturn(value); }
 
+    function setReturn(bool value)
+        internal
+    { if (value) { setReturn(0x1); } else { setReturn(0x0); } }
+
     function getSender()
         internal
     { DSController(_controller)._ds_getSender(); }
+
+    function getEnv(bytes32 key)
+        internal
+        returns (bytes32)
+    { DSController(_controller)._ds_getEnv(key); }
+
+    modifier action() {
+        if( msg.sender != address(_controller) ) {
+            throw;
+        }
+    }
 }
