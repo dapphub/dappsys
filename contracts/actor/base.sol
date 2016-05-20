@@ -2,7 +2,6 @@ contract DSActionStructUser {
     struct Action {
         address target;
         uint value;
-        uint gas;
         bytes calldata;
         // bool triggered;
     }
