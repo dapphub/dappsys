@@ -30,6 +30,21 @@ contract DSController is DSAuth, DSNullMap {
     }
     mapping( bytes4 => ActionSequence ) _scripts;
 
+    // A pair of hacks to enable configuring scripts while solidity is still limiting
+    function _ds_resetScript(bytes4 sig)
+        auth
+    {
+        delete _scripts[sig];
+    }
+    function _ds_pushAction(bytes4 sig, address target, uint value, bytes calldata, bool must_succeed)
+        auth
+    {
+        var a = Action(target, value, calldata);
+        var ca = ControlledAction(a, must_succeed);
+        _scripts[sig].push(ca);
+    }
+    // -----
+
     Context[] _stack;
     struct Context {
         address sender;
@@ -54,20 +69,16 @@ contract DSController is DSAuth, DSNullMap {
         returns (bytes32)
     {
         var ctx = _stack[_stack.length-1];
-        _stack.length--;
+        _stack.length--; // TODO I think this deletes the item?
         return ctx.returned;
     }
     function()
-        // auth  ?
+         auth
     {
-        if( !isAuthorized() ) {
-            throw;
-        }
-        
         var script = _scripts[msg.sig];
         var steps = script.steps;
         for( var i = 0; i < steps.length; i++ ) {
-            
+
         }
     }
 }
@@ -79,6 +90,11 @@ contract DSControlledAction is DSAuth {
     DSNullMap _env;
     function DSControlledAction( DSNullMap environment ) {
         updateEnvironment(environment);
+    }
+    // TODO hard assumption that msg.sender is the controller.. needs to be enforced separately by `auth`.
+    // all this does is artificially hide a few controller functions that actions should call
+    function setReturn(bytes32 value) internal {
+        DSController(msg.sender)._ds_setReturn(value);
     }
     function updateEnvironment( DSNullMap environment )
         auth
