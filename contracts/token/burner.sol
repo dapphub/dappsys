@@ -14,4 +14,7 @@ contract DSTokenBurner
         _token.transferFrom(msg.sender, this, amount);
         _supply_manager.destroy(amount);
     }
+    function burn() {
+        _supply_controller.destroy(_token.balanceOf(this));
+    }
 }
