@@ -17,11 +17,11 @@ contract DSTokenSupplyControllerTest is DSBasicAuthority() {
         controller = new DSTokenSupplyController(db);
         db.updateAuthority(authority, DSAuthModes.Authority);
         authority.setCanCall(
-          controller, db, bytes4(sha3('addBalance(address,uint)', true)));
+          controller, db, bytes4(sha3('addBalance(address,uint)')), true);
         authority.setCanCall(
-          controller, db, bytes4(sha3('subBalance(address,uint)', true)));
+          controller, db, bytes4(sha3('subBalance(address,uint)')), true);
         authority.setCanCall(
-          this, db, bytes4(sha3('moveBalance(address,address,uint)', true)));
+          this, db, bytes4(sha3('moveBalance(address,address,uint)')), true);
     }
 
     function testDemand() {
