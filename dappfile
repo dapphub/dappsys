@@ -4,10 +4,11 @@ layout:
   sol_sources: contracts
   build_dir: build
 ignore:
-    - actor/interpreter.sol
-    - auth/group_authority.sol
-    - auth/authority_lock.sol
-    - data/vote_db.sol
+  - actor/interpreter.sol
+  - auth/group_authority.sol
+  - auth/authority_lock.sol
+  - data/vote_db.sol
+  - token/hooks/vote_sync.sol
 environments:
   morden:
     objects:
@@ -19,7 +20,7 @@ environments:
         address: '0x619104fd4f8abdd2ee651f0ec4985719dbb2c599'
       multisig_factory1:
         class: DSMultisigFactory
-        address: '0x0b30a24e7257e1842d681b0f2f8aff4182eb2a78'
+        address: '0xda3b78a3261caed41f59dc3a9e83559e683c9d85'
       token_factory1:
         class: DSTokenFactory
         address: '0x9fc46bdfa075c2aad6437e9cc771e1bf6b72a9d4'
@@ -28,7 +29,7 @@ environments:
         address: '0x5b605da3a721ba809be030d225312c4c39ead11b'
       factory1:
         class: DSFactory1
-        address: '0x3da0d9695d0099f98582f58a64b2e2616fcbaa00'
+        address: '0x3c58df9a125b5f0de4d32689e5c0b24f971e16c5'
       eth_token:
         class: DSEthToken
         address: '0xfbc7f6b58daa9f99816b6cc77d2a7f4b327fa7bc'
@@ -45,7 +46,7 @@ environments:
         address: '0x5d7af7715dfbbfc86e2505c308468f78702a99d9'
       multisig_factory1:
         class: DSMultisigFactory
-        address: '0x82f39d996d1e9ab119e4b33d581c3eeb4133acf6'
+        address: '0x580c2caa8796c0352a1e0e326fc1d2505f54381f'
       token_factory1:
         class: DSTokenFactory
         address: '0x12bcc9daffda452b6c4b0a1571360925a64fcc79'
@@ -54,7 +55,7 @@ environments:
         address: '0x460df00675f994928457771eb3b9732a99314cbe'
       factory1:
         class: DSFactory1
-        address: '0x2c139c5a8dd6be98067c5b4258e0dedcdbbff78b'
+        address: '0x93779e2cb8448a24bede8da55f1dffbadbc585a9'
       eth_token:
         class: DSEthToken
         address: '0xd654bdd32fc99471455e86c2e7f7d7b6437e9179'
