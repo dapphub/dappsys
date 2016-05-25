@@ -1,18 +1,18 @@
 import 'token/token.sol';
 
-import 'token/supply_controller.sol';
+import 'token/supply_manager.sol';
 
 contract DSTokenBurner
 {
     DSToken _token;
-    DSTokenSupplyController _supply_controller;
-    function DSTokenBurner(DSToken token, DSTokenSupplyController supply_controller) {
+    DSTokenSupplyManager _supply_manager;
+    function DSTokenBurner(DSToken token, DSTokenSupplyManager supply_manager) {
         _token = token;
-        _supply_controller = supply_controller;
+        _supply_manager = supply_manager;
     }
     function burn(uint amount) {
         _token.transferFrom(msg.sender, this, amount);
-        _supply_controller.destroy(amount);
+        _supply_manager.destroy(amount);
     }
     function burn() {
         _supply_controller.destroy(_token.balanceOf(this));

@@ -4,7 +4,7 @@
 import 'auth.sol';
 import 'data/balance_db.sol';
 
-contract DSTokenSupplyController is DSAuth
+contract DSTokenSupplyManager is DSAuth
 {
     DSBalanceDB _db;
     function DSTokenSupplyManager( DSBalanceDB db )
