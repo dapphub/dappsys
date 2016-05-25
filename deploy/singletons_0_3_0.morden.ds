@@ -1,0 +1,10 @@
+var auth_factory1 = '0x7639a37b8ecbd68e15b8e173897c6c0dea462452'
+var data_factory1 = '0x619104fd4f8abdd2ee651f0ec4985719dbb2c599'
+var token_factory1 = '0x9fc46bdfa075c2aad6437e9cc771e1bf6b72a9d4'
+var token_installer1 = '0x5b605da3a721ba809be030d225312c4c39ead11b'
+
+var multisig_factory1 = new DSMultisigFactory()
+export multisig_factory1
+
+var factory1 = new DSFactory1( auth_factory1, data_factory1, multisig_factory1, token_factory1, token_installer1 )
+export factory1
