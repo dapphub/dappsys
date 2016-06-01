@@ -1,4 +1,4 @@
-import 'controller.sol'; // DSAction
+import 'dev/controller.sol'; // DSAction
 
 import 'data/balance_db.sol';
 import 'data/approval_db.sol';
