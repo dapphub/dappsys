@@ -1,8 +1,24 @@
 import 'dapple/test.sol';
 
+import 'auth.sol';
 import 'auth/basic_authority.sol';
 import 'data/balance_db.sol';
 import 'token/supply_manager.sol';
+
+// Used by maker-core
+contract TestTokenSupplyManager is DSTokenSupplyManager
+{
+    function TestTokenSupplyManager( DSBalanceDB db )
+             DSTokenSupplyManager( db )
+    {
+    }
+
+    // Allow anyone to demand however much they want.
+    function demand(uint amount)
+    {
+        _db.addBalance(msg.sender, amount);
+    }
+}
 
 contract DSTokenSupplyManagerTest is Test, DSAuthUser {
     DSBalanceDB db;
