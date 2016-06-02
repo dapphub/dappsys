@@ -40,4 +40,8 @@ contract DSComponentTest is Test {
         var env2 = new DSNullMap();
         DSComponent(T).updateEnvironment(env2);
     }
+    function testRejectsFallbackByDefault() {
+        // `call` swallows exceptions - test for throw in fallback
+        assertFalse(component.call());
+    }
 }

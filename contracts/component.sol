@@ -16,4 +16,9 @@ contract DSComponent is DSAuth {
     // Save references to local storage.
     // System updates will call this.
     function refreshEnvironment();
+    
+    // A sane default
+    function() {
+        throw;
+    }
 }
