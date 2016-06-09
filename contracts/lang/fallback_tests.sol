@@ -68,5 +68,12 @@ contract FallbackTest is Test {
         assertTrue( ret != bytes32(0), "ret is 0 by coincidence" );
         log_named_bytes32("garbage", ret);
     }
-
+    function testInternalThrowReturns0() {
+        var ret = throwing.call();
+        assertFalse(ret);
+    }
+    function testInternalCallSuccessReturns1() {
+        var ret = untyped.call();
+        assertTrue(ret);
+    }
 }
