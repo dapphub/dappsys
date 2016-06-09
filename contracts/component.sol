@@ -11,7 +11,7 @@ contract DSComponent is DSAuth {
         auth
     {
         _env = env;
-        refreshEnvironment();
+//        refreshEnvironment();    TODO think again about this later
     }
     // Save references to local storage.
     // System updates will call this.
