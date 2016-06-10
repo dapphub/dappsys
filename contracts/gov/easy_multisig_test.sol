@@ -10,6 +10,10 @@ contract helper is Debug {
     }
 }
 
+contract nothing {
+    function no();
+}
+
 contract DSEasyMultisigTest1 is Test, DSEasyMultisigEvents
 {
     DSEasyMultisig ms;
@@ -17,7 +21,9 @@ contract DSEasyMultisigTest1 is Test, DSEasyMultisigEvents
     function setUp() {
         ms = new DSEasyMultisig(1, 1, 1 hours);
         ms.addMember(address(this));
+        nothing(ms).no();
         h = new helper();
+        
         helper(ms).doSomething(1);
     }
     function testFailTooFewConfirms() {
@@ -29,6 +35,13 @@ contract DSEasyMultisigTest1 is Test, DSEasyMultisigEvents
         var action = ms.easyPropose(address(h), 1);
         ms.confirm(action);
         ms.trigger(action);
+    }
+    function testCanTransferValue() {
+        var a = ms.easyPropose(address(h), 1);
+        ms.send(1);
+        ms.confirm(a);
+        ms.trigger(a);
+        assertEq(h.balance, 1);
     }
 }
 
