@@ -32,7 +32,7 @@ environments:
         address: '0x3c58df9a125b5f0de4d32689e5c0b24f971e16c5'
       eth_token:
         class: DSEthToken
-        address: '0xfbc7f6b58daa9f99816b6cc77d2a7f4b327fa7bc'
+        address: '0x52fe88b987c7829e5d5a61c98f67c9c14e6a7a90'
       echo:
         class: DSEcho
         address: '0x002956c57c04f4b0469fa5cfa137a0b823e49293'
@@ -58,7 +58,7 @@ environments:
         address: '0x93779e2cb8448a24bede8da55f1dffbadbc585a9'
       eth_token:
         class: DSEthToken
-        address: '0xd654bdd32fc99471455e86c2e7f7d7b6437e9179'
+        address: '0xecf8f87f810ecf450940c9f60066b4a7a501d6a7'
       echo:
         class: DSEcho
         address: '0x992c64ac907ef9e531e7ff8d06cec599778a0e72'
