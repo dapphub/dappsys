@@ -3,7 +3,6 @@ import 'token/eth_wrapper.sol';
 import 'token/token.sol';
 import 'token/token_test.sol';
 
-
 contract DSEthTokenTest is DSTokenTest, DSEthTokenEvents {
     function createToken() internal returns (DSToken) {
         return new DSEthToken();
@@ -29,5 +28,35 @@ contract DSEthTokenTest is DSTokenTest, DSEthTokenEvents {
         token.call.value(10)("deposit");
         assertTrue(DSEthToken(token).withdraw(5));
         assertEq(this.balance, startingBalance - 5);
+    }
+
+    function testWithdrawAttackRegression() {
+        var attacker = new ReentrantWithdrawalAttack(DSEthToken(token));
+        attacker.send(100);
+        attacker.attack();
+        assertEq(attacker.balance, 0);
+        assertEq(token.balanceOf(attacker), 100);
+    }
+}
+
+contract ReentrantWithdrawalAttack {
+    DSEthToken _token;
+    address _owner;
+    uint _bal;
+
+    function ReentrantWithdrawalAttack(DSEthToken token) {
+        _owner = msg.sender;
+        _token = token;
+    }
+
+    function attack() {
+        _bal = this.balance;
+        _token.deposit.value(_bal)();
+        _token.withdraw(_bal);
+    }
+
+    function() {
+        if (msg.sender == _owner) return;
+        _token.withdraw(_bal);
     }
 }

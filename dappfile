@@ -1,5 +1,5 @@
 name: dappsys
-version: 0.3.1
+version: 0.3.2
 layout:
   sol_sources: contracts
   build_dir: build
