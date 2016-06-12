@@ -1,4 +1,5 @@
 import 'token/base.sol';
+import 'util/safety.sol';
 
 contract DSEthTokenEvents {
     event Deposit( address indexed who, uint amount );
@@ -10,13 +11,14 @@ contract DSEthToken is DSTokenBase(0), DSEthTokenEvents {
         return this.balance;
     }
     function withdraw( uint amount ) returns (bool ok) {
-        if( _balances[msg.sender] >= amount ) {
-            if( msg.sender.call.value( amount )() ) {
-                _balances[msg.sender] -= amount;
-                Withdrawal( msg.sender, amount );
-                return true;
-            }
+        _balances[msg.sender] = safeSub(_balances[msg.sender], amount);
+        if( msg.sender.call.value( amount )() ) {
+            Withdrawal( msg.sender, amount );
+            return true;
+        } else {
+            _balances[msg.sender] = safeAdd(_balances[msg.sender], amount);
         }
+        return false;
     }
     function deposit() returns (bool ok) {
         _balances[msg.sender] += msg.value;
