@@ -41,8 +41,8 @@ contract DSEthTokenTest is DSTokenTest, DSEthTokenEvents {
         var attacker = new ReentrantWithdrawalAttack2(DSEthToken(token));
         attacker.send(100);
         attacker.attack();
-        assertEq(attacker.balance, 0);
-        assertEq(token.balanceOf(attacker), 100);
+        assertEq(attacker.balance, 25);
+        assertEq(token.balanceOf(attacker), 75);
     }
 }
 
@@ -83,13 +83,13 @@ contract ReentrantWithdrawalAttack2 {
     function attack() {
         _bal = this.balance;
         _token.deposit.value(_bal)();
-        _token.withdraw(_bal);
+        _token.withdraw(_bal / 4);
     }
 
     function() {
         if (msg.sender == _owner) return;
-        _entered = true;
         if (_entered) throw;
-        _token.withdraw(_bal);
+        _entered = true;
+        _token.withdraw(_bal / 4);
     }
 }
