@@ -24,5 +24,4 @@ contract DSTokenVaultTest is Test, DSAuthUser {
         vault.transfer(token, this, 10**18);
         assertEq(10**18, token.balanceOf(this));
     }
-
 }
