@@ -1,4 +1,5 @@
 // testing transfer via `selfdestruct` to avoid executing code on recipient
+// source: https://gist.github.com/holiman/f66bae83540728c209e521c42bd06362
 
 import 'dapple/test.sol';
 
