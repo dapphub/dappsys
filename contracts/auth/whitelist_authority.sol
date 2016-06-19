@@ -5,7 +5,7 @@ contract DSWhitelistAuthority is DSAuthority, DSAuth {
 
     function canCall(
         address caller, address code, bytes4 sig
-    ) returns (bool) {
+    ) constant returns (bool) {
         return _is_whitelisted[caller];
     }
 
