@@ -1,3 +1,5 @@
+// This is some scratch work for a an upgradeable "frontend" contract which is safe/useful on reentry
+
 import 'auth.sol';
 import 'util/fallback_failer.sol';
 import 'actor/base.sol';
