@@ -8,8 +8,7 @@ Installation
 ---
 
     npm install -g dapple
-    # `dapple install` is not reliable yet
-    # dapple install nexusdev/dappsys@develop
+    mkdir myproject && cd myproject && mkdir dapple_packages
     git submodule add https://github.com/nexusdev/dappsys dapple_packages/dappsys
 
 Overview
