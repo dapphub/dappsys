@@ -12,18 +12,29 @@ Installation
     # dapple install nexusdev/dappsys@develop
     git submodule add https://github.com/nexusdev/dappsys dapple_packages/dappsys
 
-Diving in
+Overview
 ---
-
-This project is about 6 months behind on documentation. The more stable parts of the codebase are well documented with comments.
 
 Dappsys contracts are designed to be *composable* in two ways:
 
 * "Within" a contract (solidity-level `contract`): Many dappsys contracts are "mixin" contracts, and many contracts are defined simply by inheriting from multiple contracts with minimal additional logic
 * "Between" contracts (deployed autonomous objects): Contracts do one thing and one thing well. They have a minimal interface out of which consumers create higher-level abstractions. Any universal contracts ("objects" at the dappfile level) look like low-level infrastructure services (e.g. factories or an ETH erc20 wrapper).
 
-The best place to start is `contracts/auth/authorized.sol`.
-
-After that, take a look at the token system, `contract/token/controller.sol` and `contracts/token/frontend.sol`.
-
 There is a high-level overview of contracts in 0.2.0 here: https://github.com/nexusdev/dappsys/wiki/0.2.0-contracts
+
+
+Major Concepts
+---
+work in progress
+
+### Authorization
+Start with `contracts/auth/authorized.sol`.
+
+### Datastore / Controller / Frontend separation
+Look at the token system, `contracts/token/controller.sol` and `contracts/token/frontend.sol`.
+
+### Data
+Especially `contracts/data/nullmap.sol`
+
+### Component, Environment
+### Factories, Installers
