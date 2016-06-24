@@ -3,7 +3,7 @@
 
 import 'dapple/test.sol';
 
-contract DeliveryBoy{
+contract DeliveryBoy {
     /*
      * Delivery boy is very important, but not so clever
      */
@@ -12,7 +12,7 @@ contract DeliveryBoy{
     }
 }
 
-contract MailMan{
+contract MailMan {
     
     /*
      * The MailMan delivers
