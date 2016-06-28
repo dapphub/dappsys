@@ -153,7 +153,6 @@ contract DSEasyMultisig is DSBaseActor
             throw;
         }
         confirmations[action_id][msg.sender] = true;
-        var confs = a.confirmations;
         a.confirmations = a.confirmations + 1;
         actions[action_id] = a;
         Confirmed(action_id, msg.sender);
