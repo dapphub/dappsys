@@ -22,7 +22,8 @@ contract DSComponentTest is Test {
         env.set("var2", bytes32(address(this)));
         component = new SampleComponent(env);
     }
-    function testLocalVarsSetOnConstruction() {
+    function testLocalVarsSetOnRefresh() {
+        component.refreshEnvironment();
         assertEq32(component.var1(), "hello");
         assertEq(component.var2(), this);
     }
