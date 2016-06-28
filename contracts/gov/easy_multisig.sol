@@ -117,7 +117,6 @@ contract DSEasyMultisig is DSBaseActor
 
     // Propose an action.
     // Anyone can propose an action.
-    // Attempts to also confirm (and then trigger) the action.
     // Only members can confirm actions.
     function propose( address target, bytes calldata, uint value )
              returns (uint action_id)
