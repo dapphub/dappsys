@@ -1,7 +1,8 @@
+import 'base.sol';
 import 'auth.sol';
 import 'data/nullmap.sol';
 
-contract DSComponent is DSAuth {
+contract DSComponent is DSBase, DSAuth {
     DSNullMap _env;
     
     function DSComponent(DSNullMap env) {
