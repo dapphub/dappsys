@@ -89,6 +89,9 @@ contract DSTokenTest is Test, DSAuthUser {
         token.transfer(user2, sentAmount+1);
     }
 
+    function testApproveReturnTrueOnSuccess() {
+        assertTrue( token.approve(user1, 100) );
+    }
 
     function testApproveSetsAllowance() logs_gas {
         log_named_address("Test", this);

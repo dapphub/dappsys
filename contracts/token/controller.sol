@@ -133,5 +133,6 @@ contract DSTokenController is DSTokenControllerType
     {
         _approvals.setApproval( _caller, spender, value );
         _frontend.emitApproval( _caller, spender, value);
+        return true;
     }
 }
