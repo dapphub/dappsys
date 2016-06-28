@@ -135,7 +135,6 @@ contract DSEasyMultisig is DSBaseActor
 
     // Attempts to confirm the action.
     // Only members can confirm actions.
-    // Attempts to trigger the action
     function confirm( uint action_id ) returns (bool confirmed) {
         if( !is_member[msg.sender] ) {
             throw;
