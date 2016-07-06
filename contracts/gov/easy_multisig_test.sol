@@ -26,7 +26,7 @@ contract DSEasyMultisigTest1 is Test, DSEasyMultisigEvents
         ms.trigger(action);
     }
     function testFailNotEnoughValue() {
-        address(0x0).send(this.balance);
+        if (!address(0x0).send(this.balance)) throw;
         var action = ms.easyPropose(address(h), 1);
         ms.confirm(action);
         ms.trigger(action);

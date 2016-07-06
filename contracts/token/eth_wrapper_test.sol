@@ -8,14 +8,15 @@ contract DSEthTokenTest is DSTokenTest, DSEthTokenEvents {
         return new DSEthToken();
     }
     function setUp() {
-        token.call.value(initialBalance)(); // TokenTest precondition
+        // TokenTest precondition
+        if (!token.call.value(initialBalance)()) throw;
     }
 
     function testDeposit() {
         expectEventsExact(token);
         Deposit(this, 10);
 
-        token.call.value(10)("deposit");
+        if (!token.call.value(10)("deposit")) throw;
         assertEq(token.balanceOf(this), initialBalance + 10);
     }
 
@@ -25,21 +26,21 @@ contract DSEthTokenTest is DSTokenTest, DSEthTokenEvents {
         Withdrawal(this, 5);
 
         var startingBalance = this.balance;
-        token.call.value(10)("deposit");
+        if (!token.call.value(10)("deposit")) throw;
         assertTrue(DSEthToken(token).withdraw(5));
         assertEq(this.balance, startingBalance - 5);
     }
 
     function testWithdrawAttackRegression() {
         var attacker = new ReentrantWithdrawalAttack(DSEthToken(token));
-        attacker.send(100);
+        if (!attacker.send(100)) throw;
         attacker.attack();
         assertEq(attacker.balance, 0);
         assertEq(token.balanceOf(attacker), 100);
     }
     function testWithdrawAttack2Regression() {
         var attacker = new ReentrantWithdrawalAttack2(DSEthToken(token));
-        attacker.send(100);
+        if (!attacker.send(100)) throw;
         attacker.attack();
         assertEq(attacker.balance, 25);
         assertEq(token.balanceOf(attacker), 75);

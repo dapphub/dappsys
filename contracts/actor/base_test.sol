@@ -48,7 +48,7 @@ contract DSBaseActorTest is Test {
         assertTrue(this.balance > 0, "insufficient funds");
 
         a = new DSSimpleActor();
-        a.send(10 wei);
+        if (!a.send(10 wei)) throw;
         cr = new CallReceiver();
     }
     function testProxyCall() {
