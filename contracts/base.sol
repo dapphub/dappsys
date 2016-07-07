@@ -1,5 +1,5 @@
 contract DSBase {
-    function assert(bool what)
+    function ASSERT(bool what)
         internal
     {
         if (NOT(what)) {
