@@ -50,5 +50,5 @@ Using
     npm install -g dapple
     mkdir myproject && cd myproject
     dapple init
-    git submodule add https://github.com/nexusdev/dappsys .dapple/packages/dappsys
+    git submodule add -f https://github.com/nexusdev/dappsys .dapple/packages/dappsys
     git submodule update --init --recursive
