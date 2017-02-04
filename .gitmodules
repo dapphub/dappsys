@@ -10,3 +10,6 @@
 [submodule "ds-actor"]
 	path = ds-actor
 	url = https://github.com/nexusdev/ds-actor
+[submodule "ds-proxy"]
+	path = ds-proxy
+	url = https://github.com/nexusdev/ds-proxy
