@@ -1,0 +1,3 @@
+[submodule "lib/ds-store"]
+	path = lib/ds-store
+	url = https://github.com/nexusdev/ds-store

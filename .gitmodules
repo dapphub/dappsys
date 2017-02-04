@@ -4,3 +4,6 @@
 [submodule "ds-store"]
 	path = ds-store
 	url = https://github.com/nexusdev/ds-store
+[submodule "ds-cache"]
+	path = ds-cache
+	url = https://github.com/nexusdev/ds-cache
