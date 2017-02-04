@@ -34,3 +34,6 @@
 [submodule ".dapple/packages/ds-rate-accumulator"]
 	path = .dapple/packages/ds-rate-accumulator
 	url = https://github.com/nexusdev/ds-rate-accumulator
+[submodule "ds-auth"]
+	path = ds-auth
+	url = https://github.com/nexusdev/ds-auth
