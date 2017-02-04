@@ -2,3 +2,4 @@ build
 
 *.sw*
 *.DS_Store
+**/chain_db/
