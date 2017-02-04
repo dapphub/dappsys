@@ -1,39 +1,3 @@
-[submodule ".dapple/packages/ds-base"]
-	path = .dapple/packages/ds-base
-	url = https://github.com/nexusdev/ds-base
-[submodule ".dapple/packages/ds-forkable"]
-	path = .dapple/packages/ds-forkable
-	url = https://github.com/nexusdev/ds-forkable
-[submodule ".dapple/packages/ds-auth"]
-	path = .dapple/packages/ds-auth
-	url = https://github.com/nexusdev/ds-auth
-[submodule ".dapple/packages/ds-whitelist"]
-	path = .dapple/packages/ds-whitelist
-	url = https://github.com/nexusdev/ds-whitelist
-[submodule ".dapple/packages/ds-roles"]
-	path = .dapple/packages/ds-roles
-	url = https://github.com/nexusdev/ds-roles
-[submodule ".dapple/packages/ds-actor"]
-	path = .dapple/packages/ds-actor
-	url = https://github.com/nexusdev/ds-actor
-[submodule ".dapple/packages/ds-multisig"]
-	path = .dapple/packages/ds-multisig
-	url = https://github.com/nexusdev/ds-multisig
-[submodule ".dapple/packages/ds-token"]
-	path = .dapple/packages/ds-token
-	url = https://github.com/nexusdev/ds-token
-[submodule ".dapple/packages/ds-eth-token"]
-	path = .dapple/packages/ds-eth-token
-	url = https://github.com/nexusdev/ds-eth-token
-[submodule ".dapple/packages/ds-vault"]
-	path = .dapple/packages/ds-vault
-	url = https://github.com/nexusdev/ds-vault
-[submodule ".dapple/packages/ds-burner"]
-	path = .dapple/packages/ds-burner
-	url = https://github.com/nexusdev/ds-burner
-[submodule ".dapple/packages/ds-rate-accumulator"]
-	path = .dapple/packages/ds-rate-accumulator
-	url = https://github.com/nexusdev/ds-rate-accumulator
 [submodule "ds-auth"]
 	path = ds-auth
 	url = https://github.com/nexusdev/ds-auth
