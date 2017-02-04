@@ -1,3 +1,6 @@
 [submodule "ds-auth"]
 	path = ds-auth
 	url = https://github.com/nexusdev/ds-auth
+[submodule "ds-store"]
+	path = ds-store
+	url = https://github.com/nexusdev/ds-store
