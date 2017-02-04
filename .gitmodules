@@ -7,3 +7,6 @@
 [submodule "ds-cache"]
 	path = ds-cache
 	url = https://github.com/nexusdev/ds-cache
+[submodule "ds-actor"]
+	path = ds-actor
+	url = https://github.com/nexusdev/ds-actor
