@@ -13,3 +13,6 @@
 [submodule "ds-proxy"]
 	path = ds-proxy
 	url = https://github.com/nexusdev/ds-proxy
+[submodule "ds-roles"]
+	path = ds-roles
+	url = https://github.com/nexusdev/ds-roles
