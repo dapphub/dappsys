@@ -16,3 +16,6 @@
 [submodule "ds-roles"]
 	path = ds-roles
 	url = https://github.com/nexusdev/ds-roles
+[submodule "ds-whitelist"]
+	path = ds-whitelist
+	url = https://github.com/nexusdev/ds-whitelist
