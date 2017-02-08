@@ -19,3 +19,9 @@
 [submodule "ds-whitelist"]
 	path = ds-whitelist
 	url = https://github.com/nexusdev/ds-whitelist
+[submodule "ds-note"]
+	path = ds-note
+	url = https://github.com/dapphub/ds-note
+[submodule "ds-vault"]
+	path = ds-vault
+	url = https://github.com/dapphub/ds-vault
