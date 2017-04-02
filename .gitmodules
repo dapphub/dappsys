@@ -28,3 +28,6 @@
 [submodule "ds-prism"]
 	path = ds-prism
 	url = https://github.com/dapphub/ds-prism
+[submodule "ds-token"]
+	path = ds-token
+	url = git@github.com:dapphub/ds-token.git
