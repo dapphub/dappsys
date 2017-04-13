@@ -40,3 +40,6 @@
 [submodule "ds-value"]
 	path = ds-value
 	url = git@github.com:dapphub/ds-value.git
+[submodule "ds-thing"]
+	path = ds-thing
+	url = git@github.com:dapphub/ds-thing.git
