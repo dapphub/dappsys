@@ -31,3 +31,6 @@
 [submodule "ds-guard"]
 	path = ds-guard
 	url = git@github.com:dapphub/ds-guard.git
+[submodule "ds-math"]
+	path = ds-math
+	url = git@github.com:dapphub/ds-math.git
