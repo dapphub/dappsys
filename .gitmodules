@@ -7,9 +7,6 @@
 [submodule "ds-cache"]
 	path = ds-cache
 	url = https://github.com/dapphub/ds-cache
-[submodule "ds-proxy"]
-	path = ds-proxy
-	url = https://github.com/dapphub/ds-proxy
 [submodule "ds-roles"]
 	path = ds-roles
 	url = https://github.com/dapphub/ds-roles
@@ -40,3 +37,6 @@
 [submodule "ds-thing"]
 	path = ds-thing
 	url = git@github.com:dapphub/ds-thing.git
+[submodule "ds-proxy"]
+	path = ds-proxy
+	url = git@github.com:dapphub/ds-proxy.git
