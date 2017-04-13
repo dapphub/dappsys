@@ -37,3 +37,6 @@
 [submodule "ds-multisig"]
 	path = ds-multisig
 	url = git@github.com:dapphub/ds-multisig.git
+[submodule "ds-value"]
+	path = ds-value
+	url = git@github.com:dapphub/ds-value.git
