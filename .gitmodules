@@ -34,3 +34,6 @@
 [submodule "ds-exec"]
 	path = ds-exec
 	url = git@github.com:dapphub/ds-exec.git
+[submodule "ds-multisig"]
+	path = ds-multisig
+	url = git@github.com:dapphub/ds-multisig.git
