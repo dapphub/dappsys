@@ -1,18 +1,18 @@
 [submodule "ds-auth"]
 	path = ds-auth
-	url = https://github.com/nexusdev/ds-auth
+	url = https://github.com/dapphub/ds-auth
 [submodule "ds-store"]
 	path = ds-store
-	url = https://github.com/nexusdev/ds-store
+	url = https://github.com/dapphub/ds-store
 [submodule "ds-cache"]
 	path = ds-cache
-	url = https://github.com/nexusdev/ds-cache
+	url = https://github.com/dapphub/ds-cache
 [submodule "ds-proxy"]
 	path = ds-proxy
-	url = https://github.com/nexusdev/ds-proxy
+	url = https://github.com/dapphub/ds-proxy
 [submodule "ds-roles"]
 	path = ds-roles
-	url = https://github.com/nexusdev/ds-roles
+	url = https://github.com/dapphub/ds-roles
 [submodule "ds-note"]
 	path = ds-note
 	url = https://github.com/dapphub/ds-note
