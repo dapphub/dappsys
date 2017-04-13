@@ -31,3 +31,6 @@
 [submodule "ds-token"]
 	path = ds-token
 	url = git@github.com:dapphub/ds-token.git
+[submodule "ds-guard"]
+	path = ds-guard
+	url = git@github.com:dapphub/ds-guard.git
