@@ -4,7 +4,7 @@ Dappsys
 #######
 
 .. |readthedocs| image:: https://img.shields.io/badge/view%20docs-readthedocs-blue.svg?style=flat-square
-   :target: https://dappsys.readthedocs.io/en/latest/ds_auth.html   
+   :target: https://dappsys.readthedocs.io/en/latest/  
 
 .. |chat| image:: https://img.shields.io/badge/community-chat-blue.svg?style=flat-square
    :target: https://dapphub.chat
