@@ -34,3 +34,6 @@
 [submodule "ds-proxy"]
 	path = ds-proxy
 	url = git@github.com:dapphub/ds-proxy.git
+[submodule "ds-stop"]
+	path = ds-stop
+	url = git@github.com:dapphub/ds-stop
