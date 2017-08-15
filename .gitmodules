@@ -15,25 +15,25 @@
 	url = git@github.com:dapphub/ds-vault
 [submodule "ds-token"]
 	path = ds-token
-	url = git@github.com:dapphub/ds-token.git
+	url = git@github.com:dapphub/ds-token
 [submodule "ds-guard"]
 	path = ds-guard
-	url = git@github.com:dapphub/ds-guard.git
+	url = git@github.com:dapphub/ds-guard
 [submodule "ds-math"]
 	path = ds-math
-	url = git@github.com:dapphub/ds-math.git
+	url = git@github.com:dapphub/ds-math
 [submodule "ds-exec"]
 	path = ds-exec
-	url = git@github.com:dapphub/ds-exec.git
+	url = git@github.com:dapphub/ds-exec
 [submodule "ds-multisig"]
 	path = ds-multisig
-	url = git@github.com:dapphub/ds-multisig.git
+	url = git@github.com:dapphub/ds-multisig
 [submodule "ds-value"]
 	path = ds-value
-	url = git@github.com:dapphub/ds-value.git
+	url = git@github.com:dapphub/ds-value
 [submodule "ds-proxy"]
 	path = ds-proxy
-	url = git@github.com:dapphub/ds-proxy.git
+	url = git@github.com:dapphub/ds-proxy
 [submodule "ds-stop"]
 	path = ds-stop
 	url = git@github.com:dapphub/ds-stop
