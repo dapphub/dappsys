@@ -12,6 +12,6 @@ Dappsys
 |readthedocs|  |chat|
 
 
-Dappsys is a collection of building blocks for building smart contract systems.
-
-Dappsys components are exposed as `ethpm packages <https://github.com/ethpm/ethpm-spec>`_. They are written in Solidity, but deployed objects can be linked to any language.
+Dappsys is a collection of building blocks for building smart contract
+systems.  They are written in Solidity, but deployed objects can be linked to
+any language.
