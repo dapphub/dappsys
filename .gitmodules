@@ -1,18 +1,18 @@
 [submodule "ds-auth"]
 	path = ds-auth
-	url = https://github.com/dapphub/ds-auth
+	url = git@github.com:dapphub/ds-auth
 [submodule "ds-cache"]
 	path = ds-cache
-	url = https://github.com/dapphub/ds-cache
+	url = git@github.com:dapphub/ds-cache
 [submodule "ds-roles"]
 	path = ds-roles
-	url = https://github.com/dapphub/ds-roles
+	url = git@github.com:dapphub/ds-roles
 [submodule "ds-note"]
 	path = ds-note
-	url = https://github.com/dapphub/ds-note
+	url = git@github.com:dapphub/ds-note
 [submodule "ds-vault"]
 	path = ds-vault
-	url = https://github.com/dapphub/ds-vault
+	url = git@github.com:dapphub/ds-vault
 [submodule "ds-token"]
 	path = ds-token
 	url = git@github.com:dapphub/ds-token.git
