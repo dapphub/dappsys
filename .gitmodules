@@ -37,3 +37,6 @@
 [submodule "ds-stop"]
 	path = ds-stop
 	url = git@github.com:dapphub/ds-stop
+[submodule "ds-thing"]
+	path = ds-thing
+	url = git@github.com:dapphub/ds-thing.git
