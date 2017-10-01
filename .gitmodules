@@ -1,42 +1,42 @@
 [submodule "ds-auth"]
 	path = ds-auth
-	url = git@github.com:dapphub/ds-auth
+	url = https://github.com/dapphub/ds-auth
 [submodule "ds-cache"]
 	path = ds-cache
-	url = git@github.com:dapphub/ds-cache
+	url = https://github.com/dapphub/ds-cache
 [submodule "ds-roles"]
 	path = ds-roles
-	url = git@github.com:dapphub/ds-roles
+	url = https://github.com/dapphub/ds-roles
 [submodule "ds-note"]
 	path = ds-note
-	url = git@github.com:dapphub/ds-note
+	url = https://github.com/dapphub/ds-note
 [submodule "ds-vault"]
 	path = ds-vault
-	url = git@github.com:dapphub/ds-vault
+	url = https://github.com/dapphub/ds-vault
 [submodule "ds-token"]
 	path = ds-token
-	url = git@github.com:dapphub/ds-token
+	url = https://github.com/dapphub/ds-token
 [submodule "ds-guard"]
 	path = ds-guard
-	url = git@github.com:dapphub/ds-guard
+	url = https://github.com/dapphub/ds-guard
 [submodule "ds-math"]
 	path = ds-math
-	url = git@github.com:dapphub/ds-math
+	url = https://github.com/dapphub/ds-math
 [submodule "ds-exec"]
 	path = ds-exec
-	url = git@github.com:dapphub/ds-exec
+	url = https://github.com/dapphub/ds-exec
 [submodule "ds-multisig"]
 	path = ds-multisig
-	url = git@github.com:dapphub/ds-multisig
+	url = https://github.com/dapphub/ds-multisig
 [submodule "ds-value"]
 	path = ds-value
-	url = git@github.com:dapphub/ds-value
+	url = https://github.com/dapphub/ds-value
 [submodule "ds-proxy"]
 	path = ds-proxy
-	url = git@github.com:dapphub/ds-proxy
+	url = https://github.com/dapphub/ds-proxy
 [submodule "ds-stop"]
 	path = ds-stop
-	url = git@github.com:dapphub/ds-stop
+	url = https://github.com/dapphub/ds-stop
 [submodule "ds-thing"]
 	path = ds-thing
-	url = git@github.com:dapphub/ds-thing.git
+	url = https://github.com/dapphub/ds-thing.git
