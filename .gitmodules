@@ -40,3 +40,12 @@
 [submodule "ds-thing"]
 	path = ds-thing
 	url = https://github.com/dapphub/ds-thing.git
+[submodule "ds-test"]
+	path = ds-test
+	url = https://github.com/dapphub/ds-test
+[submodule "erc20"]
+	path = erc20
+	url = https://github.com/dapphub/erc20
+[submodule "ds-warp"]
+	path = ds-warp
+	url = https://github.com/dapphub/ds-warp
