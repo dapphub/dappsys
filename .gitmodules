@@ -46,6 +46,3 @@
 [submodule "erc20"]
 	path = erc20
 	url = https://github.com/dapphub/erc20
-[submodule "ds-warp"]
-	path = ds-warp
-	url = https://github.com/dapphub/ds-warp

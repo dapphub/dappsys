@@ -17,7 +17,6 @@ let
     ds-token    = pkg ./ds-token;
     ds-value    = pkg ./ds-value;
     ds-vault    = pkg ./ds-vault;
-    ds-warp     = pkg ./ds-warp;
     erc20       = pkg ./erc20;
   };
 in dappsys
